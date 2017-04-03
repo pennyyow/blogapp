@@ -53,7 +53,6 @@
                         <a class="btn btn-success btn-facebook block full-width m-b">
                             <i class="fa fa-facebook"> </i> Login with Facebook
                         </a>
-              
                     <a href="{{ route('password.request') }}">
                         <small>Forgot password?</small>
                     </a>

@@ -1,0 +1,1 @@
+Blogs Name: {{$blogs->name}}

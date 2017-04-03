@@ -196,11 +196,8 @@
             </div>
         </div>
     </div>
-
-
 @endsection
 
 @section('scripts')
     <script src="js/categories.js"></script>
 @stop
-
