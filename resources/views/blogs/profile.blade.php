@@ -1,6 +1,9 @@
 @extends('layouts.master')
 
 @section('content')
+@section('styles')
+    <link href="css/custom/profile.css" rel="stylesheet">
+@stop
 <title>BlogMoTo | Profile</title>
 
     <div class="wrapper wrapper-content">
@@ -13,25 +16,81 @@
                         </div>
                         <div>
                             <div class="ibox-content no-padding border-left-right">
-                                <img alt="image" class="img-responsive" src="img/profile_big.jpg">
+                                <!-- <img alt="image" class="img-responsive" src="img/profile_big.jpg"> -->
+                                @if(!auth()->user()->image == null)
+                                <img src="{{ asset('img/avatar/' . auth()->user()->image) }}" alt="image" class="img-responsive">
+                                @else
+                                <img src="{{ asset('img/avatar/152.jpg') }}" alt="image" class="img-responsive">
+                                @endif
                             </div>
                             <div class="ibox-content profile-content">
-                                <h4><strong>John Patrick Bagacina</strong></h4>
-                                <p><i class="fa fa-map-marker"></i> Pateros, Metro Manila</p>
-                                <h5>
-                                    About me
-                                </h5>
-                                <p>
-                                    Good looking person. Has many talents and skills. 
-                                </p>
+                                <h3><p><i class="fa fa-user"></i><strong> {{ auth()->user()->firstName }} {{ auth()->user()->lastName }}</strong></p></h3>
+                                <p><i class="fa fa-envelope"></i><strong> {{ auth()->user()->email }}</strong></p>
                                 
                                 <div class="user-button">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <button type="button" class="btn btn-primary btn-sm btn-block">
+                                            <button type="button" class="btn btn-primary btn-sm btn-block" 
+                                            data-toggle="modal" href="#modal-form">
                                                 <i class="fa fa-edit"></i> Edit Profile
                                             </button>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="modal-form" class="modal fade" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-6 b-r">
+                                            <h3 class="m-t-none m-b">Edit Profile</h3>
+                                            {!! Form::open(array('action' => array('BlogController@updateProfile'), 'method' => 'POST', 'id' => 'form1', 'class' => 'form-vertical', 'files' => 'true', 'enctype' => 'multipart/form-data')) !!}
+
+                                            <!-- <form role="form" action="" method="post" enctype="multipart/form-data"> -->
+                                                <div class="form-group">
+                                                    <input type="text" placeholder="Enter First Name" name="firstName" class="form-control" value="{{ auth()->user()->firstName }}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" placeholder="Enter Last Name" name="lastName" class="form-control" value="{{ auth()->user()->lastName }}">
+                                                </div>
+                                                <div class="form-group"> 
+                                                    <input type="email" placeholder="Enter email" name="email" class="form-control" value="{{ auth()->user()->email }}">
+                                                </div>
+                                                <div>
+                                                    <button class="btn btn-white btn-sm" type="button" data-dismiss="modal">
+                                                        <i class="fa fa-times"></i>
+                                                        Cancel
+                                                    </button>
+                                                        <button class="btn btn-sm btn-primary" 
+                                                            type="submit">
+                                                            <strong>
+                                                            <i class="fa fa-save"></i>
+                                                            Save Changes
+                                                            </strong>
+                                                        </button>
+                                                </div>
+                                            <!-- </form> -->
+
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <img alt="image" class="img-responsive" id="profile-image-edit" name="file" src="img/profile_big.jpg">
+                                            </div>
+                                            <div>
+                                                <label id="btnInputImage" for="inputImage" class="btn btn-sm btn-info block m-t-n-xs">
+                                                    <input type="file" name="file" id="inputImage" class="hidden">
+                                                    <strong> 
+                                                    <i class="fa fa-upload"></i>
+                                                    Upload Profile Picture
+                                                    </strong>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    {!! Form::close() !!}
+
                                     </div>
                                 </div>
                             </div>
@@ -234,4 +293,31 @@
         </div>
     </div>
 
+    <script>
+        $(document).ready( function()  {
+    var $inputImage = $("#inputImage");
+    if (window.FileReader) {
+        $inputImage.change(function() {
+            var fileReader = new FileReader(),
+                    files = this.files,
+                    file;
+            if (!files.length) {
+                return;
+            }
+
+            file = files[0];
+
+            if (/^image\/\w+$/.test(file.type)) {
+                fileReader.readAsDataURL(file);
+                fileReader.onload = function () {
+                    $('#profile-image-edit').attr('src', this.result);
+                };
+            } else {
+                showMessage("Please choose an image file.");
+            }
+        });
+    } 
+});
+
+    </script>
 @endsection

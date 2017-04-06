@@ -21,15 +21,17 @@
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
-    <link href="css/custom/posts.css" rel="stylesheet">
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 
-    <link href="css/custom/profile.css" rel="stylesheet">
+    <Script src="js/dd.js"></Script>
+    <Script src="js/cc.js"></Script>
 
-    <link href="css/custom/categories.css" rel="stylesheet">
 </head>
 
 <body class="gray-bg">
-<div class="row">
+@if(!auth()->guest())
+    <div class="row">
         <nav class="navbar navbar-fixed-top" role="navigation" style="margin-bottom: 0">
             <div class="container">
                 <div class="navbar-header">
@@ -65,7 +67,7 @@
                                     <a href="#">
                                         <div class="dropdown-messages-box">
                                             <div class="pull-left">
-                                                <img alt="image" class="img-responsive user-photo" src="img/a4.jpg">
+                                                <img alt="image" class=" user-photo" src="img/a4.jpg">
                                             </div>
                                             <div class="media-body ">
                                                 <small class="pull-right text-navy">5h ago</small>
@@ -77,7 +79,7 @@
                                     <a href="#">
                                         <div class="dropdown-messages-box">
                                             <div class="pull-left">
-                                                <img alt="image" class="img-responsive user-photo" src="img/a4.jpg">
+                                                <img alt="image" class=" user-photo" src="img/a4.jpg">
                                             </div>
                                             <div class="media-body ">
                                                 <small class="pull-right text-navy">5h ago</small>
@@ -89,7 +91,7 @@
                                     <a href="#">
                                         <div class="dropdown-messages-box">
                                             <div class="pull-left">
-                                                <img alt="image" class="img-responsive user-photo" src="img/a4.jpg">
+                                                <img alt="image" class=" user-photo" src="img/a4.jpg">
                                             </div>
                                             <div class="media-body ">
                                                 <small class="pull-right text-navy">5h ago</small>
@@ -101,7 +103,7 @@
                                     <a href="#">
                                         <div class="dropdown-messages-box">
                                             <div class="pull-left">
-                                                <img alt="image" class="img-responsive user-photo" src="img/a4.jpg">
+                                                <img alt="image" class=" user-photo" src="img/a4.jpg">
                                             </div>
                                             <div class="media-body ">
                                                 <small class="pull-right text-navy">5h ago</small>
@@ -140,18 +142,59 @@
                 </div>
             </div>
         </nav>
+    </div> 
+@else
+    <div class="row">
+        <nav class="navbar navbar-fixed-top" role="navigation" style="margin-bottom: 0">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="logo" href="posts">
+                        BlogMoTo
+                    </a>
+                    <form role="search" class="app-search" action="search_results.html">
+                        <div class="form-group">
+                            <input type="text" placeholder="Search for something..." name="top-search" id="top-search" class="form-control app-search-input">
+                            <a href=""><i class="fa fa-search"></i></a>
+                        </div>
+                    </form>
+                </div>
+                <div class="tooltip-demo">
+                    <ul class="nav navbar-top-links navbar-right pull-right">
+                        <li data-toggle="tooltip" data-placement="bottom" title="Home">
+                            <a href="{{ url('/pub_posts') }}">
+                                <i class="fa fa-home icon"></i>
+                            </a>
+                        </li>
+                      
+                        <li data-toggle="tooltip" data-placement="bottom" title="Categories">
+                            <a href="{{ url('/pub_categories') }}">
+                                <i class="fa fa-th-large icon"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </div>  
+@endif
+
 @yield('content')
+@yield('styles')
 
  <!-- Mainly scripts -->
-    <script src="js/jquery-2.1.1.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
+
+    <!-- TAGS INPUT -->
+    <script src="css/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+
+    <!-- SUMMERNOTE -->
+    <script src="js/plugins/summernote/summernote.min.js"></script>
 
 </body>
 </html>

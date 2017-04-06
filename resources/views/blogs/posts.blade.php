@@ -1,6 +1,9 @@
 @extends('layouts.master')
 
 @section('content')
+@section('styles')
+    <link href="css/custom/posts.css" rel="stylesheet">
+@stop
 <title>BlogMoTo | Posts</title>
 
     <div class="wrapper wrapper-content">

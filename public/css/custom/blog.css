@@ -1,15 +1,18 @@
 .img-responsive {
   width: 100% !important;
-  min-height: 250px !important;
-  max-height: 250px !important;
+  max-height: 350px !important;
 }
 
-.product-name {
-  font-size: 20px !important;
+.media-body textarea {
+  resize: none !important;
 }
 
-.product-imitation {
-  padding: 0px !important;
+.status p {
+  font-size: 12px !important;
+}
+
+.social-avatar.comment-text {
+  padding: 15px 15px 15px 15px !important;
 }
 
 /* NAVBAR STYLES */

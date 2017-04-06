@@ -49,24 +49,19 @@
                                 </span>
                             @endif
                     </div>
-
-                    <div class="form-group">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                </label>
-                            </div>
-                    </div>
-                     <div class="form-group">
-                            <button type="submit" class="btn btn-primary block full-width m-b"> Login </button>
-                    </div>
+                    <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+                        <a class="btn btn-success btn-facebook block full-width m-b">
+                            <i class="fa fa-facebook"> </i> Login with Facebook
+                        </a>
+              
                     <a href="{{ route('password.request') }}">
                         <small>Forgot password?</small>
                     </a>
                      <p class="text-muted text-center">
                         <small>Do not have an account?</small>
                     </p>
-                    <a class="btn btn-sm btn-white btn-block" href="{{ route('register') }}">Create an account</a>
+                    <a class="btn btn-sm btn-white btn-block m-b" href="{{ route('register') }}">Create an account</a>
+                    <a class="btn btn-info block full-width m-b" href="pub_posts">Continue without Logging in</a>
                 </form>
             </div>
         </div>

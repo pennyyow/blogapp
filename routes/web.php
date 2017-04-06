@@ -11,22 +11,31 @@
 |
 */
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
-
-// Route::get('/check', 'CheckController@check');
-/*Route::get('/index', 'CheckController@index');
-Route::get('/create', 'CheckController@create');
-Route::post('/storeBlog', 'CheckController@store');
-Route::post('/blogs/{id}', 'CheckController@show');*/
-
 
 Auth::routes();
 
-Route::get('/posts', 'BlogController@home');
-Route::get('/profile', 'BlogController@profile');
-Route::get('/categories', 'BlogController@categories');
 Route::get('/', function () {
-    return view('auth.login');
-});
+	    return view('auth.login');
+	});
+
+
+    //only authorized users can access these routes
+    Route::get('/posts', 'BlogController@home');
+	Route::get('/profile', 'BlogController@profile');
+	Route::get('/categories', 'BlogController@categories');
+	Route::get('/blog', 'BlogController@blog');
+	Route::get('/create-blog', 'BlogController@createBlog');
+	Route::post('/profile/update', 'BlogController@updateProfile');
+	Route::post('/create', 'BlogController@create');
+
+	
+
+
+
+
+    //only guests can access these routes
+    Route::get('/pub_posts', 'GuestController@home');
+	Route::get('/pub_categories', 'GuestController@categories');
+	// Route::get('/create-blog', 'BlogController@createBlog');
+
+	
