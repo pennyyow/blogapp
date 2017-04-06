@@ -60,7 +60,6 @@ class BlogController extends Controller
     public function create(Request $request){
         $categ = Input::get('category');
         if($request->file('file') == null){
-
             //TODO: Improve, change the filename of images according to its category or change this to switch case
             if($categ == 'Adventure'){
                 $avatar = 'category8';

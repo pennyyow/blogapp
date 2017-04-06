@@ -67,7 +67,7 @@
                                     <a href="#">
                                         <div class="dropdown-messages-box">
                                             <div class="pull-left">
-                                                <img alt="image" class="img-responsive user-photo" src="img/a4.jpg">
+                                                <img alt="image" class=" user-photo" src="img/a4.jpg">
                                             </div>
                                             <div class="media-body ">
                                                 <small class="pull-right text-navy">5h ago</small>
@@ -79,7 +79,7 @@
                                     <a href="#">
                                         <div class="dropdown-messages-box">
                                             <div class="pull-left">
-                                                <img alt="image" class="img-responsive user-photo" src="img/a4.jpg">
+                                                <img alt="image" class=" user-photo" src="img/a4.jpg">
                                             </div>
                                             <div class="media-body ">
                                                 <small class="pull-right text-navy">5h ago</small>
@@ -91,7 +91,7 @@
                                     <a href="#">
                                         <div class="dropdown-messages-box">
                                             <div class="pull-left">
-                                                <img alt="image" class="img-responsive user-photo" src="img/a4.jpg">
+                                                <img alt="image" class=" user-photo" src="img/a4.jpg">
                                             </div>
                                             <div class="media-body ">
                                                 <small class="pull-right text-navy">5h ago</small>
@@ -103,7 +103,7 @@
                                     <a href="#">
                                         <div class="dropdown-messages-box">
                                             <div class="pull-left">
-                                                <img alt="image" class="img-responsive user-photo" src="img/a4.jpg">
+                                                <img alt="image" class=" user-photo" src="img/a4.jpg">
                                             </div>
                                             <div class="media-body ">
                                                 <small class="pull-right text-navy">5h ago</small>
@@ -378,6 +378,7 @@
 </div>
 
 @yield('content')
+@yield('styles')
 
  <!-- Mainly scripts -->
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>

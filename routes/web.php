@@ -38,5 +38,3 @@ Route::get('/', function () {
 	Route::get('/pub_categories', 'GuestController@categories');
 	// Route::get('/create-blog', 'BlogController@createBlog');
 
-	
-
