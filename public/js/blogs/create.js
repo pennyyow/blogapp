@@ -1,34 +1,29 @@
 $(function() {
 	$('.summernote').summernote();
-	
-	var $inputImg = $("#inputImg");
-  if (window.FileReader) {
-      $inputImg.change(function() {
-          var fileReader = new FileReader(),
-                  files = this.files,
-                  file;
 
-          if (!files.length) {
-              return;
-          }
+ $('#formImg').on('change', function() {
+    var formImg = $('#formImg').get(0);
 
-          file = files[0];
+    if(formImg.files && formImg.files[0]) {
+      var reader = new FileReader();
 
-          if (/^image\/\w+$/.test(file.type)) {
-              fileReader.readAsDataURL(file);
-              fileReader.onload = function () {
-                  $('#thumbnail').attr('src', this.result);
-              };
-          } else {
-              showMessage("Please choose an image file.");
-          }
-      });
-  }
+      reader.onload = function(e) {
+        $('#divAddImg')
+          .removeClass('border-dash')
+          .empty()
+          .append(
+            $('<img/>')
+              .attr('src', e.target.result)
+              .addClass('thumbnail img-responsive')
+          );
+      }
+
+      reader.readAsDataURL(formImg.files[0]);
+    }
+  });
 
 	$('#btn-create').on('click', function(e) {
 		$('#content').val($('.summernote').code());
-
-		$(this).trigger('submit');
 	});
 
 	var get = localStorage.getItem("storageName");
@@ -36,9 +31,5 @@ $(function() {
       if($(e).val() == localStorage.getItem("storageName")){
           $('#selectCategory').prop('selectedIndex',i);
       }
-
   });
-
-  var getSrc = localStorage.getItem("storageName2");
-  $("#thumbnail").attr("src", getSrc);
 });

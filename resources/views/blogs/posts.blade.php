@@ -8,28 +8,26 @@
 
     <div class="wrapper wrapper-content">
         <div class="row animated fadeInRight">
+            @foreach($blogs as $blog)
             <div class="col-md-8 col-md-offset-2">
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-md-4 no-padding">
-                                <img alt="image" class="img-responsive" src="img/company/gal3.jpg">
+                                <img alt="image" class="img-responsive" src="img/company/{{ $blog->image }}">
                             </div>
                             <div class="col-md-8">
                                 <a href="#" class="btn-link">
-                                    <h1><strong>Caleb | 1st Birthday</strong></h1>
+                                    <h1><strong>{{ $blog->title }}</strong></h1>
                                 </a>
                                 <p>
-                                    The languages only differ in their grammar, their pronunciation and their most common words. Everyone realizes why a new common language would be desirable: one could refuse to pay expensive translators.
-                                </p>
-                                <p>
-                                    The languages only differ in their grammar, their pronunciation and their most common words. Everyone realizes why a new common language would be desirable: one could refuse to pay expensive translators.
+                                    {{ $blog->description }}
                                 </p>
                                 <div>
                                     Posted by 
                                     <a href="#" class="btn-link">
                                         <strong>
-                                            John Patrick S. Bagacina
+                                            {{ $blog->firstName }}
                                         </strong>
                                     </a> 
                                     <span class="text-muted">
@@ -58,6 +56,7 @@
                     </div>
                 </div>
             </div>
+            @endforeach
             <div class="col-md-8 col-md-offset-2">
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">

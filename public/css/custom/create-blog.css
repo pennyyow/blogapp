@@ -1,3 +1,36 @@
+#formImg {
+  display: none;
+}
+
+.form-control.description {
+  white-space: pre !important;
+}
+
+.border-dash {
+  border: #757575 5px dashed;
+}
+
+.thumbnail.img-responsive {
+  border: 0px !important;
+  min-height: 354px !important;
+}
+
+#divAddImg {
+  width: 100%;
+  min-height: 354px;
+  cursor: pointer !important;
+}
+
+.font-gray {
+  color: #757575;
+}
+
+.glyph-button {
+  margin-top: 133px;
+  font-size: 40px;
+}
+
+
 .ibox-title {
   border-color: #18a689 !important;
   border-width: 1px 0 0 !important;
