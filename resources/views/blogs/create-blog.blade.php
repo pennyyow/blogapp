@@ -47,23 +47,23 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Description</label>
-                                        <textarea placeholder="Enter Description" class="form-control" name="description" rows="5"></textarea>
+                                        <textarea placeholder="Enter Description" class="form-control" id="description" name="description" rows="5"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <img alt="image" class="img-responsive" id="thumbnail" name="thumbnail" src="" height="400" width="500">
-                                    </div>
-                                    <div>
-                                        <label id="btninputImg" for="inputImg" 
-                                            class="btn btn-sm btn-info block m-t-n-xs">
-                                            <input type="file" accept="image/*" name="file" id="inputImg" 
-                                               class="hidden" >
-                                            <strong> 
-                                            <i class="fa fa-upload"></i>
-                                            Upload Thumbnail
-                                            </strong>
-                                        </label>
+                                      <label for="formImg" class="border-dash" id="divAddImg">
+                                        <div class="row">
+                                          <div class="col-md-12 text-center">
+                                            <span class="glyphicon glyphicon-plus-sign font-gray glyph-button">
+                                            </span>
+                                            <h3 class="font-gray mt-0">
+                                              Upload thumbnail
+                                            </h3>
+                                          </div>
+                                        </div>
+                                      </label>
+                                      <input type="file" name="file" id="formImg" accept="image/*" />
                                     </div>
                                 </div>
                             </div>

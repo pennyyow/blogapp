@@ -18,7 +18,9 @@ class BlogController extends Controller
     }
 
     public function home(){
-    	return view('blogs.posts');
+        $blogs = Blogs::all();
+        return $blogs;
+    	return view('blogs.posts', compact('blogs'));
     }
 
     public function profile(){
@@ -89,17 +91,6 @@ class BlogController extends Controller
                 $avatar = 'img_profile_big';
             }
 
-            $blog = new Blogs();
-
-            $blog->title = Input::get('title');
-            $blog->category = Input::get('category');
-            $blog->tags = $request->tags;
-            $blog->description = Input::get('description');
-            $blog->content = Input::get('content');
-            $blog->image = $avatar;
-            $blog->user = auth()->user();
-            $blog->save();
-
         }else{
 
             $fileImage = $request->file('file');
@@ -108,18 +99,24 @@ class BlogController extends Controller
             //TODO: Change filename of uplodaed thumbnail to id of article
             $avatar = $fileImage->getClientOriginalName();
             $fileImage->move($destination_path, $avatar);
-
-            $blog = new Blogs();
-
-            $blog->title = Input::get('title');
-            $blog->category = Input::get('category');
-            $blog->tags = $request->tags;
-            $blog->description = Input::get('description');
-            $blog->content = Input::get('content');
-            $blog->image = $avatar;
-            $blog->user = auth()->user();
-            $blog->save();
         }
+
+        $blog = new Blogs();
+
+        $blog->title = Input::get('title');
+        $blog->category = Input::get('category');
+        $blog->tags = $request->tags;
+        $blog->description = Input::get('description');
+        $blog->content = Input::get('content');
+        $blog->image = $avatar;
+        $blog->user = [
+            "_id" => auth()->user()->_id,
+            "firstName" => auth()->user()->firstName,
+            "lastName" => auth()->user()->lastName,
+            "email" => auth()->user()->email,
+            "image" => auth()->user()->image
+        ];
+        $blog->save();
 
         return redirect('/posts');
     }
