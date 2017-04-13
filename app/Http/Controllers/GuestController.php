@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Blogs;
 
 class GuestController extends Controller
 {
 	
    public function home(){
-   	return view('blogs.posts');
+   	$blogs = Blogs::all();
+   	return view('blogs.posts', compact('blogs'));
    }
 
    public function categories(){

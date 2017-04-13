@@ -19,13 +19,7 @@ class BlogController extends Controller
 
     public function home(){
         $blogs = Blogs::all();
-        return $blogs;
     	return view('blogs.posts', compact('blogs'));
-    }
-
-    public function profile(){
-        $image = User::get();
-    	return view('blogs.profile', compact('image'));
     }
 
     public function categories(){
@@ -39,22 +33,7 @@ class BlogController extends Controller
     public function createBlog(){
         return view('blogs.create-blog');
     }
-
-    public function updateProfile(Request $request){
-        //get & move thumbnail
-        $fileImage = $request->file('file');
-        $destination_path = 'img/avatar';
-        $avatar = $fileImage->getClientOriginalName();
-        $fileImage->move($destination_path, $avatar);
-
-        $firstName = Input::get('firstName');
-        $lastName = Input::get('lastName');
-        $email = Input::get('email');
-        $image = $avatar;   
-
-        $updateProfile = Profile::updateProfile($firstName, $lastName, $image);
-        return redirect('/profile');
-    }
+    
     /*public function listBlogs(){
         $blogs = Blogs::all();
         return redirect('/posts', compact('blogs'));

@@ -21,12 +21,13 @@ Route::get('/', function () {
 
     //only authorized users can access these routes
     Route::get('/posts', 'BlogController@home');
-	Route::get('/profile', 'BlogController@profile');
 	Route::get('/categories', 'BlogController@categories');
 	Route::get('/blog', 'BlogController@blog');
 	Route::get('/create-blog', 'BlogController@createBlog');
-	Route::post('/profile/update', 'BlogController@updateProfile');
 	Route::post('/create', 'BlogController@create');
+
+	Route::get('/profile', 'UserController@profile');
+	Route::post('/profile/update', 'UserController@updateProfile');
 
 	
 
@@ -38,3 +39,19 @@ Route::get('/', function () {
 	Route::get('/pub_categories', 'GuestController@categories');
 	// Route::get('/create-blog', 'BlogController@createBlog');
 
+
+	/*Route::group(['middleware' =>  'web'], function () {
+		
+		Route::get('auth/facebook', [
+			'as' => 'auth-facebook',
+			'uses' => '\App\Http\Controllers\UserController@redirectToProvider'
+		]);
+
+		Route::get('auth/facebook/callback', [
+			'as' => 'facebook-callback',
+			'uses' => '\App\Http\Controllers\UserController@handleProviderCallback'
+		]);
+	});*/
+
+	Route::get('auth/facebook', 'Auth\RegisterController@redirectToProvider');
+	Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');

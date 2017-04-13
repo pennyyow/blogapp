@@ -17,26 +17,37 @@
                         <div>
                             <div class="ibox-content no-padding border-left-right">
                                 <!-- <img alt="image" class="img-responsive" src="img/profile_big.jpg"> -->
-                                @if(!auth()->user()->image == null)
-                                <img src="{{ asset('img/avatar/' . auth()->user()->image) }}" alt="image" class="img-responsive">
+                                @if(auth()->user()->avatar_url != null)
+                                    <img src="{{ auth()->user()->avatar_url }}" alt="image" class="img-responsive">
                                 @else
-                                <img src="{{ asset('img/avatar/152.jpg') }}" alt="image" class="img-responsive">
+                                    @if(!auth()->user()->image == null)
+                                        <img src="{{ asset('img/avatar/' . auth()->user()->image) }}" alt="image" class="img-responsive">
+                                    @else
+                                        <img src="{{ asset('img/avatar/default-img.jpg') }}" alt="image" class="img-responsive">
+                                    @endif
                                 @endif
                             </div>
                             <div class="ibox-content profile-content">
-                                <h3><p><i class="fa fa-user"></i><strong> {{ auth()->user()->firstName }} {{ auth()->user()->lastName }}</strong></p></h3>
+                                @if(auth()->user()->facebook_id == null)
+                                    <h3><p><i class="fa fa-user"></i><strong> {{ auth()->user()->firstName }} {{ auth()->user()->lastName }}</strong></p></h3>
+                                @else
+                                    <h3><p><i class="fa fa-user"></i><strong> {{ auth()->user()->name }}</strong></p></h3>
+                                @endif
                                 <p><i class="fa fa-envelope"></i> {{ auth()->user()->email }}</p>
-                                
-                                <div class="user-button">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <button type="button" class="btn btn-primary btn-sm btn-block" 
-                                            data-toggle="modal" href="#modal-form">
-                                                <i class="fa fa-edit"></i> Edit Profile
-                                            </button>
+                                @if(auth()->user()->facebook_id == null)
+                                    <div class="user-button">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn btn-primary btn-sm btn-block" 
+                                                data-toggle="modal" href="#modal-form">
+                                                    <i class="fa fa-edit"></i> Edit Profile
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                @else
+
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -47,7 +58,7 @@
                                     <div class="row">
                                         <div class="col-sm-6 b-r">
                                             <h3 class="m-t-none m-b">Edit Profile</h3>
-                                            {!! Form::open(array('action' => array('BlogController@updateProfile'), 'method' => 'POST', 'id' => 'form1', 'class' => 'form-vertical', 'files' => 'true', 'enctype' => 'multipart/form-data')) !!}
+                                            {!! Form::open(array('action' => array('UserController@updateProfile'), 'method' => 'POST', 'id' => 'form1', 'class' => 'form-vertical', 'files' => 'true', 'enctype' => 'multipart/form-data')) !!}
 
                                             <!-- <form role="form" action="" method="post" enctype="multipart/form-data"> -->
                                                 <div class="form-group">
@@ -77,7 +88,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <img alt="image" class="img-responsive" id="profile-image-edit" name="file" src="img/profile_big.jpg">
+                                                <img alt="image" class="img-responsive" id="profile-image-edit" name="file" src="{{ asset('img/avatar/' . auth()->user()->image) }}">
                                             </div>
                                             <div>
                                                 <label id="btnInputImage" for="inputImage" class="btn btn-sm btn-info block m-t-n-xs">
@@ -320,4 +331,5 @@
         });
 
     </script>
+
 @endsection
