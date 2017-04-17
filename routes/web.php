@@ -20,23 +20,30 @@ Route::get('/', function () {
 
 
     //only authorized users can access these routes
-    Route::get('/posts', 'BlogController@home');
+  Route::get('/posts', 'BlogController@home');
+	Route::get('/profile/{id}', 'BlogController@profile');
 	Route::get('/categories', 'BlogController@categories');
 	Route::get('/blog', 'BlogController@blog');
 	Route::get('/create-blog', 'BlogController@createBlog');
+	Route::get('/view-blog/{id}', 'BlogController@view');
+	Route::get('/edit-blog/{id}', 'BlogController@editBlog');
+	Route::post('/delete-blog', 'BlogController@deleteBlog');
+	Route::post('/profile/update', 'BlogController@updateProfile');
 	Route::post('/create', 'BlogController@create');
-
-	Route::get('/profile', 'UserController@profile');
-	Route::post('/profile/update', 'UserController@updateProfile');
-
-	
-
-
-
+	Route::post('/listBlogs', 'BlogController@listBlogs');
+	Route::post('/react', 'BlogController@react');
+	Route::post('/comment', 'BlogController@comment');
+	Route::post('/get-blog', 'BlogController@getBlog');
+	Route::post('/listBlogsByUser', 'BlogController@listBlogsByUser');
 
     //only guests can access these routes
-    Route::get('/pub_posts', 'GuestController@home');
+	Route::get('/profile/{id}', 'GuestController@profile');
+	Route::post('/pub-get-blog', 'GuestController@getBlog');
+	Route::get('/pub-view-blog/{id}', 'GuestController@view');
+  Route::get('/pub_posts', 'GuestController@home');
+  Route::post('/pub_listBlogs', 'GuestController@listBlogs');
 	Route::get('/pub_categories', 'GuestController@categories');
+	Route::post('/pub-listBlogsByUser', 'GuestController@listBlogsByUser');
 	// Route::get('/create-blog', 'BlogController@createBlog');
 
 
