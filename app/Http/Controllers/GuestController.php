@@ -44,6 +44,7 @@ class GuestController extends Controller
             '_id' => $user->_id,
             'firstName' => $user->firstName,
             'lastName' => $user->lastName,
+            'name' => $user->name,
             'email' => $user->email,
             'image' => $user->image
         ]);

@@ -29,6 +29,7 @@ class BlogController extends Controller
             '_id' => $user->_id,
             'firstName' => $user->firstName,
             'lastName' => $user->lastName,
+            'name' => $user->name,
             'email' => $user->email,
             'image' => $user->image
         ]);
@@ -71,7 +72,7 @@ class BlogController extends Controller
         $res = Blogs::orderBy('updated_at', 'desc')->raw(
             function($collection) use($user) {
                 return $collection->find([
-                    'user._id' => '58e74331d7da1d1f94006ec2'
+                    'user._id' => $user
                     ], 
                     ['sort' => ['updated_at' => -1]]);
             })->take($max);
@@ -144,18 +145,38 @@ class BlogController extends Controller
 
     public function updateProfile(Request $request){
         //get & move thumbnail
+     
+        $new = Blogs::select('user')->get();
+
         $fileImage = $request->file('file');
         $destination_path = 'img/avatar';
-        $avatar = $fileImage->getClientOriginalName();
-        $fileImage->move($destination_path, $avatar);
+        if($fileImage == null) {
+            $avatar = \Auth::user()->image;
+        }else{
+            $avatar = $fileImage->getClientOriginalName();
+            $fileImage->move($destination_path, $avatar);     
+        }
 
         $firstName = Input::get('firstName');
         $lastName = Input::get('lastName');
+        $name = $firstName.' '.$lastName;
         $email = Input::get('email');
-        $image = $avatar;   
+        $image = $avatar;
 
-        $updateProfile = Profile::updateProfile($firstName, $lastName, $image);
-        return redirect('/profile');
+        $updateProfile = Profile::updateProfile($firstName, $lastName, $email, $name, $image);
+       
+        $blog = Blogs::select('user')->update(array(
+                    'firstName' => $firstName,
+                    'lastName' => $lastName,
+                    'email' => $email,
+                    'name' => $firstName.' '.$lastName,
+                    'image' => $image
+                ));
+
+
+
+
+        return redirect('/profile/' . \Auth::user()->id);
     }
     
     public function create(Request $request){
@@ -163,37 +184,37 @@ class BlogController extends Controller
         if($request->file('file') == null){
             //TODO: Improve, change the filename of images according to its category or change this to switch case
             if($categ == 'Adventure'){
-                $avatar = 'category8';
+                $avatar = 'category8.jpeg';
             }
             if($categ == 'Entertainment'){
-                $avatar = 'category1';
+                $avatar = 'category1.jpeg';
             }
             if($categ == 'Politics'){
-                $avatar = 'category2';
+                $avatar = 'category2.jpeg';
             }
             if($categ == 'Nature'){
-                $avatar = 'category3';
+                $avatar = 'category3.jpeg';
             }
             if($categ == 'Education'){
-                $avatar = 'category4';
+                $avatar = 'category4.jpeg';
             }
             if($categ == 'Fashion'){
-                $avatar = 'category5';
+                $avatar = 'category5.jpeg';
             }
             if($categ == 'Technology'){
-                $avatar = 'category6';
+                $avatar = 'category6.jpeg';
             }
             if($categ == 'Sports'){
-                $avatar = 'category7';
+                $avatar = 'category7.jpeg';
             }
             if($categ == 'Others'){
-                $avatar = 'img_profile_big';
+                $avatar = 'profile_big.jpg';
             }
 
         }else{
 
             $fileImage = $request->file('file');
-            $destination_path = 'img/avatar';
+            $destination_path = 'img/company';
 
             //TODO: Change filename of uplodaed thumbnail to id of article
             $avatar = $fileImage->getClientOriginalName();
@@ -212,6 +233,7 @@ class BlogController extends Controller
             "_id" => auth()->user()->_id,
             "firstName" => auth()->user()->firstName,
             "lastName" => auth()->user()->lastName,
+            "name" => auth()->user()->firstName.' '.auth()->user()->lastName,
             "email" => auth()->user()->email,
             "image" => auth()->user()->image
         ];
@@ -231,5 +253,35 @@ class BlogController extends Controller
 
     public function getBlog() {
         return Blogs::find(Input::get('blog'));
+    }
+
+    public function search() {
+        $keyword = Input::get('search');
+        
+        return view('blogs.search', compact('keyword'));
+    }
+
+    public function filterBlogs() {
+        $keyword = Input::get('keyword');
+
+        $result = Blogs::where('title', 'regex', "/". $keyword ."/i" )->get();
+
+        return $result;
+
+    }
+
+    public function filterUsers() {
+        $keyword = Input::get('keyword');
+
+        $result = User::where('name', 'regex', "/". $keyword ."/i" )->get();
+        return $result; 
+    }
+
+    public function filterTags() {
+        $keyword = Input::get('keyword');
+
+        $result = Blogs::where('tags', 'regex', "/". $keyword ."/i" )->get();
+
+        return $result;
     }
 }

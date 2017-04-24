@@ -40,12 +40,12 @@
                     <a class="logo" href="{{ url('/posts') }}">
                         BlogMoTo
                     </a>
-                    <form role="search" class="app-search" action="search_results.html">
+                    {!! Form::open(array('action' => array('BlogController@search'), 'role' => 'search', 'method' => 'GET', 'id' => 'createForm', 'class' => 'app-search')) !!}
                         <div class="form-group">
-                            <input type="text" placeholder="Search for something..." name="top-search" id="top-search" class="form-control app-search-input">
+                            <input type="text" placeholder="Search for something..." name="search" id="top-search" class="form-control app-search-input">
                             <a href=""><i class="fa fa-search"></i></a>
                         </div>
-                    </form>
+                    {!! Form::close() !!}
                 </div>
                 <div class="tooltip-demo">
                     <ul class="nav navbar-top-links navbar-right pull-right">

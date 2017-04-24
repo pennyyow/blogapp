@@ -50,7 +50,7 @@
                             @endif
                     </div>
                     <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
-                        <a href="http://9278cd52.ngrok.io/blogapp/public/auth/facebook" class="btn btn-success btn-facebook block full-width m-b">
+                        <a href="http://40325255.ngrok.io/blogapp/public/auth/facebook" class="btn btn-success btn-facebook block full-width m-b">
                             <i class="fa fa-facebook"> </i> Login with Facebook
                         </a>
                     <a href="{{ route('password.request') }}">
