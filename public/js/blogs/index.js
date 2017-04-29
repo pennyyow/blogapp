@@ -83,6 +83,23 @@ var Blog = React.createClass({
   },
   componentDidMount() {
     $(this.refs.description).html(this.state.blog.description);
+
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: '1352297461495712',
+        xfbml: true,
+        version: 'v2.0'
+      });
+    };
+
+    (function (d, s, id) {
+      var js,
+          fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, 'script', 'facebook-jssdk');
   },
   addReaction(reaction, blog) {
     $.ajax({
@@ -100,6 +117,19 @@ var Blog = React.createClass({
         $(this.refs.description).html(r.description);
       }.bind(this)
     });
+  },
+  share() {
+    var blog = this.state.blog;
+
+    FB.ui({
+      method: 'share',
+      display: 'popup',
+      href: 'http://d09343f8.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
+      title: blog.title,
+      picture: 'http://d09343f8.ngrok.io/blogapp/public/img/company/' + blog.image,
+      caption: blog.description,
+      description: blog.description
+    }, function (response) {});
   },
   render() {
     var blog = this.state.blog;
@@ -138,7 +168,7 @@ var Blog = React.createClass({
               React.createElement(
                 'div',
                 { className: 'col-md-4 no-padding' },
-                React.createElement('img', { alt: 'image', className: 'img-responsive', src: 'img/avatar/' + blog.image })
+                React.createElement('img', { alt: 'image', className: 'img-responsive', src: 'img/company/' + blog.image })
               ),
               React.createElement(
                 'div',
@@ -253,9 +283,12 @@ var Blog = React.createClass({
                 ),
                 React.createElement(
                   'button',
-                  { className: 'btn btn-white btn-xs' },
-                  React.createElement('i', { className: 'fa fa-share' }),
-                  ' Share'
+                  { className: 'btn btn-white btn-xs', onClick: this.share },
+                  React.createElement(
+                    'i',
+                    { className: 'fa fa-share' },
+                    ' Share '
+                  )
                 )
               )
             ),
@@ -263,13 +296,12 @@ var Blog = React.createClass({
               If,
               { test: isGuest },
               React.createElement(
-                'div',
-                { className: 'btn-group' },
+                'button',
+                { className: 'btn btn-white btn-xs', onClick: this.share },
                 React.createElement(
-                  'button',
-                  { className: 'btn btn-white btn-xs' },
-                  React.createElement('i', { className: 'fa fa-share' }),
-                  ' Share'
+                  'i',
+                  { className: 'fa fa-share' },
+                  ' Share '
                 )
               )
             )

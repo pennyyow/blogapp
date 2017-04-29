@@ -10,7 +10,8 @@ use App\User;
 class GuestController extends Controller
 {
    public function home(){
-   	return view('blogs.posts');
+   	$blogs = Blogs::all();
+   	return view('blogs.posts', compact('blogs'));
    }
 
    public function categories(){
@@ -43,6 +44,7 @@ class GuestController extends Controller
             '_id' => $user->_id,
             'firstName' => $user->firstName,
             'lastName' => $user->lastName,
+            'name' => $user->name,
             'email' => $user->email,
             'image' => $user->image
         ]);

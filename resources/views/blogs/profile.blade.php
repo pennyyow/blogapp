@@ -19,10 +19,10 @@
                         <div>
                             <div class="ibox-content no-padding border-left-right">
                                 <!-- <img alt="image" class="img-responsive" src="img/profile_big.jpg"> -->
-                                <img src="{{ $image ? asset('img/avatar/' . $image) : asset('img/avatar/152.jpg') }}" alt="image" class="img-responsive">                                
+                                <img src="{{ $image ? asset('img/avatar/' . $image) : asset('img/avatar/default-img.jpg') }}" alt="image" class="img-responsive">                                
                             </div>
                             <div class="ibox-content profile-content">
-                                <h3><p><i class="fa fa-user"></i><strong> {{ $firstName }} {{ $lastName }}</strong></p></h3>
+                                <h3><p><i class="fa fa-user"></i><strong> {{ $name }}</strong></p></h3>
                                 <p><i class="fa fa-envelope"></i> {{ $email }}</p>
                                 @if(!auth()->guest())
                                     @if(auth()->user()->_id == $_id)
@@ -75,8 +75,7 @@
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
                                                         <img alt="image" class="img-responsive" id="profile-image-edit" name="file" 
-                                                        src="{{ asset('img/profile_big.jpg') }}">
-                                                        <!-- <canvas id="img-canvas" ></canvas> -->
+                                                        src="{{ asset('img/avatar/' . $image) }}">
                                                     </div>
                                                     <div>
                                                         <label id="btnInputImage" for="inputImage" class="btn btn-sm btn-info block m-t-n-xs">

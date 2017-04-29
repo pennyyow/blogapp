@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use App\User;
 use DB;
+use Input;
 
 class Blogs extends Eloquent
 {

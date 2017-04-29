@@ -31,6 +31,7 @@ class BlogController extends Controller
             '_id' => $user->_id,
             'firstName' => $user->firstName,
             'lastName' => $user->lastName,
+            'name' => $user->name,
             'email' => $user->email,
             'image' => $user->image
         ]);
@@ -150,18 +151,38 @@ class BlogController extends Controller
 
     public function updateProfile(Request $request){
         //get & move thumbnail
+     
+        $new = Blogs::select('user')->get();
+
         $fileImage = $request->file('file');
         $destination_path = 'img/avatar';
-        $avatar = $fileImage->getClientOriginalName();
-        $fileImage->move($destination_path, $avatar);
+        if($fileImage == null) {
+            $avatar = \Auth::user()->image;
+        }else{
+            $avatar = $fileImage->getClientOriginalName();
+            $fileImage->move($destination_path, $avatar);     
+        }
 
         $firstName = Input::get('firstName');
         $lastName = Input::get('lastName');
+        $name = $firstName.' '.$lastName;
         $email = Input::get('email');
-        $image = $avatar;   
+        $image = $avatar;
 
-        $updateProfile = Profile::updateProfile($firstName, $lastName, $image);
-        return redirect('/profile');
+        $updateProfile = Profile::updateProfile($firstName, $lastName, $email, $name, $image);
+       
+        $blog = Blogs::select('user')->update(array(
+                    'firstName' => $firstName,
+                    'lastName' => $lastName,
+                    'email' => $email,
+                    'name' => $firstName.' '.$lastName,
+                    'image' => $image
+                ));
+
+
+
+
+        return redirect('/profile/' . \Auth::user()->id);
     }
 
     public function edit() {
@@ -242,11 +263,12 @@ class BlogController extends Controller
         $blog->tags = $request->tags;
         $blog->description = Input::get('description');
         $blog->content = Input::get('content');
-        
+
         $blog->user = [
             "_id" => auth()->user()->_id,
             "firstName" => auth()->user()->firstName,
             "lastName" => auth()->user()->lastName,
+            "name" => auth()->user()->firstName.' '.auth()->user()->lastName,
             "email" => auth()->user()->email,
             "image" => auth()->user()->image
         ];
@@ -285,5 +307,48 @@ class BlogController extends Controller
 
     public function getBlog() {
         return Blogs::find(Input::get('blog'));
+    }
+
+    public function view($id) {
+        $blog = Blogs::find($id);
+        $views = $blog->views ? $blog->views : 0;
+        $views++;
+        $blog->views = $views;
+        $blog->save();
+        return view('blogs.blog', compact('blog'));
+    }
+
+    public function getBlog() {
+        return Blogs::find(Input::get('blog'));
+    }
+
+    public function search() {
+        $keyword = Input::get('search');
+        
+        return view('blogs.search', compact('keyword'));
+    }
+
+    public function filterBlogs() {
+        $keyword = Input::get('keyword');
+
+        $result = Blogs::where('title', 'regex', "/". $keyword ."/i" )->get();
+
+        return $result;
+
+    }
+
+    public function filterUsers() {
+        $keyword = Input::get('keyword');
+
+        $result = User::where('name', 'regex', "/". $keyword ."/i" )->get();
+        return $result; 
+    }
+
+    public function filterTags() {
+        $keyword = Input::get('keyword');
+
+        $result = Blogs::where('tags', 'regex', "/". $keyword ."/i" )->get();
+
+        return $result;
     }
 }

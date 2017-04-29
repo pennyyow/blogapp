@@ -6,8 +6,8 @@
     <link href="{{ asset('css/plugins/slick/slick.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/slick/slick-theme.css') }}" rel="stylesheet">
 @stop
-<title>BlogMoTo | Posts</title>
 
+<title>BlogMoTo | Posts</title>
     <div class="wrapper wrapper-content">
         <div class="row animated fadeInRight">
             <div class="regular slider">
@@ -205,7 +205,7 @@
             listBlogs: '{{ !auth()->guest() ? url('/listBlogs') : url('/pub_listBlogs')  }}',
             react: '{{ url('/react') }}',
             view: '{{ !auth()->guest() ? url('/view-blog') : url('/pub-view-blog')  }}',
-            profile: '{{ url('/profile') }}'
+            profile: '{{ !auth()->guest() ? url('/profile') : url('/pub_profile')  }}'
         };
 
         var isGuest = (Url.listBlogs == '{{url('/listBlogs')}}' ? false : true);

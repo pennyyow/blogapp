@@ -6,6 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Socialite;
 
 class RegisterController extends Controller
 {
@@ -64,12 +65,40 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        return $user = User::create([
             'firstName' => $data['firstName'],
             'lastName' => $data['lastName'],
+            'name' => $data['firstName'].' '.$data['lastName'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'image' => ''
+            'image' => 'default-img.jpg'
         ]);
+    }
+
+    public function redirectToProvider() {
+      
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    public function handleProviderCallback() {
+        try {
+            $socialUser = Socialite::driver('facebook')->stateless()->user();
+        }catch(\Exception $e) {
+            return redirect('/');
+        }
+
+        $user = User::where('facebook_id', $socialUser->getId())->first();
+        if(!$user) {
+            $user = User::create([
+                'facebook_id' => $socialUser->getId(),
+                'name' => $socialUser->getName(),
+                'email' => $socialUser->getEmail(),
+                'avatar_url' =>$socialUser->avatar_original
+        ]);
+
+        auth()->login($user);
+        }
+        auth()->login($user);
+        return redirect('/posts');
     }
 }

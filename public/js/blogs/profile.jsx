@@ -167,7 +167,7 @@ var Blog = React.createClass({
           <div className="ibox-content">
             <div className="row">
                 <div className="col-md-4 no-padding">
-                    <img alt="image" className="img-responsive" src={ '../img/avatar/' + blog.image} />
+                    <img alt="image" className="img-responsive" src={ '../img/company/' + blog.image} />
                 </div>
                 <div className="col-md-8">
                     <a href={ Url.view + '/' + blog._id} className="btn-link">
@@ -178,7 +178,7 @@ var Blog = React.createClass({
                         Posted by 
                         <a href={Url.profile + '/' + blog.user._id} className="btn-link">
                             <strong>
-                                &nbsp;{ blog.user.firstName } { blog.user.lastName }&nbsp;
+                                &nbsp; { blog.user.name } &nbsp;
                             </strong>
                         </a> 
                         <span className="text-muted">
@@ -240,6 +240,14 @@ var Blog = React.createClass({
 });
 
 $(function() {
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
   var $inputImage = $("#inputImage");
   if (window.FileReader) {
       $inputImage.change(function() {

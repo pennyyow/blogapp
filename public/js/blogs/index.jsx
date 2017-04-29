@@ -72,6 +72,22 @@ var Blog = React.createClass({
 	},
   componentDidMount() {
     $(this.refs.description).html(this.state.blog.description);
+
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '1352297461495712',
+        xfbml      : true,
+        version    : 'v2.0'
+      });
+    };
+
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
   },
 	addReaction(reaction, blog) {
 		$.ajax({
@@ -90,6 +106,19 @@ var Blog = React.createClass({
       }.bind(this)
     });
 	},
+  share() {
+    var blog = this.state.blog;
+
+    FB.ui({
+      method: 'share',
+      display: 'popup',
+      href: 'http://d09343f8.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
+      title: blog.title,
+      picture: 'http://d09343f8.ngrok.io/blogapp/public/img/company/' + blog.image,  
+      caption: blog.description,
+      description: blog.description
+    }, function(response){});
+  },
 	render() {
 		var blog = this.state.blog;
 		var reaction = null; 
@@ -116,7 +145,7 @@ var Blog = React.createClass({
               <div className="ibox-content">
                   <div className="row">
                       <div className="col-md-4 no-padding">
-                          <img alt="image" className="img-responsive" src={ 'img/avatar/' + blog.image} />
+                          <img alt="image" className="img-responsive" src={ 'img/company/' + blog.image} />
                       </div>
                       <div className="col-md-8">
                           <a href={ Url.view + '/' + blog._id} className="btn-link">
@@ -169,18 +198,17 @@ var Blog = React.createClass({
                         	<i className="fa fa-thumbs-down"></i> Dislike
                         </button>
                         <button className="btn btn-white btn-xs">
-                        	<i className="fa fa-comments"></i> Comment</button>
-                        <button className="btn btn-white btn-xs">
-                        	<i className="fa fa-share"></i> Share
+                        	<i className="fa fa-comments"></i> Comment
+                        </button>
+                        <button className="btn btn-white btn-xs" onClick={this.share}>
+                          <i className="fa fa-share"> Share </i>
                         </button>
                     </div>
               		</If>
                   <If test={isGuest}>
-                  	<div className="btn-group">
-                    		<button className="btn btn-white btn-xs">
-                    			<i className="fa fa-share"></i> Share
-                    		</button>
-                    </div>
+                      <button className="btn btn-white btn-xs" onClick={this.share}>
+                        <i className="fa fa-share"> Share </i>
+                      </button>
                   </If>
               </div>
           </div>
