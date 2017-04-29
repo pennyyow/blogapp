@@ -7,26 +7,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('js/plugins/gritter/jquery.gritter.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/animate.css') }}" rel="stylesheet">  
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
-
-    <!-- Toastr style -->
-    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
-
-    <!-- Gritter -->
-    <link href="js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
-
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     @yield('styles')
-    <link href="css/custom/categories.css" rel="stylesheet">
+    <link href="{{ asset('css/custom/master.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom/categories.css') }}" rel="stylesheet">
 
-    <script src="js/jquery-2.1.1.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/categories.js"></script>
+    <script src="{{ asset('js/jquery-2.1.1.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+
+    <!-- REACT COMPONENTS -->
+    <script src="{{ asset('js/react/react.js') }}"></script>
+    <script src="{{ asset('js/react/react-dom.js') }}"></script>
+    <script src="{{ asset('js/react-components.js') }}"></script>
+    <script type="text/javascript">
+        var user = null;
+    </script>
 </head>
 
 <body class="gray-bg">
@@ -35,7 +37,7 @@
         <nav class="navbar navbar-fixed-top" role="navigation" style="margin-bottom: 0">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="logo" href="posts">
+                    <a class="logo" href="{{ url('/posts') }}">
                         BlogMoTo
                     </a>
                     <form role="search" class="app-search" action="search_results.html">
@@ -53,7 +55,7 @@
                             </a>
                         </li>
                         <li data-toggle="tooltip" data-placement="bottom" title="Profile">
-                            <a href="{{ url('/profile') }}">
+                            <a href="{{ url('/profile/'.auth()->user()->_id) }}">
                                 <i class="fa fa-user icon"></i>
                             </a>
                         </li>
@@ -143,6 +145,13 @@
             </div>
         </nav>
     </div> 
+
+    <script type="text/javascript">
+        user = {
+            id: '{{auth()->user()->_id}}',
+            image: '{{auth()->user()->image}}'
+        };
+    </script>
 @else
     <div class="row">
         <nav class="navbar navbar-fixed-top" role="navigation" style="margin-bottom: 0">
@@ -171,6 +180,11 @@
                                 <i class="fa fa-th-large icon"></i>
                             </a>
                         </li>
+                        <li data-toggle="tooltip" data-placement="bottom" title="Login">
+                            <a href="{{ url('/') }}">
+                                <i class="fa fa-sign-in icon"></i>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -189,7 +203,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic1" value="img/company/category8.jpeg" src="img/company/category8.jpeg">
+                                            <img alt="image" class="img-responsive" id="pic1" src="{{ asset('img/company/category8.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="#" class="product-name">Adventure</a>
@@ -209,7 +223,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic2" src="img/company/category7.jpeg">
+                                            <img alt="image" class="img-responsive" id="pic2" src="{{ asset('img/company/category7.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="#" class="product-name">Sports</a>
@@ -229,7 +243,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic3" src="img/company/category1.jpeg">
+                                            <img alt="image" class="img-responsive" id="pic3" src="{{ asset('img/company/category1.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="#" class="product-name">Entertainment</a>
@@ -251,7 +265,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic4" src="img/company/category4.jpeg">
+                                            <img alt="image" class="img-responsive" id="pic4" src="{{ asset('img/company/category4.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="#" class="product-name">Education</a>
@@ -271,7 +285,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic5" src="img/company/category6.jpeg">
+                                            <img alt="image" class="img-responsive" id="pic5" src="{{ asset('img/company/category6.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="#" class="product-name">Technology</a>
@@ -291,7 +305,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic6" src="img/company/category3.jpeg">
+                                            <img alt="image" class="img-responsive" id="pic6" src="{{ asset('img/company/category3.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="#" class="product-name">Nature</a>
@@ -313,7 +327,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic7" src="img/company/category2.jpeg">
+                                            <img alt="image" class="img-responsive" id="pic7" src="{{ asset('img/company/category2.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="#" class="product-name">Politics</a>
@@ -333,7 +347,8 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic8" src="img/company/category5.jpeg">
+                                            <img alt="image" class="img-responsive" id="pic8" 
+                                            src="{{ asset('img/company/category5.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="#" class="product-name">Fashion</a>
@@ -353,7 +368,8 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic9" src="img/profile_big.jpg">
+                                            <img alt="image" class="img-responsive" id="pic9" 
+                                            src="{{ asset('img/profile_big.jpg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="#" class="product-name">Others</a>
@@ -379,21 +395,25 @@
 
 @yield('content')
 @yield('styles')
+    <script type="text/javascript">
+        var createBlog = '{{ url('/create-blog') }}';
+    </script>
 
- <!-- Mainly scripts -->
-    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Mainly scripts -->
+    <script src="{{ asset('js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
+    <script src="{{ asset('js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
 
     <!-- Custom and plugin javascript -->
-    <script src="js/inspinia.js"></script>
-    <script src="js/plugins/pace/pace.min.js"></script>
+    <script src="{{ asset('js/inspinia.js') }}"></script>
+    <script src="{{ asset('js/plugins/pace/pace.min.js') }}"></script>
 
     <!-- TAGS INPUT -->
-    <script src="css/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+    <script src="{{ asset('css/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}"></script>
 
     <!-- SUMMERNOTE -->
-    <script src="js/plugins/summernote/summernote.min.js"></script>
-    <script src="js/categories.js"></script>
+    <script src="{{ asset('js/plugins/summernote/summernote.min.js') }}"></script>
+
+    <script src="{{ asset('js/categories.js') }}"></script>
 
 @yield('scripts')
 </body>

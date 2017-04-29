@@ -1,7 +1,16 @@
 $(function() {
-	$('.summernote').summernote();
+  var imageChanged = false;
+  $('#divAddImg')
+    .removeClass('border-dash')
+    .empty()
+    .append(
+      $('<img/>')
+        .attr('src', '../img/avatar/'+image)
+        .addClass('thumbnail img-responsive')
+    );
 
   $('#formImg').on('change', function() {
+    imageChanged = true;
     var formImg = $('#formImg').get(0);
 
     if(formImg.files && formImg.files[0]) {
@@ -25,17 +34,17 @@ $(function() {
 	$('#btn-create').on('click', function(e) {
     $('#btn-create').addClass('disabled');
     e.preventDefault();
-    
+    var descriptionContent = $('.description-textbox').code().replace(/(?:\n)/g, '<br>');
+    $('#description').val(
+       descriptionContent == '<div><br></div>' ? null : descriptionContent
+    );
     $('#content').val($('.summernote').code()
       .replace(/(?:\n)/g, '<br>')
       .replace(/(?:")/g, '\'')
     );
-    $('#description').val($('.description-textbox').code()
-      .replace(/(?:\n)/g, '<br>')
-    );
 
     var formData = $('form.create-form').serializeArray();
-    formData.push({name: 'file', value: $('.thumbnail').attr('src') ? $('.thumbnail').attr('src') : null})
+    formData.push({name: 'file', value: imageChanged ? $('.thumbnail').attr('src') : null});
 		
     $('.title').removeClass('has-error');
     $('.title-label').html('');
@@ -47,14 +56,13 @@ $(function() {
     $('.content-label').html('');
     $('.content-label').text('Content  ');
     
-
     $.ajax({
       method: 'POST',    
-      url: Url.create,
+      url: Url.editBlogContents,
       data: formData,
       success: function(r) {
-        console.log('>>>>>>>>>>DATAL ' + r);
-        window.location.href = Url.posts;
+        console.log('>>>>>>>>>>DATAL ' + JSON.stringify(r));
+        window.location.href = Url.profile + '/' + user.id;
       },
       error: function(r) {
         console.log('>>>>ERROR: ' + JSON.stringify(r))
@@ -89,11 +97,4 @@ $(function() {
       }
     });
 	});
-
-	var get = localStorage.getItem("storageName");
-  $('#selectCategory').find('option').each(function(i,e){
-      if($(e).val() == localStorage.getItem("storageName")){
-          $('#selectCategory').prop('selectedIndex',i);
-      }
-  });
 });

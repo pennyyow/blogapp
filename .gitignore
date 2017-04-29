@@ -1,8 +1,10 @@
 /node_modules
 /public/storage
 /public/hot
-/public/img
+/public/img/avatar/
+/public/img/avatar
 /public/img/
+/public/img
 /storage/*.key
 /vendor
 /.idea
