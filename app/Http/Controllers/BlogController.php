@@ -309,19 +309,6 @@ class BlogController extends Controller
         return Blogs::find(Input::get('blog'));
     }
 
-    public function view($id) {
-        $blog = Blogs::find($id);
-        $views = $blog->views ? $blog->views : 0;
-        $views++;
-        $blog->views = $views;
-        $blog->save();
-        return view('blogs.blog', compact('blog'));
-    }
-
-    public function getBlog() {
-        return Blogs::find(Input::get('blog'));
-    }
-
     public function search() {
         $keyword = Input::get('search');
         

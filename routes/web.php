@@ -14,12 +14,8 @@
 
 Auth::routes();
 
-Route::get('/', function () {
-	    return view('auth.login');
-	});
-
-
     //only authorized users can access these routes
+	Route::get('/', 'BlogController@home');
     Route::get('/posts', 'BlogController@home');
     Route::get('/search', 'BlogController@search');
 	Route::get('/profile/{id}', 'BlogController@profile');
