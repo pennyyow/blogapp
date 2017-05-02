@@ -50,14 +50,17 @@
                                             <div class="row">
                                                 <div class="col-sm-6 b-r">
                                                     <h3 class="m-t-none m-b">Edit Profile</h3>
-                                                    {!! Form::open(array('action' => array('BlogController@updateProfile'), 'method' => 'POST', 'id' => 'form1', 'class' => 'form-vertical', 'files' => 'true', 'enctype' => 'multipart/form-data')) !!}
-                                                        <div class="form-group">
+                                                    {!! Form::open(array('action' => array('BlogController@updateProfile'), 'method' => 'POST', 'id' => 'update-profile-form', 'class' => 'form-vertical', 'files' => 'true', 'enctype' => 'multipart/form-data')) !!}
+                                                        <div class="form-group firstname">
+                                                            <label class="control-label firstname-label hidden"></label>
                                                             <input type="text" placeholder="Enter First Name" name="firstName" class="form-control" value="{{ $firstName }}">
                                                         </div>
-                                                        <div class="form-group">
+                                                        <div class="form-group lastname">
+                                                            <label class="control-label lastname-label hidden"></label>
                                                             <input type="text" placeholder="Enter Last Name" name="lastName" class="form-control" value="{{ $lastName }}">
                                                         </div>
-                                                        <div class="form-group"> 
+                                                        <div class="form-group email">
+                                                            <label class="control-label email-label hidden"></label> 
                                                             <input type="email" placeholder="Enter email" name="email" class="form-control" value="{{ $email }}">
                                                         </div>
                                                         <div>
@@ -123,7 +126,8 @@
             listBlogsByUser: '{{ !auth()->guest() ? url('/listBlogsByUser') : url('/pub-listBlogsByUser') }}',
             editBlog: '{{ url('/edit-blog') }}',
             deleteBlog: '{{ url('/delete-blog') }}',
-            edit: '{{ url('/edit') }}'
+            edit: '{{ url('/edit') }}',
+            updateProfile: '{{ url('/profile/update') }}'
         };
 
         var isGuest = (Url.listBlogs == '{{url('/listBlogs')}}' ? false : true);

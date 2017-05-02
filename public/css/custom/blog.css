@@ -15,8 +15,17 @@
   padding: 15px 15px 15px 15px !important;
 }
 
+.title-container {
+  max-width: 100%;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
 .btn-tag {
   margin-right: 5px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .like-on {
@@ -25,4 +34,14 @@
 
 .dislike-on {
   color: #ed5565 !important;
+}
+
+.comment-textbox:empty:not(:focus):before {
+  content: attr(data-text);
+}
+
+.comment-textbox {
+  max-height: 100px !important;
+  min-height: 100px !important;
+  overflow-y: auto;
 }

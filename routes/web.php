@@ -35,10 +35,10 @@ Auth::routes();
 	Route::post('/comment', 'BlogController@comment');
 	Route::post('/get-blog', 'BlogController@getBlog');
 	Route::post('/listBlogsByUser', 'BlogController@listBlogsByUser');
-	Route::post('/edit', 'BlogController@edit');
 	Route::post('/editBlogContents', 'BlogController@editBlogContents');
 
     //only guests can access these routes
+    Route::get('/pubSearch', 'GuestController@pubSearch');
 	Route::get('/pub_profile/{id}', 'GuestController@profile');
 	Route::post('/pub-get-blog', 'GuestController@getBlog');
 	Route::get('/pub-view-blog/{id}', 'GuestController@view');
@@ -46,6 +46,9 @@ Auth::routes();
 	Route::post('/pub_listBlogs', 'GuestController@listBlogs');
 	Route::get('/pub_categories', 'GuestController@categories');
 	Route::post('/pub-listBlogsByUser', 'GuestController@listBlogsByUser');
+	Route::post('/pub_filterBlogs', 'GuestController@filterBlogs');
+	Route::post('/pub_filterUsers', 'GuestController@filterUsers');
+	Route::post('/pub_filterTags', 'GuestController@filterTags');
 	
 	Route::get('auth/facebook', 'Auth\RegisterController@redirectToProvider');
 	Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');

@@ -170,10 +170,16 @@ var Blog = React.createClass({
                     <img alt="image" className="img-responsive" src={ '../img/company/' + blog.image} />
                 </div>
                 <div className="col-md-8">
-                    <a href={ Url.view + '/' + blog._id} className="btn-link">
+                    <a href={ Url.view + '/' + blog._id} className="btn-link title-container">
                         <h1><strong>{ blog.title }</strong></h1>
                     </a>
-                    <div ref="description"></div>
+                    <div ref="description" className="form-group description-container"></div>
+                    <div className="form-group">
+                        <a href={ Url.view + '/' + blog._id} type="button" 
+                          className="btn btn-primary btn-outline">
+                            Read more
+                        </a>
+                    </div>
                     <div className="form-group">
                         Posted by 
                         <a href={Url.profile + '/' + blog.user._id} className="btn-link">
@@ -218,8 +224,9 @@ var Blog = React.createClass({
                       onClick={() => this.addReaction(2, blog._id)}>
                       <i className="fa fa-thumbs-down"></i> Dislike
                     </button>
-                    <button className="btn btn-white btn-xs">
-                      <i className="fa fa-comments"></i> Comment</button>
+                    <a href={ Url.view + '/' + blog._id + '#comment-section'} className="btn btn-white btn-xs">
+                      <i className="fa fa-comments"></i> Comment
+                    </a>
                     <button className="btn btn-white btn-xs">
                       <i className="fa fa-share"></i> Share
                     </button>
@@ -248,40 +255,80 @@ $(function() {
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 
+  var imageChanged = false;
   var $inputImage = $("#inputImage");
   if (window.FileReader) {
       $inputImage.change(function() {
-          var fileReader = new FileReader(),
-                  files = this.files,
-                  file;
-          if (!files.length) {
-              return;
-          }
+        imageChanged = true;      
+        var fileReader = new FileReader(),
+                files = this.files,
+                file;
+        if (!files.length) {
+            return;
+        }
 
-          file = files[0];
+        file = files[0];
 
-          if (/^image\/\w+$/.test(file.type)) {
-              fileReader.readAsDataURL(file);
-              fileReader.onload = function () {
-                  $('#profile-image-edit').attr('src', this.result);
-              };
-          } else {
-              showMessage("Please choose an image file.");
-          }
+        if (/^image\/\w+$/.test(file.type)) {
+            fileReader.readAsDataURL(file);
+            fileReader.onload = function () {
+                $('#profile-image-edit').attr('src', this.result);
+            };
+        } else {
+            showMessage("Please choose an image file.");
+        }
       });
   }
 
   $('#btnSave').click(function(e) {
     e.preventDefault();
+    $('#btnSave').addClass('disabled');
+    var formData = $('form#update-profile-form').serializeArray();
+    formData.push({name: 'file', value: imageChanged ? $('#profile-image-edit').attr('src') : null});
+    
     $.ajax({
       method: 'POST',    
-      url: Url.edit,
-      data: {
-        image: $('#profile-image-edit').attr('src'),
-        '_token': token
-      },
+      url: Url.updateProfile,
+      data: formData,
       success: function(r) {
-        console.log('>>>>>>>>>>DATAL ' + r)
+        console.log('USER: ' + JSON.stringify(r))
+        window.location.href = Url.profile + '/' + user.id;
+      },
+      error: function(r) {
+        //console.log('>>>JSON: ' + JSON.stringify(r))
+        var errors = r.responseJSON.errors;
+
+        if(errors.firstname) {
+          $('.firstname').addClass('has-error');
+          $('.firstname-label').removeClass('hidden');
+          $('.firstname-label').text(errors.firstname);
+        } else {
+          $('.firstname').removeClass('has-error');
+          $('.firstname-label').addClass('hidden');
+          $('.firstname-label').text('');
+        }
+
+        if(errors.lastname) {
+          $('.lastname').addClass('has-error');
+          $('.lastname-label').removeClass('hidden');
+          $('.lastname-label').text(errors.lastname);
+        } else {
+          $('.lastname').removeClass('has-error');
+          $('.lastname-label').addClass('hidden');
+          $('.lastname-label').text('');
+        }
+
+        if(errors.email) {
+          $('.email').addClass('has-error');
+          $('.email-label').removeClass('hidden');
+          $('.email-label').text(errors.email);
+        } else {
+          $('.email').removeClass('has-error');
+          $('.email-label').addClass('hidden');
+          $('.email-label').text('');
+        }
+
+        $('#btnSave').removeClass('disabled');
       }
     });
   });

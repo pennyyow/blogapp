@@ -20,7 +20,7 @@
                             <div class="product-desc">
                                 <a href="#" class="product-name">Adventure</a>
                                 <div class="m-t">
-                                    <a href="" class="btn btn-xs btn-outline btn-primary">
+                                    <a href="{{ url('/posts?category=Adventure') }}" class="btn btn-xs btn-outline btn-primary">
                                         <i class="fa fa-bars"></i> View All
                                     </a>
                                     <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic1" value="Adventure">
@@ -40,7 +40,7 @@
                             <div class="product-desc">
                                 <a href="#" class="product-name">Sports</a>
                                 <div class="m-t">
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">
+                                    <a href="{{ url('/posts?category=Sports') }}" class="btn btn-xs btn-outline btn-primary">
                                         <i class="fa fa-bars"></i> View All
                                     </a>
                                     <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic2" value="Sports">
@@ -58,9 +58,9 @@
                                 <img alt="image" class="img-responsive" id="pic3" src="{{ asset('img/company/category1.jpeg') }}">
                             </div>
                             <div class="product-desc">
-                                <a href="#" class="product-name">Entertainment</a>
+                                <a href="{{ url('/posts?category=Entertainment') }}" class="product-name">Entertainment</a>
                                 <div class="m-t">
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">
+                                    <a href="{{ url('/posts?category=Entertainment') }}" class="btn btn-xs btn-outline btn-primary">
                                         <i class="fa fa-bars"></i> View All
                                     </a>
                                     <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic3" value="Entertainment">
@@ -78,7 +78,7 @@
                                 <img alt="image" class="img-responsive" id="pic4" src="{{ asset('img/company/category4.jpeg') }}">
                             </div>
                             <div class="product-desc">
-                                <a href="#" class="product-name">Education</a>
+                                <a href="{{ url('/posts?category=Education') }}" class="product-name">Education</a>
                                 <div class="m-t">
                                     <a href="#" class="btn btn-xs btn-outline btn-primary">
                                         <i class="fa fa-bars"></i> View All
@@ -98,7 +98,7 @@
                                 <img alt="image" class="img-responsive" id="pic5" src="{{ asset('img/company/category6.jpeg') }}">
                             </div>
                             <div class="product-desc">
-                                <a href="#" class="product-name">Technology</a>
+                                <a href="{{ url('/posts?category=Technology') }}" class="product-name">Technology</a>
                                 <div class="m-t">
                                     <a href="#" class="btn btn-xs btn-outline btn-primary">
                                         <i class="fa fa-bars"></i> View All
@@ -118,7 +118,7 @@
                                 <img alt="image" class="img-responsive" id="pic6" src="{{ asset('img/company/category3.jpeg') }}">
                             </div>
                             <div class="product-desc">
-                                <a href="#" class="product-name">Nature</a>
+                                <a href="{{ url('/posts?category=Nature') }}" class="product-name">Nature</a>
                                 <div class="m-t">
                                     <a href="#" class="btn btn-xs btn-outline btn-primary">
                                         <i class="fa fa-bars"></i> View All
@@ -138,7 +138,7 @@
                                 <img alt="image" class="img-responsive" id="pic7" src="{{ asset('img/company/category2.jpeg') }}">
                             </div>
                             <div class="product-desc">
-                                <a href="#" class="product-name">Politics</a>
+                                <a href="{{ url('/posts?category=Politics') }}" class="product-name">Politics</a>
                                 <div class="m-t">
                                     <a href="#" class="btn btn-xs btn-outline btn-primary">
                                         <i class="fa fa-bars"></i> View All
@@ -159,7 +159,7 @@
                                 src="{{ asset('img/company/category5.jpeg') }}">
                             </div>
                             <div class="product-desc">
-                                <a href="#" class="product-name">Fashion</a>
+                                <a href="{{ url('/posts?category=Fashion') }}" class="product-name">Fashion</a>
                                 <div class="m-t">
                                     <a href="#" class="btn btn-xs btn-outline btn-primary">
                                         <i class="fa fa-bars"></i> View All
@@ -180,7 +180,7 @@
                                 src="{{ asset('img/profile_big.jpg') }}">
                             </div>
                             <div class="product-desc">
-                                <a href="#" class="product-name">Others</a>
+                                <a href="{{ url('/posts?category=Others') }}" class="product-name">Others</a>
                                 <div class="m-t">
                                     <a href="#" class="btn btn-xs btn-outline btn-primary">
                                         <i class="fa fa-bars"></i> View All
@@ -193,6 +193,15 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                @if($category)
+                    <h2>Filtered by category: {{ $category }}</h2>
+                @endif
+
+                @if(!$category)
+                    <h2>Latest blogs</h2>
+                @endif
             </div>
             <div id="blogs"></div>
         </div>
@@ -209,7 +218,7 @@
         };
 
         var isGuest = (Url.listBlogs == '{{url('/listBlogs')}}' ? false : true);
-
+        var category = '{{ $category }}';
         var token = '{{ csrf_token() }}';
     </script>
     <script src="{{ asset('js/plugins/slick/slick.min.js') }}"></script>

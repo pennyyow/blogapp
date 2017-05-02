@@ -1,162 +1,364 @@
 var FilteredBlogs = React.createClass({
 	getInitialState() {
 		return {
-			blogs: []
+			blogs: [],
+			max: 2,
+			nothingToShow: false 
 		}
 	},
 	componentDidMount() {
+		this.getResults(this.state.max);
+	},
+	getResults(max) {
 		$.ajax({
 	      method: 'POST',    
 	      url: Url.filterBlogs,
 	      data: {
+	      	max: max,
 	    	keyword: keyword,
 	        '_token': token
 	      },
 	      success: function(r) {
-	      	this.setState({
-	      		blogs: r
-	      	});
+	      	var nothingToShow = this.state.nothingToShow;
+      		if(this.state.max > r.total) nothingToShow = true;
+
+			this.setState({
+				blogs: r.result,
+				nothingToShow: nothingToShow
+			});
+
+	      	$(this.refs.spinner).addClass('hidden');
+	      	if(r.result.length == 0) {
+				$(this.refs.noResult).append(
+					$('<h3/>')
+					  .text('No results found')
+					  .addClass('text-center')
+				);
+	      	}
 	      }.bind(this)
 	    });
 	},
-	showId(id) {
-		alert(id)
+	showMore() {
+		var max = this.state.max;
+		max += 2;
+		this.setState({
+			max: max
+		});
+		this.getResults(max);
 	},
 	render() {
 		var blogs = this.state.blogs;
 		return(
 			<div>
-				<h1>All blogs</h1>
-				{
-					blogs.map( blog => {
-						return(
-							<div>
-								<p>Title: {blog.title}</p>
-								<p>Description: {blog.description}</p>
-								<p>ID: {blog._id}</p>
-								<button type="button" onClick={() => this.showId(blog._id)}>
-									Click me
-								</button>
-							</div>
-						);
-					})
-				}
+				<If test={blogs.length > 0}>
+					<div>
+						{
+							blogs.map( blog => {
+								return(
+									<div>
+										<div className="ibox float-e-margins">
+				                            <div className="ibox-content">
+				                                <div className="row">
+				                                    <div className="col-md-2 no-padding">
+				                                      <img alt="image" className="img-responsive user-image" src={'img/company/' + blog.image} />
+				                                    </div>
+				                                    <div className="col-md-10">
+				                                        <h3>
+				                                            <a href="#" className="overflow">
+				                                                {blog.title}
+				                                            </a>
+				                                        </h3>
+				                                        <h4 className="overflow">{blog.description}</h4>
+				                                    </div>
+				                                </div>
+				                            </div>
+				                        </div>
+									</div>
+								);
+							})
+						}
+						<If test={!this.state.nothingToShow}>
+							<button className="btn btn-primary btn-block" onClick={this.showMore}>
+								<i className="fa fa-arrow-down"></i> Show More Results
+							</button>
+						</If>
+						<If test={this.state.nothingToShow}>
+							<button className="btn btn-primary btn-block" disabled>
+								<i className="fa fa-times"></i> No more results to show 
+							</button>
+						</If>
+					</div>
+				</If>
+				<div ref="noResult">
+					<div className="spiner-example" ref="spinner">
+                        <div className="sk-spinner sk-spinner-cube-grid">
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                        </div>
+                    </div>
+				</div>
 			</div>
 		);
 	}	
 });
 
-var FilteredUsers = React.createClass({
-	getInitialState() {
-		return {
-			users: []
-		}
-	},
-	componentDidMount() {
-		$.ajax({
-			method: 'POST',
-			url: Url.filterUsers,
-			data: {
-				keyword: keyword,
-				'_token': token
-			},
-			success: function(r) {
-				this.setState({
-					users: r
-				});
-			}.bind(this)
-		});
-	},	
-	render() {
-		var users = this.state.users;
-		return(
-			<div>
-				<h1>All Users</h1>
-				{
-					users.map( users => {
-						return(
-							<div>
-								<p>Name: {users.name}</p>
-								<p>Email: {users.email}</p>
-							</div>
-						)
-					})
-				}
-			</div>
-		);
-	}
-});
-
 var FilteredTags = React.createClass({
 	getInitialState() {
 		return {
-			blogs: []
+			blogs: [],
+			max: 2,
+			nothingToShow: false 
 		}
 	},
 	componentDidMount() {
+		this.getResults(this.state.max);
+	},
+	getResults(max) {
 		$.ajax({
 			method: 'POST',
 			'url': Url.filterTags,
 			'data': {
+				max: max,
 				keyword: keyword,
 				'_token': token
 			},
-			success: function(r){
+			success: function(r) {
+				var nothingToShow = this.state.nothingToShow;
+	      		if(this.state.max > r.total) nothingToShow = true;
+
 				this.setState({
-					blogs: r
+					blogs: r.result,
+					nothingToShow: nothingToShow
 				});
+
+				$(this.refs.spinner).addClass('hidden');
+		      	if(r.result.length == 0) {
+					$(this.refs.noResult).append(
+						$('<h3/>')
+						  .text('No results found')
+						  .addClass('text-center')
+					);
+		      	}
 			}.bind(this)
 		});
+	},
+	showMore() {
+		var max = this.state.max;
+		max += 2;
+		this.setState({
+			max: max
+		});
+		this.getResults(max);
 	},
 	render() {
 		var blogs = this.state.blogs;
 		return(
 			<div>
-				<h1>All Blogs</h1>
-				{
-					blogs.map( blog => {
-						return(
-							<div>
-								<p>Title: {blog.title}</p>
-								<p>Description: {blog.description}</p>
-								<p>ID: {blog._id}</p>
-							</div>
-						)
-					})
-				}
+				<If test={blogs.length > 0}>
+					<div>
+						{
+							blogs.map( blog => {
+								return(
+									<div>
+										<div className="ibox float-e-margins">
+				                            <div className="ibox-content">
+				                                <div className="row">
+				                                    <div className="col-md-2 no-padding">
+				                                      <img alt="image" className="img-responsive user-image" src={'img/company/' + blog.image} />
+				                                    </div>
+				                                    <div className="col-md-10">
+				                                        <h3>
+				                                            <a href="#" className="overflow">
+				                                                {blog.title}
+				                                            </a>
+				                                        </h3>
+				                                        <h4 className="overflow">{blog.description}</h4>
+				                                    </div>
+				                                </div>
+				                            </div>
+				                        </div>
+									</div>
+								);
+							})
+						}
+						<If test={!this.state.nothingToShow}>
+							<button className="btn btn-primary btn-block" onClick={this.showMore}>
+								<i className="fa fa-arrow-down"></i> Show More Results
+							</button>
+						</If>
+						<If test={this.state.nothingToShow}>
+							<button className="btn btn-primary btn-block" disabled>
+								<i className="fa fa-times"></i> No more results to show 
+							</button>
+						</If>
+					</div>
+				</If>
+				<div ref="noResult">
+					<div className="spiner-example" ref="spinner">
+                        <div className="sk-spinner sk-spinner-cube-grid">
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                        </div>
+                    </div>
+				</div>
+			</div>
+		);
+	}
+});
+
+var FilteredUsers = React.createClass({
+	getInitialState() {
+		return {
+			users: [],
+			max: 2,
+			nothingToShow: false 
+		}
+	},
+	componentDidMount() {
+		this.getResults(this.state.max);
+	},
+	getResults(max) {
+		$.ajax({
+			method: 'POST',
+			url: Url.filterUsers,
+			data: {
+				max: max,
+				keyword: keyword,
+				'_token': token
+			},
+			success: function(r) {
+				var nothingToShow = this.state.nothingToShow;
+	      		if(this.state.max > r.total) nothingToShow = true;
+
+				this.setState({
+					users: r.result,
+					nothingToShow: nothingToShow
+				});
+
+				$(this.refs.spinner).addClass('hidden');
+		      	if(r.result.length == 0) {
+					$(this.refs.noResult).append(
+						$('<h3/>')
+						  .text('No results found')
+						  .addClass('text-center')
+					);
+		      	}
+			}.bind(this)
+		});
+	},
+	showMore() {
+		var max = this.state.max;
+		max += 2;
+		this.setState({
+			max: max
+		});
+		this.getResults(max);
+	},	
+	render() {
+		var users = this.state.users;
+		return(
+			<div>
+				<If test={users.length > 0}>
+					<div>
+						{
+							users.map( user => {
+								return(
+									<div>
+										<div className="ibox float-e-margins">
+				                            <div className="ibox-content">
+				                                <div className="row">
+				                                    <div className="col-md-2 no-padding">
+				                                      <img alt="image" className="img-responsive user-image" src={'img/avatar/' + user.image} />
+				                                    </div>
+				                                    <div className="col-md-10">
+				                                        <h3>
+				                                            <a href="#">
+				                                                {user.name}
+				                                            </a>
+				                                        </h3>
+				                                        <h4>{user.email}</h4>
+				                                    </div>
+				                                </div>
+				                            </div>
+				                        </div>
+									</div>
+								)
+							})
+						}
+						<If test={!this.state.nothingToShow}>
+							<button className="btn btn-primary btn-block" onClick={this.showMore}>
+								<i className="fa fa-arrow-down"></i> Show More Results
+							</button>
+						</If>
+						<If test={this.state.nothingToShow}>
+							<button className="btn btn-primary btn-block" disabled>
+								<i className="fa fa-times"></i> No more results to show 
+							</button>
+						</If>
+					</div>
+				</If>
+				<div ref="noResult">
+					<div className="spiner-example" ref="spinner">
+                        <div className="sk-spinner sk-spinner-cube-grid">
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                            <div className="sk-cube"></div>
+                        </div>
+                    </div>
+				</div>
 			</div>
 		);
 	}
 });
 
 $(function() {
+	ReactDOM.unmountComponentAtNode($('#search-user').get(0));
+	ReactDOM.render(
+   		<FilteredUsers />,
+    	$('#search-user').get(0)
+	);
 
-
-
-	$('#btnSearchTags').on('click', function() {
-		ReactDOM.unmountComponentAtNode($('#results').get(0));
-		ReactDOM.render(
-	   		<FilteredTags />,
-	    	$('#results').get(0)
-		);
-	});
-
-	$('#btnSearchBlogs').on('click', function() {
-		ReactDOM.unmountComponentAtNode($('#results').get(0));
-		ReactDOM.render(
-	   		<FilteredBlogs />,
-	    	$('#results').get(0)
-		);
-	});
-
-	$('#btnSearchUsers').on('click', function() {
-		ReactDOM.unmountComponentAtNode($('#results').get(0));
+	$('#tab-user').on('click', function() {
+		ReactDOM.unmountComponentAtNode($('#search-user').get(0));
 		ReactDOM.render(
 	   		<FilteredUsers />,
-	    	$('#results').get(0)
+	    	$('#search-user').get(0)
 		);
 	});
 
+	$('#tab-blog').on('click', function() {
+		ReactDOM.unmountComponentAtNode($('#search-blog').get(0));
+		ReactDOM.render(
+	   		<FilteredBlogs />,
+	    	$('#search-blog').get(0)
+		);
+	});
 
-	
+	$('#tab-tag').on('click', function() {
+		ReactDOM.unmountComponentAtNode($('#search-tag').get(0));
+		ReactDOM.render(
+	   		<FilteredTags />,
+	    	$('#search-tag').get(0)
+		);
+	});	
 });

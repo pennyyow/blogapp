@@ -213,7 +213,7 @@ var Blog = React.createClass({
               { className: 'col-md-8' },
               React.createElement(
                 'a',
-                { href: Url.view + '/' + blog._id, className: 'btn-link' },
+                { href: Url.view + '/' + blog._id, className: 'btn-link title-container' },
                 React.createElement(
                   'h1',
                   null,
@@ -224,7 +224,17 @@ var Blog = React.createClass({
                   )
                 )
               ),
-              React.createElement('div', { ref: 'description' }),
+              React.createElement('div', { ref: 'description', className: 'form-group description-container' }),
+              React.createElement(
+                'div',
+                { className: 'form-group' },
+                React.createElement(
+                  'a',
+                  { href: Url.view + '/' + blog._id, type: 'button',
+                    className: 'btn btn-primary btn-outline' },
+                  'Read more'
+                )
+              ),
               React.createElement(
                 'div',
                 { className: 'form-group' },
@@ -312,8 +322,8 @@ var Blog = React.createClass({
                 ' Dislike'
               ),
               React.createElement(
-                'button',
-                { className: 'btn btn-white btn-xs' },
+                'a',
+                { href: Url.view + '/' + blog._id + '#comment-section', className: 'btn btn-white btn-xs' },
                 React.createElement('i', { className: 'fa fa-comments' }),
                 ' Comment'
               ),
@@ -355,9 +365,11 @@ $(function () {
     fjs.parentNode.insertBefore(js, fjs);
   })(document, 'script', 'facebook-jssdk');
 
+  var imageChanged = false;
   var $inputImage = $("#inputImage");
   if (window.FileReader) {
     $inputImage.change(function () {
+      imageChanged = true;
       var fileReader = new FileReader(),
           files = this.files,
           file;
@@ -380,15 +392,53 @@ $(function () {
 
   $('#btnSave').click(function (e) {
     e.preventDefault();
+    $('#btnSave').addClass('disabled');
+    var formData = $('form#update-profile-form').serializeArray();
+    formData.push({ name: 'file', value: imageChanged ? $('#profile-image-edit').attr('src') : null });
+
     $.ajax({
       method: 'POST',
-      url: Url.edit,
-      data: {
-        image: $('#profile-image-edit').attr('src'),
-        '_token': token
-      },
+      url: Url.updateProfile,
+      data: formData,
       success: function (r) {
-        console.log('>>>>>>>>>>DATAL ' + r);
+        console.log('USER: ' + JSON.stringify(r));
+        window.location.href = Url.profile + '/' + user.id;
+      },
+      error: function (r) {
+        //console.log('>>>JSON: ' + JSON.stringify(r))
+        var errors = r.responseJSON.errors;
+
+        if (errors.firstname) {
+          $('.firstname').addClass('has-error');
+          $('.firstname-label').removeClass('hidden');
+          $('.firstname-label').text(errors.firstname);
+        } else {
+          $('.firstname').removeClass('has-error');
+          $('.firstname-label').addClass('hidden');
+          $('.firstname-label').text('');
+        }
+
+        if (errors.lastname) {
+          $('.lastname').addClass('has-error');
+          $('.lastname-label').removeClass('hidden');
+          $('.lastname-label').text(errors.lastname);
+        } else {
+          $('.lastname').removeClass('has-error');
+          $('.lastname-label').addClass('hidden');
+          $('.lastname-label').text('');
+        }
+
+        if (errors.email) {
+          $('.email').addClass('has-error');
+          $('.email-label').removeClass('hidden');
+          $('.email-label').text(errors.email);
+        } else {
+          $('.email').removeClass('has-error');
+          $('.email-label').addClass('hidden');
+          $('.email-label').text('');
+        }
+
+        $('#btnSave').removeClass('disabled');
       }
     });
   });

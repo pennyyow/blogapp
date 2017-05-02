@@ -43,7 +43,8 @@ var Blog = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'ibox-content no-padding border-left-right' },
-					React.createElement('img', { alt: 'image', className: 'img-responsive', src: '../img/avatar/' + blog.image })
+					React.createElement('img', { alt: 'image', className: 'img-responsive',
+						src: '../img/company/' + blog.image })
 				),
 				React.createElement(
 					'div',
@@ -53,7 +54,7 @@ var Blog = React.createClass({
 						{ className: 'text-center article-title' },
 						React.createElement(
 							'h1',
-							null,
+							{ className: 'title-container' },
 							blog.title
 						),
 						React.createElement(
@@ -70,9 +71,7 @@ var Blog = React.createClass({
 										'strong',
 										null,
 										' ',
-										this.state.author.firstName,
-										' ',
-										this.state.author.lastName,
+										this.state.author.name,
 										' '
 									)
 								)
@@ -164,22 +163,21 @@ var Reactions = React.createClass({
 		});
 	},
 	onKeyUp(e) {
+		var content = $(this.refs.comment).code();
 		if (e.key === 'Enter') {
 			if (!e.nativeEvent.shiftKey) {
+				$(this.refs.comment).html('');
+				console.log('>>>>>>>>>>>>>>>>COMENT: ' + $(this.refs.comment).code());
 				$.ajax({
 					method: 'POST',
 					url: Url.comment,
 					data: {
-						comment: $(this.refs.comment).val(),
+						comment: content,
 						blog: this.state.blog._id,
 						'_token': token
 					},
 					success: function (r) {
-						$(this.refs.comment).val('');
-						this.setState({
-							blog: r,
-							comments: r.comments
-						});
+						this.getBlog();
 					}.bind(this)
 				});
 			}
@@ -258,8 +256,8 @@ var Reactions = React.createClass({
 								' Dislike'
 							),
 							React.createElement(
-								'button',
-								{ className: 'btn btn-white btn-xs' },
+								'a',
+								{ href: '#comment-section', className: 'btn btn-white btn-xs' },
 								React.createElement('i', { className: 'fa fa-comments' }),
 								' Comment'
 							),
@@ -311,25 +309,19 @@ var Reactions = React.createClass({
 									React.createElement(
 										'a',
 										{ href: '#' },
-										comment.user.firstName,
-										' ',
-										comment.user.lastName
+										comment.user.name
 									),
 									React.createElement(
 										'small',
 										{ className: 'text-muted' },
-										'Today 4:21 pm - 12.06.2014'
+										comment.dateAdded.date
 									)
 								)
 							),
 							React.createElement(
 								'div',
 								{ className: 'social-body' },
-								React.createElement(
-									'p',
-									null,
-									comment.content
-								)
+								React.createElement(CommentContent, { content: comment.content })
 							)
 						);
 					}),
@@ -338,7 +330,7 @@ var Reactions = React.createClass({
 						{ test: user },
 						React.createElement(
 							'div',
-							{ className: 'social-feed-box' },
+							{ className: 'social-feed-box', id: 'comment-section' },
 							React.createElement(
 								'div',
 								{ className: 'social-avatar comment-text' },
@@ -350,8 +342,9 @@ var Reactions = React.createClass({
 								React.createElement(
 									'div',
 									{ className: 'media-body' },
-									React.createElement('textarea', { className: 'form-control', onKeyUp: this.onKeyUp,
-										placeholder: 'Write comment...', rows: '3', ref: 'comment' })
+									React.createElement('div', { className: 'form-control comment-textbox',
+										onKeyUp: this.onKeyUp, ref: 'comment',
+										'data-text': 'Write comment...', contentEditable: 'true' })
 								)
 							)
 						)
@@ -359,6 +352,17 @@ var Reactions = React.createClass({
 				)
 			)
 		);
+	}
+});
+
+var CommentContent = React.createClass({
+	displayName: 'CommentContent',
+
+	componentDidMount() {
+		$(this.refs.content).html(this.props.content);
+	},
+	render() {
+		return React.createElement('div', { ref: 'content' });
 	}
 });
 

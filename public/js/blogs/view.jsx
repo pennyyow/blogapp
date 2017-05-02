@@ -36,18 +36,19 @@ var Blog = React.createClass({
 			<If test={blog != null}>
 				<div>
 					<div className="ibox-content no-padding border-left-right">
-	            <img alt="image" className="img-responsive" src={'../img/avatar/' + blog.image} />
+	            <img alt="image" className="img-responsive" 
+	            	src={'../img/company/' + blog.image} />
 	        </div>
 	        <div className="ibox-content">
 	            
 	            <div className="text-center article-title">
-	                <h1>
+	                <h1 className="title-container">
 	                   {blog.title}
 	                </h1>
 	                <span className="text-muted"> 
 	                    By <a href="#" className="btn-link">
 	                    	<If test={blog.user}>
-	                        <strong> {this.state.author.firstName} {this.state.author.lastName} </strong>
+	                        <strong> {this.state.author.name} </strong>
 	                    	</If>
 	                    </a>
 	                    <i className="fa fa-clock-o"></i> { blog.updated_at} 
@@ -126,24 +127,23 @@ var Reactions = React.createClass({
     });
 	},
 	onKeyUp(e) {
+		var content = $(this.refs.comment).code();
 		if(e.key === 'Enter') {
 			if(!e.nativeEvent.shiftKey) {
+				$(this.refs.comment).html('');
+				console.log('>>>>>>>>>>>>>>>>COMENT: ' + $(this.refs.comment).code())
 				$.ajax({
-		      method: 'POST',    
-		      url: Url.comment,
-		      data: {
-		    		comment: $(this.refs.comment).val(),
-		    		blog: this.state.blog._id,
-		        '_token': token
-		      },
-		      success: function(r) {
-		      	$(this.refs.comment).val('');
-		      	this.setState({
-		      		blog: r,
-      				comments: r.comments
-		      	});
-		      }.bind(this)
-		    });
+			      method: 'POST',    
+			      url: Url.comment,
+			      data: {
+			    		comment: content,
+			    		blog: this.state.blog._id,
+			        '_token': token
+			      },
+			      success: function(r) {
+			      	this.getBlog();
+			      }.bind(this)
+			    });
 			}
 		}
 	},
@@ -188,8 +188,9 @@ var Reactions = React.createClass({
                     	onClick={() => this.addReaction(2, blog._id)}>
                     	<i className="fa fa-thumbs-down"></i> Dislike
                     </button>
-                    <button className="btn btn-white btn-xs">
-                    	<i className="fa fa-comments"></i> Comment</button>
+                    <a href="#comment-section" className="btn btn-white btn-xs">
+                      <i className="fa fa-comments"></i> Comment
+                    </a>
                     <button className="btn btn-white btn-xs">
                     	<i className="fa fa-share"></i> Share
                     </button>
@@ -197,9 +198,9 @@ var Reactions = React.createClass({
           		</If>
               <If test={isGuest}>
               	<div className="btn-group">
-                		<button className="btn btn-white btn-xs">
-                			<i className="fa fa-share"></i> Share
-                		</button>
+            		<button className="btn btn-white btn-xs">
+            			<i className="fa fa-share"></i> Share
+            		</button>
                 </div>
               </If>
 	          </div>
@@ -216,36 +217,59 @@ var Reactions = React.createClass({
 				                        </a>
 				                        <div className="media-body">
 				                            <a href="#">
-				                                {comment.user.firstName} {comment.user.lastName}
+				                                {comment.user.name}
 				                            </a>
-				                            <small className="text-muted">Today 4:21 pm - 12.06.2014</small>
+				                            <small className="text-muted">
+				                            	{comment.dateAdded.date}
+				                            </small>
 				                        </div>
 				                    </div>
 				                    <div className="social-body">
-				                        <p>
-				                            {comment.content}
-				                        </p>
+				                        <CommentContent content={comment.content} />
 				                    </div>
 				                </div>
 	                		);
 	                	})
                 } 
                 <If test={user}>
-                	<div className="social-feed-box">
-                    <div className="social-avatar comment-text">
-                        <a href="" className="pull-left">
-                            <img alt="image" src={'../img/avatar/' + (user ? user.image : '')} />
-                        </a>
-                        <div className="media-body">
-                            <textarea className="form-control" onKeyUp={this.onKeyUp} 
-                            	placeholder="Write comment..." rows="3" ref="comment"></textarea>
-                        </div>
-                    </div>
+                	<div className="social-feed-box" id="comment-section">
+		                {
+		                // 	<div className="social-avatar comment-text">
+		                //     <a href="" className="pull-left">
+		                //         <img alt="image" src={'../img/avatar/' + (user ? user.image : '')} />
+		                //     </a>
+		                //     <div className="media-body">
+		                //         <textarea className="form-control" onKeyUp={this.onKeyUp} 
+		                //         	placeholder="Write comment..." rows="3" ref="comment"></textarea>
+		                //     </div>
+		                // </div>
+		                }
+		                <div className="social-avatar comment-text">
+		                    <a href="" className="pull-left">
+		                        <img alt="image" src={'../img/avatar/' + (user ? user.image : '')} />
+		                    </a>
+		                    <div className="media-body">
+		                        <div className="form-control comment-textbox" 
+		                        	onKeyUp={this.onKeyUp} ref="comment"
+                                  	data-text="Write comment..." contentEditable="true"></div>
+		                    </div>
+		                </div>
                 	</div>
                 </If>
             </div>
         </div>
 			</div>
+		);
+	}
+});
+
+var CommentContent = React.createClass({
+	componentDidMount() {
+		$(this.refs.content).html(this.props.content);
+	},
+	render() {
+		return(
+			<div ref="content"></div>
 		);
 	}
 });

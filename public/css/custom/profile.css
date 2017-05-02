@@ -22,4 +22,13 @@
 
 .btn-tag {
   margin-right: 5px;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.title-container, .description-container {
+  max-width: 100%;
+  overflow: hidden;
+  word-wrap: break-word;
 }

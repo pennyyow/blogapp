@@ -5,7 +5,7 @@ $(function() {
     .empty()
     .append(
       $('<img/>')
-        .attr('src', '../img/avatar/'+image)
+        .attr('src', '../img/company/'+image)
         .addClass('thumbnail img-responsive')
     );
 

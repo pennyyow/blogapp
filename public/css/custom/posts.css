@@ -11,8 +11,17 @@
   color: #ed5565 !important;
 }
 
+.title-container, .description-container {
+  max-width: 100%;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
 .btn-tag {
   margin-right: 5px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 * {

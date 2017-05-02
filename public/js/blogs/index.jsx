@@ -15,6 +15,7 @@ var Blogs = React.createClass({
       url: Url.listBlogs,
       data: {
     		max: max,
+        category: (category ? category : null),
         '_token': token
       },
       success: function(r) {
@@ -148,16 +149,21 @@ var Blog = React.createClass({
                           <img alt="image" className="img-responsive" src={ 'img/company/' + blog.image} />
                       </div>
                       <div className="col-md-8">
-                          <a href={ Url.view + '/' + blog._id} className="btn-link">
+                          <a href={ Url.view + '/' + blog._id} className="btn-link title-container">
                               <h1><strong>{ blog.title }</strong></h1>
                           </a>
-                          <div ref="description">
+                          <div ref="description" className="form-group description-container">
+                          </div>
+                          <div className="form-group">
+                              <a href={ Url.view + '/' + blog._id} type="button" className="btn btn-primary btn-outline">
+                                  Read more
+                              </a>
                           </div>
                           <div className="form-group">
                               Posted by 
                               <a href={Url.profile + '/' + blog.user._id} className="btn-link">
                                   <strong>
-                                      &nbsp;{ blog.user.firstName } { blog.user.lastName }&nbsp;
+                                      &nbsp;{ blog.user.name }&nbsp;
                                   </strong>
                               </a> 
                               <span className="text-muted">
@@ -197,9 +203,9 @@ var Blog = React.createClass({
                         	onClick={() => this.addReaction(2, blog._id)}>
                         	<i className="fa fa-thumbs-down"></i> Dislike
                         </button>
-                        <button className="btn btn-white btn-xs">
-                        	<i className="fa fa-comments"></i> Comment
-                        </button>
+                        <a href={ Url.view + '/' + blog._id + '#comment-section'} className="btn btn-white btn-xs">
+                          <i className="fa fa-comments"></i> Comment
+                        </a>
                         <button className="btn btn-white btn-xs" onClick={this.share}>
                           <i className="fa fa-share"> Share </i>
                         </button>

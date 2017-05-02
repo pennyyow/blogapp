@@ -10,8 +10,10 @@ use App\User;
 class GuestController extends Controller
 {
    public function home(){
-   	$blogs = Blogs::all();
-   	return view('blogs.posts', compact('blogs'));
+      $category = Input::get('category');
+      return view('blogs.posts')->with([
+         'category' => $category 
+      ]);
    }
 
    public function categories(){
@@ -60,6 +62,53 @@ class GuestController extends Controller
     }
 
     public function getBlog() {
-        return Blogs::find(Input::get('blog'));
+        $blog = Blogs::find(Input::get('blog'))->toArray();
+
+        $blog['user'] = User::find($blog['user']);
+
+        for ($i=0; $i < count($blog['comments']) ; $i++) { 
+            $blog['comments'][$i]['user'] = User::find($blog['comments'][$i]['user']);
+        }
+
+        return $blog;
+    }
+
+    public function pubSearch() {
+        $keyword = Input::get('search');
+        
+        return view('blogs.search', compact('keyword'));
+    }
+
+    public function filterBlogs() {
+        $keyword = Input::get('keyword');
+        $max = (int) Input::get('max');
+
+        $result = Blogs::where('title', 'regex', "/". $keyword ."/i" )->take($max)->get();
+        return [
+            'total' => $result->count(),
+            'result' => $result
+        ];
+    }
+
+    public function filterUsers() {
+        $keyword = Input::get('keyword');
+        $max = (int) Input::get('max');
+
+        $result = User::where('name', 'regex', "/". $keyword ."/i" )->take($max)->get();
+        return [
+            'total' => $result->count(),
+            'result' => $result
+        ];
+    }
+
+    public function filterTags() {
+        $keyword = Input::get('keyword');
+        $max = (int) Input::get('max');
+
+        $result = Blogs::where('tags', 'regex', "/". $keyword ."/i" )->take($max)->get();
+        return [
+            'total' => $result->count(),
+            'result' => $result
+        ];
     }
 }

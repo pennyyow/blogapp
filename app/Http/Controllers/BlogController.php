@@ -21,8 +21,10 @@ class BlogController extends Controller
     }
 
     public function home(){
-        $blogs = Blogs::all();
-    	return view('blogs.posts', compact('blogs'));
+        $category = Input::get('category');
+    	return view('blogs.posts')->with([
+           'category' => $category 
+        ]);
     }
 
     public function profile($id){
@@ -52,7 +54,9 @@ class BlogController extends Controller
     public function deleteBlog() {
         //delete process
         $blog = Blogs::find(Input::get('blog'));
+        File::delete('img/company/'.$blog->image);
         $blog->delete();
+
         return 'deleting blog: '.Input::get('blog'); //magreturn ka dito ng kahit ano;
     }
 
@@ -65,10 +69,29 @@ class BlogController extends Controller
 
     public function listBlogs() {
         $max = (int) Input::get('max');
-        $result = Blogs::orderBy('updated_at', 'desc')->take($max)->get();
+        $category = Input::get('category');
+        $result = [];
+        if($category) {
+            $result = Blogs::orderBy('updated_at', 'desc')->raw(
+            function($collection) use($category) {
+                return $collection->find([
+                    'category' => $category
+                    ], 
+                    ['sort' => ['updated_at' => -1]]);
+            })->take($max);
+        }
+        else {
+            $result = Blogs::orderBy('updated_at', 'desc')->take($max)->get();
+        }
+        
+        $blogs = $result->toArray();
+        for ($i=0; $i < count($blogs) ; $i++) { 
+            $blogs[$i]['user'] = User::find($blogs[$i]['user']);
+        }
+
         return [
             'total' => $result->count(),
-            'blogs' => $result
+            'blogs' => $blogs
         ];
     }
 
@@ -78,14 +101,20 @@ class BlogController extends Controller
         $res = Blogs::orderBy('updated_at', 'desc')->raw(
             function($collection) use($user) {
                 return $collection->find([
-                    'user._id' => $user
+                    'user' => $user
                     ], 
                     ['sort' => ['updated_at' => -1]]);
             })->take($max);
 
+        $blogs = $res->toArray();
+        for ($i=0; $i < count($blogs) ; $i++) { 
+            $blogs[$i]['user'] = User::find($blogs[$i]['user']);
+        }
+
+
         return [
             'total' => $res->count(),
-            'blogs' => $res
+            'blogs' => $blogs
         ];
     }
 
@@ -134,12 +163,7 @@ class BlogController extends Controller
 
         array_push($comments, [
             'content' => $comment,
-            'user' => [
-                '_id' => auth()->user()->_id,
-                'image' => auth()->user()->image,
-                'firstName' => auth()->user()->firstName,
-                'lastName' => auth()->user()->lastName
-            ],
+            'user' => auth()->user()->_id,
             'dateAdded' => Carbon::now()
         ]);
 
@@ -150,48 +174,56 @@ class BlogController extends Controller
     }
 
     public function updateProfile(Request $request){
-        //get & move thumbnail
-     
-        $new = Blogs::select('user')->get();
-
-        $fileImage = $request->file('file');
-        $destination_path = 'img/avatar';
-        if($fileImage == null) {
-            $avatar = \Auth::user()->image;
-        }else{
-            $avatar = $fileImage->getClientOriginalName();
-            $fileImage->move($destination_path, $avatar);     
+        $user = auth()->user();
+        $errors = [];
+        if(Input::get('firstName') == '') {
+            $errors['firstname'] = 'Please enter your first name';
         }
 
-        $firstName = Input::get('firstName');
-        $lastName = Input::get('lastName');
-        $name = $firstName.' '.$lastName;
+        if(Input::get('lastName') == '') {
+            $errors['lastname'] = 'Please enter your last name';
+        }
+
         $email = Input::get('email');
-        $image = $avatar;
+        if($email == null) {
+            $errors['email'] = 'Please enter your email';
+        } else {
+            if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errors['email'] = 'Please enter a valid email address';
+            }
 
-        $updateProfile = Profile::updateProfile($firstName, $lastName, $email, $name, $image);
-       
-        $blog = Blogs::select('user')->update(array(
-                    'firstName' => $firstName,
-                    'lastName' => $lastName,
-                    'email' => $email,
-                    'name' => $firstName.' '.$lastName,
-                    'image' => $image
-                ));
+            $userByEmail = User::where('email', $email)->get();
+            if(count($userByEmail) > 0) {
+                if($userByEmail[0]->id != $user->id) {
+                    $errors['email'] = 'Email is already in use';
+                }
+            }
+        }
 
+        if(count($errors) > 0) {
+            return Response::json([
+                'errors' => $errors
+            ], 400);
+        }
 
+        $user->firstName = Input::get('firstName');
+        $user->lastName = Input::get('lastName');
+        $user->name = $user->firstName . ' ' . $user->lastName;
+        $user->email = Input::get('email');
 
+        $file = Input::get('file');
 
-        return redirect('/profile/' . \Auth::user()->id);
-    }
+        if($file != null) {
+            $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $file));
+            $destination_path = 'img/avatar'; 
+            file_put_contents('img/avatar/'.$user->id.'.png', $image);
 
-    public function edit() {
-        $file = Input::get('image');
-        $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $file));
-        $destination_path = 'img/avatar'; 
-        //$image->move($destination_path, );
-        file_put_contents('img/avatar/woo.png', $image);
-        return Input::get('image');
+            $user->image = $user->id.'.png';
+        }
+
+        $user->save();
+
+        return $user;
     }
 
     public function editBlogContents(Request $request) {
@@ -219,8 +251,8 @@ class BlogController extends Controller
 
         if($file != '') {
             $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $file));
-            $destination_path = 'img/avatar'; 
-            file_put_contents('img/avatar/'.$blog->id.'.png', $image);
+            $destination_path = 'img/company'; 
+            file_put_contents('img/company/'.$blog->id.'.png', $image);
 
             $blog->image = $blog->id.'.png';
         }
@@ -263,20 +295,13 @@ class BlogController extends Controller
         $blog->tags = $request->tags;
         $blog->description = Input::get('description');
         $blog->content = Input::get('content');
-
-        $blog->user = [
-            "_id" => auth()->user()->_id,
-            "firstName" => auth()->user()->firstName,
-            "lastName" => auth()->user()->lastName,
-            "name" => auth()->user()->firstName.' '.auth()->user()->lastName,
-            "email" => auth()->user()->email,
-            "image" => auth()->user()->image
-        ];
+        $blog->comments = [];
+        $blog->user = auth()->user()->_id;
         $blog->save();
 
         if(!Input::get('file')) {
-            $oldPath = 'img/avatar/'.Input::get('category').'.jpeg';
-            $newPath = 'img/avatar/'.$blog->id.'.jpeg';
+            $oldPath = 'img/company/'.Input::get('category').'.jpeg';
+            $newPath = 'img/company/'.$blog->id.'.jpeg';
 
             if(\File::copy($oldPath, $newPath)) {
                 $blog->image = $blog->id.'.jpeg';
@@ -286,8 +311,8 @@ class BlogController extends Controller
         else {
             $file = Input::get('file');
             $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $file));
-            $destination_path = 'img/avatar'; 
-            file_put_contents('img/avatar/'.$blog->id.'.png', $image);
+            $destination_path = 'img/company'; 
+            file_put_contents('img/company/'.$blog->id.'.png', $image);
 
             $blog->image = $blog->id.'.png';
             $blog->save();
@@ -302,11 +327,20 @@ class BlogController extends Controller
         $views++;
         $blog->views = $views;
         $blog->save();
+
         return view('blogs.blog', compact('blog'));
     }
 
     public function getBlog() {
-        return Blogs::find(Input::get('blog'));
+        $blog = Blogs::find(Input::get('blog'))->toArray();
+
+        $blog['user'] = User::find($blog['user']);
+
+        for ($i=0; $i < count($blog['comments']) ; $i++) { 
+            $blog['comments'][$i]['user'] = User::find($blog['comments'][$i]['user']);
+        }
+
+        return $blog;
     }
 
     public function search() {
@@ -317,25 +351,34 @@ class BlogController extends Controller
 
     public function filterBlogs() {
         $keyword = Input::get('keyword');
+        $max = (int) Input::get('max');
 
-        $result = Blogs::where('title', 'regex', "/". $keyword ."/i" )->get();
-
-        return $result;
-
+        $result = Blogs::where('title', 'regex', "/". $keyword ."/i" )->take($max)->get();
+        return [
+            'total' => $result->count(),
+            'result' => $result
+        ];
     }
 
     public function filterUsers() {
         $keyword = Input::get('keyword');
+        $max = (int) Input::get('max');
 
-        $result = User::where('name', 'regex', "/". $keyword ."/i" )->get();
-        return $result; 
+        $result = User::where('name', 'regex', "/". $keyword ."/i" )->take($max)->get();
+        return [
+            'total' => $result->count(),
+            'result' => $result
+        ];
     }
 
     public function filterTags() {
         $keyword = Input::get('keyword');
+        $max = (int) Input::get('max');
 
-        $result = Blogs::where('tags', 'regex', "/". $keyword ."/i" )->get();
-
-        return $result;
+        $result = Blogs::where('tags', 'regex', "/". $keyword ."/i" )->take($max)->get();
+        return [
+            'total' => $result->count(),
+            'result' => $result
+        ];
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Socialite;
+use File;
 
 class RegisterController extends Controller
 {
@@ -65,14 +66,23 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return $user = User::create([
+        $user = User::create([
             'firstName' => $data['firstName'],
             'lastName' => $data['lastName'],
             'name' => $data['firstName'].' '.$data['lastName'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'image' => 'default-img.jpg'
+            'password' => bcrypt($data['password'])
         ]);
+
+        $oldPath = 'img/avatar/default.jpeg';
+        $newPath = 'img/avatar/'.$user->id.'.jpeg';
+
+        if(\File::copy($oldPath, $newPath)) {
+            $user->image = $user->id.'.jpeg';
+            $user->save();
+        }
+
+        return $user;
     }
 
     public function redirectToProvider() {

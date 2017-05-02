@@ -17,6 +17,7 @@ var Blogs = React.createClass({
       url: Url.listBlogs,
       data: {
         max: max,
+        category: category ? category : null,
         '_token': token
       },
       success: function (r) {
@@ -175,7 +176,7 @@ var Blog = React.createClass({
                 { className: 'col-md-8' },
                 React.createElement(
                   'a',
-                  { href: Url.view + '/' + blog._id, className: 'btn-link' },
+                  { href: Url.view + '/' + blog._id, className: 'btn-link title-container' },
                   React.createElement(
                     'h1',
                     null,
@@ -186,7 +187,16 @@ var Blog = React.createClass({
                     )
                   )
                 ),
-                React.createElement('div', { ref: 'description' }),
+                React.createElement('div', { ref: 'description', className: 'form-group description-container' }),
+                React.createElement(
+                  'div',
+                  { className: 'form-group' },
+                  React.createElement(
+                    'a',
+                    { href: Url.view + '/' + blog._id, type: 'button', className: 'btn btn-primary btn-outline' },
+                    'Read more'
+                  )
+                ),
                 React.createElement(
                   'div',
                   { className: 'form-group' },
@@ -198,9 +208,7 @@ var Blog = React.createClass({
                       'strong',
                       null,
                       '\xA0',
-                      blog.user.firstName,
-                      ' ',
-                      blog.user.lastName,
+                      blog.user.name,
                       '\xA0'
                     )
                   ),
@@ -276,8 +284,8 @@ var Blog = React.createClass({
                   ' Dislike'
                 ),
                 React.createElement(
-                  'button',
-                  { className: 'btn btn-white btn-xs' },
+                  'a',
+                  { href: Url.view + '/' + blog._id + '#comment-section', className: 'btn btn-white btn-xs' },
                   React.createElement('i', { className: 'fa fa-comments' }),
                   ' Comment'
                 ),
