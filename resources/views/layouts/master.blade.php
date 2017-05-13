@@ -29,6 +29,7 @@
     <script type="text/javascript">
         var user = null;
     </script>
+
 </head>
 
 <body class="gray-bg">

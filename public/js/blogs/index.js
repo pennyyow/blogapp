@@ -125,9 +125,9 @@ var Blog = React.createClass({
     FB.ui({
       method: 'share',
       display: 'popup',
-      href: 'http://d09343f8.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
+      href: 'http://ca6c9074.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
       title: blog.title,
-      picture: 'http://d09343f8.ngrok.io/blogapp/public/img/company/' + blog.image,
+      picture: 'http://ca6c9074.ngrok.io/blogapp/public/img/company/' + blog.image,
       caption: blog.description,
       description: blog.description
     }, function (response) {});

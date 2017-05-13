@@ -11,6 +11,7 @@ use DB;
 use Carbon\Carbon;
 use Response;
 use File;
+use DateTime;
 
 class BlogController extends Controller
 {
@@ -29,14 +30,19 @@ class BlogController extends Controller
 
     public function profile($id){
         $user = User::find($id);
-    	return view('blogs.profile')->with([
+        if($user == null){
+            return view('errors.404');
+        }else{
+            return view('blogs.profile')->with([
             '_id' => $user->_id,
             'firstName' => $user->firstName,
             'lastName' => $user->lastName,
             'name' => $user->name,
             'email' => $user->email,
-            'image' => $user->image
+            'image' => $user->image,
+            'facebook_id' => $user->facebook_id
         ]);
+        }
     }
 
     public function categories(){

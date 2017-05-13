@@ -85,6 +85,25 @@ var Blog = React.createClass({
   },
   componentDidMount() {
     $(this.refs.description).html(this.state.blog.description);
+
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: '1352297461495712',
+        xfbml: true,
+        version: 'v2.0'
+      });
+    };
+
+    (function (d, s, id) {
+      var js,
+          fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, 'script', 'facebook-jssdk');
+
+    this.getBlog();
   },
   addReaction(reaction, blog) {
     $.ajax({
@@ -130,6 +149,19 @@ var Blog = React.createClass({
         swal("Deleted!", "Your blog has been deleted.", "success");
       }
     });
+  },
+  share() {
+    var blog = this.state.blog;
+
+    FB.ui({
+      method: 'share',
+      display: 'popup',
+      href: 'http://d09343f8.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
+      title: blog.title,
+      picture: 'http://d09343f8.ngrok.io/blogapp/public/img/company/' + blog.image,
+      caption: blog.description,
+      description: blog.description
+    }, function (response) {});
   },
   render() {
     var blog = this.state.blog;
@@ -329,7 +361,7 @@ var Blog = React.createClass({
               ),
               React.createElement(
                 'button',
-                { className: 'btn btn-white btn-xs' },
+                { className: 'btn btn-white btn-xs', onClick: this.share },
                 React.createElement('i', { className: 'fa fa-share' }),
                 ' Share'
               )
@@ -343,7 +375,7 @@ var Blog = React.createClass({
               { className: 'btn-group' },
               React.createElement(
                 'button',
-                { className: 'btn btn-white btn-xs' },
+                { className: 'btn btn-white btn-xs', onClick: this.share },
                 React.createElement('i', { className: 'fa fa-share' }),
                 ' Share'
               )
@@ -356,14 +388,6 @@ var Blog = React.createClass({
 });
 
 $(function () {
-  (function (d, s, id) {
-    var js,
-        fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s);js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1";
-    fjs.parentNode.insertBefore(js, fjs);
-  })(document, 'script', 'facebook-jssdk');
 
   var imageChanged = false;
   var $inputImage = $("#inputImage");

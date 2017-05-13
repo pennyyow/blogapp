@@ -74,7 +74,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password'])
         ]);
 
-        $oldPath = 'img/avatar/default.jpeg';
+        $oldPath = 'img/avatar/default-img.jpeg';
         $newPath = 'img/avatar/'.$user->id.'.jpeg';
 
         if(\File::copy($oldPath, $newPath)) {

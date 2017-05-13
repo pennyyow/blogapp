@@ -25,7 +25,19 @@
                                 <h3><p><i class="fa fa-user"></i><strong> {{ $name }}</strong></p></h3>
                                 <p><i class="fa fa-envelope"></i> {{ $email }}</p>
                                 @if(!auth()->guest())
-                                    @if(auth()->user()->_id == $_id)
+                                    <!-- @if(auth()->user()->_id == $_id) -->
+                                    @if(count($facebook_id) == 1)
+                                    <div class="user-button" hidden="">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn btn-primary btn-sm btn-block" 
+                                                data-toggle="modal" href="#modal-form">
+                                                    <i class="fa fa-edit"></i> Edit Profile
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @else
                                     <div class="user-button">
                                         <div class="row">
                                             <div class="col-md-12">
@@ -37,6 +49,7 @@
                                         </div>
                                     </div>
                                     @endif
+                                    <!-- @endif -->
                                 @endif
                             </div>
                         </div>
@@ -122,7 +135,7 @@
             listBlogs: '{{ !auth()->guest() ? url('/listBlogs') : url('/pub_listBlogs')  }}',
             react: '{{ url('/react') }}',
             view: '{{ !auth()->guest() ? url('/view-blog') : url('/pub-view-blog')  }}',
-            profile: '{{ url('/profile') }}',
+            profile: '{{ url('/profile/') }}',
             listBlogsByUser: '{{ !auth()->guest() ? url('/listBlogsByUser') : url('/pub-listBlogsByUser') }}',
             editBlog: '{{ url('/edit-blog') }}',
             deleteBlog: '{{ url('/delete-blog') }}',

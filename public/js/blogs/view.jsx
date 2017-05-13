@@ -42,7 +42,7 @@ var Blog = React.createClass({
 	        <div className="ibox-content">
 	            
 	            <div className="text-center article-title">
-	                <h1 className="title-container">
+	                <h1 className="title-container" style={{padding: '8px'}}>
 	                   {blog.title}
 	                </h1>
 	                <span className="text-muted"> 
@@ -91,6 +91,23 @@ var Reactions = React.createClass({
 		}
 	},
 	componentDidMount() {
+	$(this.refs.description).html(this.state.blog.description);
+
+	window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '1352297461495712',
+        xfbml      : true,
+        version    : 'v2.0'
+      });
+    };
+
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
 		this.getBlog();
 	},
 	getBlog() {
@@ -147,6 +164,22 @@ var Reactions = React.createClass({
 			}
 		}
 	},
+	share() {
+    var blog = this.state.blog;
+
+    FB.ui({
+      method: 'share',
+      display: 'popup',
+      href: 'http://d09343f8.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
+      title: blog.title,
+      picture: 'http://d09343f8.ngrok.io/blogapp/public/img/company/' + blog.image,  
+      caption: blog.description,
+      description: blog.description
+    }, function(response){});
+  },
+    goTo() {
+    	$(".comment-textbox").focus();
+  },
 	render() {
 		var blog = this.state.blog;
 		var reaction = null; 
@@ -188,19 +221,19 @@ var Reactions = React.createClass({
                     	onClick={() => this.addReaction(2, blog._id)}>
                     	<i className="fa fa-thumbs-down"></i> Dislike
                     </button>
-                    <a href="#comment-section" className="btn btn-white btn-xs">
+                    <a href="#comment-textbox" className="btn btn-white btn-xs" onClick={this.goTo}>
                       <i className="fa fa-comments"></i> Comment
                     </a>
-                    <button className="btn btn-white btn-xs">
-                    	<i className="fa fa-share"></i> Share
-                    </button>
+                    <button className="btn btn-white btn-xs" onClick={this.share}>
+                      <i className="fa fa-share"> Share </i>
+                     </button>
                 </div>
           		</If>
               <If test={isGuest}>
               	<div className="btn-group">
-            		<button className="btn btn-white btn-xs">
-            			<i className="fa fa-share"></i> Share
-            		</button>
+            		<button className="btn btn-white btn-xs" onClick={this.share}>
+                      <i className="fa fa-share"> Share </i>
+                    </button>
                 </div>
               </If>
 	          </div>
