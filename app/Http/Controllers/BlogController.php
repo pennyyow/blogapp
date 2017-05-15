@@ -16,20 +16,21 @@ use DateTime;
 class BlogController extends Controller
 {
 
-	public function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
     }
 
     public function home(){
         $category = Input::get('category');
-    	return view('blogs.posts')->with([
+        return view('blogs.posts')->with([
            'category' => $category 
         ]);
     }
 
     public function profile($id){
         $user = User::find($id);
+        $blogs = count(Blogs::where('user', '=', $id)->get());
         if($user == null){
             return view('errors.404');
         }else{
@@ -40,13 +41,14 @@ class BlogController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'image' => $user->image,
-            'facebook_id' => $user->facebook_id
+            'facebook_id' => $user->facebook_id,
+            'blogs' => $blogs
         ]);
         }
     }
 
     public function categories(){
-    	return view('blogs.categories');
+        return view('blogs.categories');
     }
 
     public function blog(){
@@ -265,8 +267,13 @@ class BlogController extends Controller
 
         $blog->title = Input::get('title');
         $blog->category = Input::get('category');
-        $blog->tags = [];
+        // $blog->tags = [];
         $blog->tags = $request->tags;
+        if($blog->tags == $request->tags){
+            $blog->tags = $request->tags;
+        }else{
+            $blog->tags = Input::get('tags');
+        }
         $blog->description = Input::get('description');
         $blog->content = Input::get('content');
         $blog->save();
@@ -351,8 +358,12 @@ class BlogController extends Controller
 
     public function search() {
         $keyword = Input::get('search');
-        
-        return view('blogs.search', compact('keyword'));
+
+        $filteredBlogs = count(Blogs::where('title', 'regex', "/". $keyword ."/i" )->get());
+        $filteredUsers = count(User::where('name', 'regex', "/". $keyword ."/i" )->get());
+        $filteredTags = count(Blogs::where('tags', 'regex', "/". $keyword ."/i" )->get());
+
+        return view('blogs.search', compact('keyword', 'filteredBlogs', 'filteredUsers', 'filteredTags'));
     }
 
     public function filterBlogs() {

@@ -63,7 +63,7 @@ var Blog = React.createClass({
 							'By ',
 							React.createElement(
 								'a',
-								{ href: '#', className: 'btn-link' },
+								{ href: Url.profile + '/' + this.state.author._id, className: 'btn-link' },
 								React.createElement(
 									If,
 									{ test: blog.user },

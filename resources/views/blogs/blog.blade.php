@@ -24,7 +24,8 @@
         var Url = {
             react: '{{ url('/react') }}',
             comment: '{{ url('/comment') }}',
-            getBlog: '{{ !auth()->guest() ? url('/get-blog') : url('/pub-get-blog')  }}'
+            getBlog: '{{ !auth()->guest() ? url('/get-blog') : url('/pub-get-blog')  }}',
+            profile: '{{ !auth()->guest() ? url('/profile') : url('/pub_profile')  }}'
         }; 
 
         var isGuest = ('{{auth()->guest()}}' != '1' ? false : true);

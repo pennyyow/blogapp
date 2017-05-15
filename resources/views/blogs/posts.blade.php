@@ -19,9 +19,15 @@
                         <div class="product-desc">
                             <a href="#" class="product-name">Adventure</a>
                             <div class="m-t">
+                            @if(!auth()->guest())
                                 <a href="{{ url('/posts?category=Adventure') }}" class="btn btn-xs btn-outline btn-primary">
                                     <i class="fa fa-bars"></i> View All
                                 </a>
+                            @else
+                                <a href="{{ url('/pub_posts?category=Adventure') }}" class="btn btn-xs btn-outline btn-primary">
+                                    <i class="fa fa-bars"></i> View All
+                                </a>
+                            @endif
                                 <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic1" value="Adventure">
                                     <i class="fa fa-plus"></i> Create
                                 </button>
@@ -37,12 +43,19 @@
                         <div class="product-desc">
                             <a href="#" class="product-name">Sports</a>
                             <div class="m-t">
+                            @if(!auth()->guest())
                                 <a href="{{ url('/posts?category=Sports') }}" class="btn btn-xs btn-outline btn-primary">
                                     <i class="fa fa-bars"></i> View All
                                 </a>
+                            @else
+                                <a href="{{ url('/pub_posts?category=Sports') }}" class="btn btn-xs btn-outline btn-primary">
+                                    <i class="fa fa-bars"></i> View All
+                                </a>
+                            @endif
                                 <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic2" value="Sports">
                                     <i class="fa fa-plus"></i> Create
                                 </button>
+                            
                             </div>
                         </div>
                     </div>
@@ -55,9 +68,15 @@
                         <div class="product-desc">
                             <a href="{{ url('/posts?category=Entertainment') }}" class="product-name">Entertainment</a>
                             <div class="m-t">
+                            @if(!auth()->guest())
                                 <a href="{{ url('/posts?category=Entertainment') }}" class="btn btn-xs btn-outline btn-primary">
                                     <i class="fa fa-bars"></i> View All
                                 </a>
+                            @else
+                                <a href="{{ url('/pub_posts?category=Entertainment') }}" class="btn btn-xs btn-outline btn-primary">
+                                    <i class="fa fa-bars"></i> View All
+                                </a>
+                            @endif
                                 <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic3" value="Entertainment">
                                     <i class="fa fa-plus"></i> Create
                                 </button>
@@ -73,9 +92,15 @@
                         <div class="product-desc">
                             <a href="{{ url('/posts?category=Education') }}" class="product-name">Education</a>
                             <div class="m-t">
+                            @if(!auth()->guest())
                                 <a href="#" class="btn btn-xs btn-outline btn-primary">
                                     <i class="fa fa-bars"></i> View All
                                 </a>
+                            @else
+                                <a href="{{ url('/pub_posts?category=Education') }}" class="btn btn-xs btn-outline btn-primary">
+                                    <i class="fa fa-bars"></i> View All
+                                </a>
+                            @endif
                                 <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic4" value="Education">
                                     <i class="fa fa-plus"></i> Create
                                 </button>
@@ -91,9 +116,15 @@
                         <div class="product-desc">
                             <a href="{{ url('/posts?category=Technology') }}" class="product-name">Technology</a>
                             <div class="m-t">
+                            @if(!auth()->guest())
                                 <a href="#" class="btn btn-xs btn-outline btn-primary">
                                     <i class="fa fa-bars"></i> View All
                                 </a>
+                            @else
+                                <a href="{{ url('/pub_posts?category=Technology') }}" class="btn btn-xs btn-outline btn-primary">
+                                    <i class="fa fa-bars"></i> View All
+                                </a>
+                            @endif
                                 <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic5" value="Technology">
                                     <i class="fa fa-plus"></i> Create
                                 </button>
@@ -109,9 +140,15 @@
                         <div class="product-desc">
                             <a href="{{ url('/posts?category=Nature') }}" class="product-name">Nature</a>
                             <div class="m-t">
+                            @if(!auth()->guest())
                                 <a href="#" class="btn btn-xs btn-outline btn-primary">
                                     <i class="fa fa-bars"></i> View All
                                 </a>
+                            @else
+                                <a href="{{ url('/pub_posts?category=Nature') }}" class="btn btn-xs btn-outline btn-primary">
+                                    <i class="fa fa-bars"></i> View All
+                                </a>
+                            @endif
                                 <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic6" value="Nature">
                                     <i class="fa fa-plus"></i> Create
                                 </button>
@@ -127,9 +164,15 @@
                         <div class="product-desc">
                             <a href="{{ url('/posts?category=Politics') }}" class="product-name">Politics</a>
                             <div class="m-t">
+                            @if(!auth()->guest())
                                 <a href="#" class="btn btn-xs btn-outline btn-primary">
                                     <i class="fa fa-bars"></i> View All
                                 </a>
+                            @else
+                                <a href="{{ url('/pub_posts?category=Politics') }}" class="btn btn-xs btn-outline btn-primary">
+                                    <i class="fa fa-bars"></i> View All
+                                </a>
+                            @endif
                                <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic7" value="Politics">
                                     <i class="fa fa-plus"></i> Create
                                 </button>
@@ -146,9 +189,15 @@
                         <div class="product-desc">
                             <a href="{{ url('/posts?category=Fashion') }}" class="product-name">Fashion</a>
                             <div class="m-t">
+                            @if(!auth()->guest())
                                 <a href="#" class="btn btn-xs btn-outline btn-primary">
                                     <i class="fa fa-bars"></i> View All
                                 </a>
+                            @else
+                                <a href="{{ url('/pub_posts?category=Fashion') }}" class="btn btn-xs btn-outline btn-primary">
+                                    <i class="fa fa-bars"></i> View All
+                                </a>
+                            @endif
                                 <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic8" value="Fashion">
                                     <i class="fa fa-plus"></i> Create
                                 </button>
@@ -165,9 +214,15 @@
                         <div class="product-desc">
                             <a href="{{ url('/posts?category=Others') }}" class="product-name">Others</a>
                             <div class="m-t">
+                            @if(!auth()->guest())
                                 <a href="#" class="btn btn-xs btn-outline btn-primary">
                                     <i class="fa fa-bars"></i> View All
                                 </a>
+                            @else
+                                <a href="{{ url('/pub_posts?category=Others') }}" class="btn btn-xs btn-outline btn-primary">
+                                    <i class="fa fa-bars"></i> View All
+                                </a>
+                            @endif    
                                <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic9" value="Others">
                                     <i class="fa fa-plus"></i> Create
                                 </button>

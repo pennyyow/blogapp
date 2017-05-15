@@ -60,11 +60,13 @@ var FilteredBlogs = React.createClass({
 				                            <div className="ibox-content">
 				                                <div className="row">
 				                                    <div className="col-md-2 no-padding">
+				                                   	<a href={ Url.view + '/' + blog._id}  className="overflow">
 				                                      <img alt="image" className="img-responsive user-image" src={'img/company/' + blog.image} />
+				                                    </a>
 				                                    </div>
 				                                    <div className="col-md-10">
 				                                        <h3>
-				                                            <a href="#" className="overflow">
+				                                            <a href={ Url.view + '/' + blog._id}  className="overflow">
 				                                                {blog.title}
 				                                            </a>
 				                                        </h3>
@@ -171,11 +173,13 @@ var FilteredTags = React.createClass({
 				                            <div className="ibox-content">
 				                                <div className="row">
 				                                    <div className="col-md-2 no-padding">
+				                                    <a href={ Url.view + '/' + blog._id} className="overflow">
 				                                      <img alt="image" className="img-responsive user-image" src={'img/company/' + blog.image} />
+				                                    </a>
 				                                    </div>
 				                                    <div className="col-md-10">
 				                                        <h3>
-				                                            <a href="#" className="overflow">
+				                                            <a href={ Url.view + '/' + blog._id} className="overflow">
 				                                                {blog.title}
 				                                            </a>
 				                                        </h3>
@@ -282,11 +286,13 @@ var FilteredUsers = React.createClass({
 				                            <div className="ibox-content">
 				                                <div className="row">
 				                                    <div className="col-md-2 no-padding">
+				                                    <a href={Url.profile + '/' + user._id}>
 				                                      <img alt="image" className="img-responsive user-image" src={'img/avatar/' + user.image} />
+				                                    </a>
 				                                    </div>
 				                                    <div className="col-md-10">
 				                                        <h3>
-				                                            <a href="#">
+				                                            <a href={Url.profile + '/' + user._id}>
 				                                                {user.name}
 				                                            </a>
 				                                        </h3>

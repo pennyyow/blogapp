@@ -76,7 +76,11 @@ class GuestController extends Controller
     public function pubSearch() {
         $keyword = Input::get('search');
         
-        return view('blogs.search', compact('keyword'));
+        $filteredBlogs = count(Blogs::where('title', 'regex', "/". $keyword ."/i" )->get());
+        $filteredUsers = count(User::where('name', 'regex', "/". $keyword ."/i" )->get());
+        $filteredTags = count(Blogs::where('tags', 'regex', "/". $keyword ."/i" )->get());
+
+        return view('blogs.search', compact('keyword', 'filteredBlogs', 'filteredUsers', 'filteredTags'));
     }
 
     public function filterBlogs() {

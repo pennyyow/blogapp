@@ -4,28 +4,31 @@
 @section('styles')
     <link href="{{ asset('css/import/core.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom/search.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom/badge.css') }}" rel="stylesheet">
 @stop
+
+</style>
     <title>BlogMoTo | Search</title>
-	<div class="wrapper wrapper-content">
+    <div class="wrapper wrapper-content">
         <div class="row animated fadeInRight">
             <div class="col-md-8 col-md-offset-2">
                 <ul class="nav nav-tabs tabs">
                     <li class="active tab" >
                         <a href="#search-user" id="tab-user" data-toggle="tab" aria-expanded="false">
-                            <span class="visible-xs"><i class="fa fa-home"></i></span>
-                            <span class="hidden-xs">Users</span>
+                            <span class="visible-xs badge1" data-badge="{{ $filteredUsers }}"><i class="fa fa-home"></i></span>
+                            <span class="hidden-xs badge1" data-badge="{{ $filteredUsers }}">Users</span>
                         </a>
                     </li>
                     <li class="tab" >
                         <a href="#search-blog" id="tab-blog" data-toggle="tab" aria-expanded="false">
-                            <span class="visible-xs"><i class="fa fa-user"></i></span>
-                            <span class="hidden-xs">Blogs</span>
+                            <span class="visible-xs badge1" data-badge="{{ $filteredBlogs }}"><i class="fa fa-user"></i></span>
+                            <span class="hidden-xs badge1" data-badge="{{ $filteredBlogs }}">Blogs</span>
                         </a>
                     </li>
                     <li class="tab" >
                         <a href="#search-tag" id="tab-tag" data-toggle="tab" aria-expanded="true">
-                            <span class="visible-xs"><i class="fa fa-envelope-o"></i></span>
-                            <span class="hidden-xs">Tags</span>
+                            <span class="visible-xs badge1" data-badge="{{ $filteredTags }}"><i class="fa fa-envelope-o"></i></span>
+                            <span class="hidden-xs badge1" data-badge="{{ $filteredTags }}">Tags</span>
                         </a>
                     </li>
                 </ul>
@@ -38,16 +41,18 @@
                     </div>
                 </div>
             </div>
-			
-		</div>
-	</div>
+            
+        </div>
+    </div>
 @endsection
 @section('scripts')
     <script type="text/javascript">
         var Url = {
             filterBlogs: '{{ !auth()->guest() ? url('/filterBlogs') : url('/pub_filterBlogs')  }}',
             filterUsers: '{{ !auth()->guest() ? url('/filterUsers') : url('/pub_filterUsers')  }}',
-            filterTags: '{{ !auth()->guest()  ? url('/filterTags') : url('/pub_filterTags') }}'
+            filterTags: '{{ !auth()->guest()  ? url('/filterTags') : url('/pub_filterTags') }}',
+            view: '{{ !auth()->guest() ? url('/view-blog') : url('/pub-view-blog')  }}',
+            profile: '{{ !auth()->guest() ? url('/profile') : url('/pub_profile')  }}'
         };
 
         var token = '{{ csrf_token() }}';

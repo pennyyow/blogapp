@@ -5,6 +5,7 @@
     <!-- Sweet Alert -->
     <link href="{{ asset('css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom/profile.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom/badge.css') }}" rel="stylesheet">
 @stop
 <title>BlogMoTo | Profile</title>
 
@@ -115,7 +116,7 @@
                 <div class="col-md-8">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
-                            <h5>Blogs</h5>
+                            <h5 class="badge2" data-badge2="{{ $blogs }}">Blogs</h5>
                         </div>
                         <div class="ibox-content">
                             <div id="blogs"></div>                         

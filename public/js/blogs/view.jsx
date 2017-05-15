@@ -45,8 +45,8 @@ var Blog = React.createClass({
 	                <h1 className="title-container" style={{padding: '8px'}}>
 	                   {blog.title}
 	                </h1>
-	                <span className="text-muted"> 
-	                    By <a href="#" className="btn-link">
+	                <span className="text-muted">
+	                    By <a href={Url.profile + '/' + this.state.author._id} className="btn-link">
 	                    	<If test={blog.user}>
 	                        <strong> {this.state.author.name} </strong>
 	                    	</If>
