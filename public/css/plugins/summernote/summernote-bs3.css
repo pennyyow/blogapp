@@ -4982,8 +4982,9 @@ button.note-editor .close {
   border: 0;
   -webkit-appearance: none;
 }
+
 .modal-open {
-  overflow: hidden;
+ overflow: auto;
 }
 .modal {
   display: none;

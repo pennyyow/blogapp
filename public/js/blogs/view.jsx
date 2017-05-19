@@ -15,6 +15,8 @@ var Blog = React.createClass({
       url: Url.getBlog,
       data: {
     		blog: blogId,
+    		tags: (tags ? tags : null),
+    		moment: moment,
         '_token': token
       },
       success: function(r) {
@@ -51,7 +53,7 @@ var Blog = React.createClass({
 	                        <strong> {this.state.author.name} </strong>
 	                    	</If>
 	                    </a>
-	                    <i className="fa fa-clock-o"></i> { blog.updated_at} 
+	                    <i className="fa fa-clock-o"></i> {moment(blog.created_at).fromNow()}
 	                </span>
 	            </div>
 	            <div id="content" ref="content">
@@ -64,9 +66,10 @@ var Blog = React.createClass({
 	                        {
 	                        	(this.state.tags ? this.state.tags : []).map(tag => {
 	                        		return(
-	                        			<button className="btn btn-white btn-xs btn-tag" type="button">
-			                            <i className="fa fa-tag"></i> {tag}
-		                            </button>
+	                        		 <a key={tag} href={ Url.posts + '?tags=' + blog.tags} className="btn btn-white btn-xs btn-tag" type="button">
+                              <i className="fa fa-tag"></i> {tag}
+                            </a>
+	                        		
 	                        		);
 	                        	})
 	                        }
@@ -116,6 +119,7 @@ var Reactions = React.createClass({
       url: Url.getBlog,
       data: {
     		blog: blogId,
+    		moment: moment,
         '_token': token
       },
       success: function(r) {
@@ -154,6 +158,7 @@ var Reactions = React.createClass({
 			      url: Url.comment,
 			      data: {
 			    		comment: content,
+			    		moment: moment,
 			    		blog: this.state.blog._id,
 			        '_token': token
 			      },
@@ -253,7 +258,7 @@ var Reactions = React.createClass({
 				                                {comment.user.name}
 				                            </a>
 				                            <small className="text-muted">
-				                            	{comment.dateAdded.date}
+				                            	{moment(comment.dateAdded.date, "YYYYMMDD h:mm:ss").fromNow()}
 				                            </small>
 				                        </div>
 				                    </div>

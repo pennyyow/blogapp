@@ -18,9 +18,11 @@
     @yield('styles')
     <link href="{{ asset('css/custom/master.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom/categories.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom/scroll-top.css') }}" rel="stylesheet">
 
     <script src="{{ asset('js/jquery-2.1.1.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <link href="{{ asset('css/hover-min.css') }}" rel="stylesheet" media="all">
 
     <!-- REACT COMPONENTS -->
     <script src="{{ asset('js/react/react.js') }}"></script>
@@ -28,6 +30,12 @@
     <script src="{{ asset('js/react-components.js') }}"></script>
     <script type="text/javascript">
         var user = null;
+    </script>
+
+    <script src="http://momentjs.com/downloads/moment.min.js"></script>
+    <script src="https://momentjs.com/downloads/moment-timezone-with-data.min.js"></script>
+    <script>
+        moment().format();
     </script>
 
 </head>
@@ -38,29 +46,35 @@
         <nav class="navbar navbar-fixed-top" role="navigation" style="margin-bottom: 0">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="logo" href="{{ url('/posts') }}">
+                    <a class="logo hvr-grow-shadow" href="{{ url('/posts') }}">
                         BlogMoTo
                     </a>
                     {!! Form::open(array('action' => array('BlogController@search'), 'role' => 'search', 'method' => 'GET', 'id' => 'createForm', 'class' => 'app-search')) !!}
-                        <div class="form-group">
+                        <div class="form-group lining">
                             <input type="text" placeholder="Search for something..." name="search" id="top-search" class="form-control app-search-input">
-                            <a href=""><i class="fa fa-search"></i></a>
+                            <button id="top-search" class="btn btn-primary my-button"><i class="fa fa-search"></i></button>
                         </div>
                     {!! Form::close() !!}
                 </div>
                 <div class="tooltip-demo">
                     <ul class="nav navbar-top-links navbar-right pull-right">
-                        <li data-toggle="tooltip" data-placement="bottom" title="Home">
+                         <li data-toggle="tooltip" data-placement="bottom" title="Create Blog" class="hvr-grow">
+                            <a href="{{ url('/create-blog') }}">
+                                <i class="fa fa-plus icon"></i>
+                            </a>
+                        </li>
+                        <li> | </li>
+                        <li data-toggle="tooltip" data-placement="bottom" title="Home" class="hvr-grow">
                             <a href="{{ url('/posts') }}">
                                 <i class="fa fa-home icon"></i>
                             </a>
                         </li>
-                        <li data-toggle="tooltip" data-placement="bottom" title="Profile">
+                        <li data-toggle="tooltip" data-placement="bottom" title="Profile" class="hvr-grow">
                             <a href="{{ url('/profile/'.auth()->user()->_id) }}">
                                 <i class="fa fa-user icon"></i>
                             </a>
                         </li>
-                        <li class="dropdown" data-toggle="tooltip" data-placement="bottom" title="Notifications">
+                        <li class="dropdown hvr-grow" data-toggle="tooltip" data-placement="bottom" title="Notifications">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="false">
                                 <i class="fa fa-globe icon"></i>  <span class="label label-warning">16</span>
                             </a>
@@ -126,12 +140,13 @@
                                 </li>
                             </ul>
                         </li>
-                        <li data-toggle="tooltip" data-placement="bottom" title="Categories">
+                        <li data-toggle="tooltip" data-placement="bottom" title="Categories" class="hvr-grow">
                             <a href="#categories" data-toggle="modal">
                                 <i class="fa fa-th-large icon"></i>
                             </a>
                         </li>
-                        <li data-toggle="tooltip" data-placement="bottom" title="Logout">
+                        <li> | </li>
+                        <li data-toggle="tooltip" data-placement="bottom" title="Logout" class="hvr-grow">
                             <a href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
@@ -395,7 +410,9 @@
 </div>
 
 @yield('content')
+<a href="javascript:" id="return-to-top" class="return-to-top"><i class="fa fa-chevron-up"></i></a>
 @yield('styles')
+
     <script type="text/javascript">
         var createBlog = '{{ url('/create-blog') }}';
     </script>
@@ -415,6 +432,8 @@
     <script src="{{ asset('js/plugins/summernote/summernote.min.js') }}"></script>
 
     <script src="{{ asset('js/categories.js') }}"></script>
+
+    <script src="{{ asset('js/blogs/scroll-top.js') }}"></script>
 
 @yield('scripts')
 </body>

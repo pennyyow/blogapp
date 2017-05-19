@@ -16,6 +16,8 @@ var Blogs = React.createClass({
       data: {
     		max: max,
         category: (category ? category : null),
+        moment: moment,
+        tags: (tags ? tags : null),
         '_token': token
       },
       success: function(r) {
@@ -146,7 +148,9 @@ var Blog = React.createClass({
               <div className="ibox-content">
                   <div className="row">
                       <div className="col-md-4 no-padding">
-                          <img alt="image" className="img-responsive" src={ 'img/company/' + blog.image} />
+                        <a href={ Url.view + '/' + blog._id }>
+                            <img alt="image" className="img-responsive" src={ 'img/company/' + blog.image} />
+                        </a>
                       </div>
                       <div className="col-md-8">
                           <a href={ Url.view + '/' + blog._id} className="btn-link title-container">
@@ -154,27 +158,24 @@ var Blog = React.createClass({
                           </a>
                           <div ref="description" className="form-group description-container">
                           </div>
+                          
                           <div className="form-group">
-                              <a href={ Url.view + '/' + blog._id} type="button" className="btn btn-primary btn-outline">
-                                  Read more
-                              </a>
-                          </div>
-                          <div className="form-group">
-                              Posted by 
                               <a href={Url.profile + '/' + blog.user._id} className="btn-link">
                                   <strong>
+                                      &nbsp;<img alt="image" className=" img-circle" src={ 'img/avatar/' + blog.user.image} />&nbsp;
                                       &nbsp;{ blog.user.name }&nbsp;
                                   </strong>
                               </a> 
                               <span className="text-muted">
-                                  <i className="fa fa-clock-o"></i> { blog.created_at }
+                                  <i className="fa fa-clock-o"></i> {moment(blog.created_at, "YYYYMMDD h:mm:ss").fromNow()}
                               </span>
                           </div>
+                         
                           <div>
                           	{
                           		(blog.tags ? blog.tags : []).map( tag => {
                           			return(
-                          				<a key={tag} href="#" className="btn btn-white btn-xs btn-tag" type="button">
+                          				<a key={tag} href={ Url.posts + '?tags=' + blog.tags } className="btn btn-white btn-xs btn-tag" type="button">
                                   	<i className="fa fa-tag"></i> {tag}
                                   </a>
                           			);

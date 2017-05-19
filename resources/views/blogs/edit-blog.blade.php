@@ -99,10 +99,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <button class="btn btn-white btn-sm m-t-n-xs" type="button">
-                                        <i class="fa fa-times"></i>
-                                        Cancel
-                                    </button>
+                                        <button class="btn btn-white btn-sm m-t-n-xs" type="button" onclick="goBack()">
+                                            <i class="fa fa-times"></i>
+                                            Cancel
+                                        </button>
                                         <button class="btn btn-sm btn-primary m-t-n-xs" 
                                             type="submit" id="btn-create">
                                             <strong>
@@ -135,6 +135,11 @@
         $('.summernote').summernote();
         $('.description-textbox').html("{!! $blog->description !!}");
         $('.note-editable').html("{!! $blog->content !!}");
+    </script>
+    <script type="text/javascript">
+        function goBack(){
+            window.history.back();
+        }
     </script>
     <script src="{{ asset('js/blogs/edit.js') }}"></script>
 @stop

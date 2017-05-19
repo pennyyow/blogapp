@@ -18,6 +18,8 @@ var Blogs = React.createClass({
       data: {
         max: max,
         category: category ? category : null,
+        moment: moment,
+        tags: tags ? tags : null,
         '_token': token
       },
       success: function (r) {
@@ -169,7 +171,11 @@ var Blog = React.createClass({
               React.createElement(
                 'div',
                 { className: 'col-md-4 no-padding' },
-                React.createElement('img', { alt: 'image', className: 'img-responsive', src: 'img/company/' + blog.image })
+                React.createElement(
+                  'a',
+                  { href: Url.view + '/' + blog._id },
+                  React.createElement('img', { alt: 'image', className: 'img-responsive', src: 'img/company/' + blog.image })
+                )
               ),
               React.createElement(
                 'div',
@@ -193,21 +199,13 @@ var Blog = React.createClass({
                   { className: 'form-group' },
                   React.createElement(
                     'a',
-                    { href: Url.view + '/' + blog._id, type: 'button', className: 'btn btn-primary btn-outline' },
-                    'Read more'
-                  )
-                ),
-                React.createElement(
-                  'div',
-                  { className: 'form-group' },
-                  'Posted by',
-                  React.createElement(
-                    'a',
                     { href: Url.profile + '/' + blog.user._id, className: 'btn-link' },
                     React.createElement(
                       'strong',
                       null,
                       '\xA0',
+                      React.createElement('img', { alt: 'image', className: ' img-circle', src: 'img/avatar/' + blog.user.image }),
+                      '\xA0 \xA0',
                       blog.user.name,
                       '\xA0'
                     )
@@ -217,7 +215,7 @@ var Blog = React.createClass({
                     { className: 'text-muted' },
                     React.createElement('i', { className: 'fa fa-clock-o' }),
                     ' ',
-                    blog.created_at
+                    moment(blog.created_at, "YYYYMMDD h:mm:ss").fromNow()
                   )
                 ),
                 React.createElement(
@@ -226,7 +224,7 @@ var Blog = React.createClass({
                   (blog.tags ? blog.tags : []).map(tag => {
                     return React.createElement(
                       'a',
-                      { key: tag, href: '#', className: 'btn btn-white btn-xs btn-tag', type: 'button' },
+                      { key: tag, href: Url.posts + '?tags=' + blog.tags, className: 'btn btn-white btn-xs btn-tag', type: 'button' },
                       React.createElement('i', { className: 'fa fa-tag' }),
                       ' ',
                       tag

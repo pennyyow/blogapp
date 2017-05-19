@@ -59,7 +59,7 @@
 			<div class="col-md-6 disp2">
 				Internal Server Error
 			</div>
-			<button type="button" class="btn btn-default btn-des">
+			<button type="button" onClick="goBack()" class="btn btn-default btn-des">
                 Back Mo To
             </button>
 		</div>
@@ -69,6 +69,11 @@
     <script src="{{ asset('js/plugins/pace/pace.min.js') }}"></script>
 
 
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 @yield('scripts')
 
 </body>

@@ -5,244 +5,117 @@
     <link href="{{ asset('css/custom/posts.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/slick/slick.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/slick/slick-theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom/badge.css') }}" rel="stylesheet">
 @stop
 
 <title>BlogMoTo | Posts</title>
-    <div class="wrapper wrapper-content">
         <div class="row animated fadeInRight">
-            <div class="regular slider">
-                <div>
-                    <div class="ibox-content product-box">
-                        <div class="product-imitation">
-                            <img alt="image" class="img-responsive" id="pic1" src="{{ asset('img/company/category8.jpeg') }}">
-                        </div>
-                        <div class="product-desc">
-                            <a href="#" class="product-name">Adventure</a>
-                            <div class="m-t">
-                            @if(!auth()->guest())
-                                <a href="{{ url('/posts?category=Adventure') }}" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @else
-                                <a href="{{ url('/pub_posts?category=Adventure') }}" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @endif
-                                <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic1" value="Adventure">
-                                    <i class="fa fa-plus"></i> Create
-                                </button>
-                            </div>
-                        </div>
+            <ul class="ul-style">
+                <li class="li-style">
+                    <div class="m-t">
+                        @if(!auth()->guest())
+                           <a href="{{ url('/posts?category=Adventure') }}" class="my-font hvr-grow">Adventure</a>
+                        @else
+                            <a href="{{ url('/pub_posts?category=Adventure') }}" class="my-font hvr-grow">Adventure</a>
+                        @endif
                     </div>
-                </div>
-                <div>
-                    <div class="ibox-content product-box">
-                        <div class="product-imitation">
-                            <img alt="image" class="img-responsive" id="pic2" src="{{ asset('img/company/category7.jpeg') }}">
-                        </div>
-                        <div class="product-desc">
-                            <a href="#" class="product-name">Sports</a>
-                            <div class="m-t">
-                            @if(!auth()->guest())
-                                <a href="{{ url('/posts?category=Sports') }}" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @else
-                                <a href="{{ url('/pub_posts?category=Sports') }}" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @endif
-                                <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic2" value="Sports">
-                                    <i class="fa fa-plus"></i> Create
-                                </button>
-                            
-                            </div>
-                        </div>
+                </li>
+                <li class="li-style"> | </li>
+                <li class="li-style">
+                    <div class="m-t">
+                    @if(!auth()->guest())
+                        <a href="{{ url('/posts?category=Sports') }}" class="my-font hvr-grow">Sports</a>
+                    @else
+                        <a href="{{ url('/pub_posts?category=Sports') }}" class="my-font hvr-grow">Sports</a>
+                    @endif
                     </div>
-                </div>
-                <div>
-                    <div class="ibox-content product-box">
-                        <div class="product-imitation">
-                            <img alt="image" class="img-responsive" id="pic3" src="{{ asset('img/company/category1.jpeg') }}">
-                        </div>
-                        <div class="product-desc">
-                            <a href="{{ url('/posts?category=Entertainment') }}" class="product-name">Entertainment</a>
-                            <div class="m-t">
-                            @if(!auth()->guest())
-                                <a href="{{ url('/posts?category=Entertainment') }}" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @else
-                                <a href="{{ url('/pub_posts?category=Entertainment') }}" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @endif
-                                <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic3" value="Entertainment">
-                                    <i class="fa fa-plus"></i> Create
-                                </button>
-                            </div>
-                        </div>
+                </li>
+                <li class="li-style"> | </li>
+                <li class="li-style">
+                    <div class="m-t">
+                        @if(!auth()->guest())
+                           <a href="{{ url('/posts?category=Entertainment') }}" class="my-font hvr-grow">Entertainment</a>
+                        @else
+                            <a href="{{ url('/pub_posts?category=Entertainment') }}" class="my-font hvr-grow">Entertainment</a>
+                        @endif
                     </div>
-                </div>
-                <div>
-                    <div class="ibox-content product-box">
-                        <div class="product-imitation">
-                            <img alt="image" class="img-responsive" id="pic4" src="{{ asset('img/company/category4.jpeg') }}">
-                        </div>
-                        <div class="product-desc">
-                            <a href="{{ url('/posts?category=Education') }}" class="product-name">Education</a>
-                            <div class="m-t">
-                            @if(!auth()->guest())
-                                <a href="#" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @else
-                                <a href="{{ url('/pub_posts?category=Education') }}" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @endif
-                                <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic4" value="Education">
-                                    <i class="fa fa-plus"></i> Create
-                                </button>
-                            </div>
-                        </div>
+                </li>
+                <li class="li-style"> | </li>
+                <li class="li-style">
+                    <div class="m-t">
+                        @if(!auth()->guest())
+                            <a href="{{ url('/posts?category=Education') }}" class="my-font hvr-grow">Education</a>
+                        @else
+                            <a href="{{ url('/pub_posts?category=Education') }}" class="my-font hvr-grow">Education</a>
+                        @endif
                     </div>
-                </div>
-                <div>
-                    <div class="ibox-content product-box">
-                        <div class="product-imitation">
-                            <img alt="image" class="img-responsive" id="pic5" src="{{ asset('img/company/category6.jpeg') }}">
-                        </div>
-                        <div class="product-desc">
-                            <a href="{{ url('/posts?category=Technology') }}" class="product-name">Technology</a>
-                            <div class="m-t">
-                            @if(!auth()->guest())
-                                <a href="#" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @else
-                                <a href="{{ url('/pub_posts?category=Technology') }}" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @endif
-                                <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic5" value="Technology">
-                                    <i class="fa fa-plus"></i> Create
-                                </button>
-                            </div>
-                        </div>
+                </li>
+                <li class="li-style"> | </li>
+                <li class="li-style">
+                    <div class="m-t">
+                        @if(!auth()->guest())
+                            <a href="{{ url('/posts?category=Technology') }}" class="my-font hvr-grow">Technology</a>
+                        @else
+                            <a href="{{ url('/pub_posts?category=Technology') }}" class="my-font hvr-grow">Technology</a>
+                        @endif
                     </div>
-                </div>
-                <div>
-                    <div class="ibox-content product-box">
-                        <div class="product-imitation">
-                            <img alt="image" class="img-responsive" id="pic6" src="{{ asset('img/company/category3.jpeg') }}">
-                        </div>
-                        <div class="product-desc">
-                            <a href="{{ url('/posts?category=Nature') }}" class="product-name">Nature</a>
-                            <div class="m-t">
-                            @if(!auth()->guest())
-                                <a href="#" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @else
-                                <a href="{{ url('/pub_posts?category=Nature') }}" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @endif
-                                <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic6" value="Nature">
-                                    <i class="fa fa-plus"></i> Create
-                                </button>
-                            </div>
-                        </div>
+                </li>
+                <li class="li-style"> | </li>
+                <li class="li-style">
+                    <div class="m-t">
+                        @if(!auth()->guest())
+                            <a href="{{ url('/posts?category=Nature') }}" class="my-font hvr-grow">Nature</a>
+                        @else
+                            <a href="{{ url('/pub_posts?category=Nature') }}" class="my-font hvr-grow">Nature</a>
+                        @endif
                     </div>
-                </div>
-                <div>
-                    <div class="ibox-content product-box">
-                        <div class="product-imitation">
-                            <img alt="image" class="img-responsive" id="pic7" src="{{ asset('img/company/category2.jpeg') }}">
-                        </div>
-                        <div class="product-desc">
-                            <a href="{{ url('/posts?category=Politics') }}" class="product-name">Politics</a>
-                            <div class="m-t">
-                            @if(!auth()->guest())
-                                <a href="#" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @else
-                                <a href="{{ url('/pub_posts?category=Politics') }}" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @endif
-                               <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic7" value="Politics">
-                                    <i class="fa fa-plus"></i> Create
-                                </button>
-                            </div>
-                        </div>
+                </li>
+                <li class="li-style"> | </li>
+                <li class="li-style">
+                    <div class="m-t">
+                        @if(!auth()->guest())
+                           <a href="{{ url('/posts?category=Politics') }}" class="my-font hvr-grow">Politics</a>
+                        @else
+                            <a href="{{ url('/pub_posts?category=Politics') }}" class="my-font hvr-grow">Politics</a>
+                        @endif
                     </div>
-                </div>
-                <div>
-                    <div class="ibox-content product-box">
-                        <div class="product-imitation">
-                            <img alt="image" class="img-responsive" id="pic8" 
-                            src="{{ asset('img/company/category5.jpeg') }}">
-                        </div>
-                        <div class="product-desc">
-                            <a href="{{ url('/posts?category=Fashion') }}" class="product-name">Fashion</a>
-                            <div class="m-t">
-                            @if(!auth()->guest())
-                                <a href="#" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @else
-                                <a href="{{ url('/pub_posts?category=Fashion') }}" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @endif
-                                <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic8" value="Fashion">
-                                    <i class="fa fa-plus"></i> Create
-                                </button>
-                            </div>
-                        </div>
+                </li>
+                <li class="li-style"> | </li>
+                <li class="li-style">
+                    <div class="m-t">
+                        @if(!auth()->guest())
+                        <a href="{{ url('/posts?category=Fashion') }}" class="my-font hvr-grow">Fashion</a>
+                        @else
+                           <a href="{{ url('/pub_posts?category=Fashion') }}" class="my-font hvr-grow">Fashion</a>
+                        @endif
                     </div>
-                </div>
-                <div>
-                    <div class="ibox-content product-box">
-                        <div class="product-imitation">
-                            <img alt="image" class="img-responsive" id="pic9" 
-                            src="{{ asset('img/profile_big.jpg') }}">
-                        </div>
-                        <div class="product-desc">
-                            <a href="{{ url('/posts?category=Others') }}" class="product-name">Others</a>
-                            <div class="m-t">
-                            @if(!auth()->guest())
-                                <a href="#" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @else
-                                <a href="{{ url('/pub_posts?category=Others') }}" class="btn btn-xs btn-outline btn-primary">
-                                    <i class="fa fa-bars"></i> View All
-                                </a>
-                            @endif    
-                               <button type="button" class="btn btn-xs btn-outline btn-primary btn-category" data-image="pic9" value="Others">
-                                    <i class="fa fa-plus"></i> Create
-                                </button>
-                            </div>
-                        </div>
+                </li>
+                <li class="li-style"> | </li>
+                <li class="li-style">
+                    <div class="m-t">
+                        @if(!auth()->guest())
+                            <a href="{{ url('/posts?category=Others') }}" class="my-font hvr-grow">Others</a>
+                        @else
+                            <a href="{{ url('/pub_posts?category=Others') }}" class="my-font hvr-grow">Others</a>
+                        @endif    
                     </div>
-                </div>
-            </div>
+                </li>
+            </ul>
+
             <div class="col-md-8 col-md-offset-2">
                 @if($category)
                     <h2>Filtered by category: {{ $category }}</h2>
                 @endif
 
-                @if(!$category)
-                    <h2>Latest blogs</h2>
+                @if($tags)
+                    <h2>Filtered by tags: {{ $tags }}</h2>
+                @endif
+                @if(!$category && !$tags)
+                    <h2><strong>Latest blogs</strong></h2>
                 @endif
             </div>
             <div id="blogs"></div>
         </div>
-    </div>
 
 @endsection
 @section('scripts')
@@ -251,11 +124,13 @@
             listBlogs: '{{ !auth()->guest() ? url('/listBlogs') : url('/pub_listBlogs')  }}',
             react: '{{ url('/react') }}',
             view: '{{ !auth()->guest() ? url('/view-blog') : url('/pub-view-blog')  }}',
-            profile: '{{ !auth()->guest() ? url('/profile') : url('/pub_profile')  }}'
+            profile: '{{ !auth()->guest() ? url('/profile') : url('/pub_profile')  }}',
+            posts: '{{ !auth()->guest() ? url('/posts') : url('/pub_posts')  }}'
         };
 
         var isGuest = (Url.listBlogs == '{{url('/listBlogs')}}' ? false : true);
         var category = '{{ $category }}';
+        var tags = '{{ $tags }}';
         var token = '{{ csrf_token() }}';
     </script>
     <script src="{{ asset('js/plugins/slick/slick.min.js') }}"></script>

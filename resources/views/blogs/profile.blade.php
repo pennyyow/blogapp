@@ -24,7 +24,8 @@
                             </div>
                             <div class="ibox-content profile-content">
                                 <h3><p><i class="fa fa-user"></i><strong> {{ $name }}</strong></p></h3>
-                                <p><i class="fa fa-envelope"></i> {{ $email }}</p>
+                                <p><i class="fa fa-envelope"></i> {{ $email }}</p> 
+                                <p><i class="fa fa-pencil"></i> Blogs: {{ $blogs }}</p>
                                 @if(!auth()->guest())
                                     <!-- @if(auth()->user()->_id == $_id) -->
                                     @if(count($facebook_id) == 1)
@@ -116,7 +117,7 @@
                 <div class="col-md-8">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
-                            <h5 class="badge2" data-badge2="{{ $blogs }}">Blogs</h5>
+                            <h5>Blogs</h5>
                         </div>
                         <div class="ibox-content">
                             <div id="blogs"></div>                         
@@ -141,12 +142,13 @@
             editBlog: '{{ url('/edit-blog') }}',
             deleteBlog: '{{ url('/delete-blog') }}',
             edit: '{{ url('/edit') }}',
-            updateProfile: '{{ url('/profile/update') }}'
+            updateProfile: '{{ url('/profile/update') }}',
+            posts: '{{ url('/posts') }}',
         };
 
         var isGuest = (Url.listBlogs == '{{url('/listBlogs')}}' ? false : true);
         var userProfile = '{{ $_id }}';
-
+        var tags = '{{ $tags }}';
         var token = '{{ csrf_token() }}';
     </script>
 

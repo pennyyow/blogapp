@@ -17,6 +17,8 @@ var Blog = React.createClass({
 			url: Url.getBlog,
 			data: {
 				blog: blogId,
+				tags: tags ? tags : null,
+				moment: moment,
 				'_token': token
 			},
 			success: function (r) {
@@ -78,7 +80,7 @@ var Blog = React.createClass({
 							),
 							React.createElement('i', { className: 'fa fa-clock-o' }),
 							' ',
-							blog.updated_at
+							moment(blog.created_at).fromNow()
 						)
 					),
 					React.createElement('div', { id: 'content', ref: 'content' }),
@@ -99,8 +101,8 @@ var Blog = React.createClass({
 								),
 								(this.state.tags ? this.state.tags : []).map(tag => {
 									return React.createElement(
-										'button',
-										{ className: 'btn btn-white btn-xs btn-tag', type: 'button' },
+										'a',
+										{ key: tag, href: Url.posts + '?tags=' + blog.tags, className: 'btn btn-white btn-xs btn-tag', type: 'button' },
 										React.createElement('i', { className: 'fa fa-tag' }),
 										' ',
 										tag
@@ -153,6 +155,7 @@ var Reactions = React.createClass({
 			url: Url.getBlog,
 			data: {
 				blog: blogId,
+				moment: moment,
 				'_token': token
 			},
 			success: function (r) {
@@ -191,6 +194,7 @@ var Reactions = React.createClass({
 					url: Url.comment,
 					data: {
 						comment: content,
+						moment: moment,
 						blog: this.state.blog._id,
 						'_token': token
 					},
@@ -354,7 +358,7 @@ var Reactions = React.createClass({
 									React.createElement(
 										'small',
 										{ className: 'text-muted' },
-										comment.dateAdded.date
+										moment(comment.dateAdded.date, "YYYYMMDD h:mm:ss").fromNow()
 									)
 								)
 							),

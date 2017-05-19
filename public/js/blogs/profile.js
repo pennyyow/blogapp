@@ -18,10 +18,12 @@ var Blogs = React.createClass({
       data: {
         max: max,
         user: userProfile,
+        moment: moment,
+        tags: tags ? tags : null,
         '_token': token
       },
       success: function (r) {
-        console.log('>>>>>>>>>>>>>.BLOGS: ' + JSON.stringify(r));
+        console.log('>>>>>>>>>>>>>.BLOGS: ' + moment().format('MMMM Do YYYY, h:mm:s a'));
         var nothingToShow = this.state.nothingToShow;
         if (this.state.max > r.total) nothingToShow = true;
 
@@ -238,7 +240,11 @@ var Blog = React.createClass({
             React.createElement(
               'div',
               { className: 'col-md-4 no-padding' },
-              React.createElement('img', { alt: 'image', className: 'img-responsive', src: '../img/company/' + blog.image })
+              React.createElement(
+                'a',
+                { href: Url.view + '/' + blog._id },
+                React.createElement('img', { alt: 'image', className: 'img-responsive', src: '../img/company/' + blog.image })
+              )
             ),
             React.createElement(
               'div',
@@ -287,7 +293,7 @@ var Blog = React.createClass({
                   { className: 'text-muted' },
                   React.createElement('i', { className: 'fa fa-clock-o' }),
                   ' ',
-                  blog.created_at
+                  moment(blog.created_at, "YYYYMMDD h:mm:ss").fromNow()
                 )
               ),
               React.createElement(
@@ -296,7 +302,7 @@ var Blog = React.createClass({
                 (this.state.blog.tags ? this.state.blog.tags : []).map(tag => {
                   return React.createElement(
                     'a',
-                    { key: tag, href: '#', className: 'btn btn-white btn-xs btn-tag', type: 'button' },
+                    { key: tag, href: Url.posts + '?tags=' + blog.tags, className: 'btn btn-white btn-xs btn-tag', type: 'button' },
                     React.createElement('i', { className: 'fa fa-tag' }),
                     ' ',
                     tag

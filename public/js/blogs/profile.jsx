@@ -16,10 +16,12 @@ var Blogs = React.createClass({
       data: {
     		max: max,
         user: userProfile,
+        moment: moment,
+        tags: (tags ? tags : null),
         '_token': token
       },
       success: function(r) {
-      console.log('>>>>>>>>>>>>>.BLOGS: ' + JSON.stringify(r))
+      console.log('>>>>>>>>>>>>>.BLOGS: ' + moment().format('MMMM Do YYYY, h:mm:s a'))
       	var nothingToShow = this.state.nothingToShow;
       	if(this.state.max > r.total) nothingToShow = true;
 
@@ -198,7 +200,9 @@ var Blog = React.createClass({
           <div className="ibox-content">
             <div className="row">
                 <div className="col-md-4 no-padding">
-                    <img alt="image" className="img-responsive" src={ '../img/company/' + blog.image} />
+                  <a href={ Url.view + '/' + blog._id }>
+                      <img alt="image" className="img-responsive" src={ '../img/company/' + blog.image} />
+                  </a>
                 </div>
                 <div className="col-md-8">
                     <a href={ Url.view + '/' + blog._id} className="btn-link title-container">
@@ -219,14 +223,15 @@ var Blog = React.createClass({
                             </strong>
                         </a> 
                         <span className="text-muted">
-                            <i className="fa fa-clock-o"></i> { blog.created_at }
+                            <i className="fa fa-clock-o"></i> {moment(blog.created_at, "YYYYMMDD h:mm:ss").fromNow()}
+                            
                         </span>
                     </div>
                     <div>
                       {
                         (this.state.blog.tags ? this.state.blog.tags : []).map( tag => {
                           return(
-                            <a key={tag} href="#" className="btn btn-white btn-xs btn-tag" type="button">
+                            <a key={tag} href={ Url.posts + '?tags=' + blog.tags} className="btn btn-white btn-xs btn-tag" type="button">
                               <i className="fa fa-tag"></i> {tag}
                             </a>
                           );

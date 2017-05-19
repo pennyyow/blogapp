@@ -78,3 +78,45 @@
   background-color: #1ab394;
   color: white;
 }
+
+
+ .ul-style {
+    border: 1px solid #e7e7e7;
+    background-color: #f3f3f3;
+    list-style: none;
+    text-align: center;
+    word-spacing: 15px;
+}
+    
+.li-style {
+    display: inline-block;
+}
+.my-font {
+    font-size: 16px;
+    font-weight: 600;
+    color: #676a6c;
+    display: block;
+    margin: 2px 0 5px 0;
+}
+
+.my-font:hover {
+  color:#18a689;
+}
+
+.le-font {
+    white-space: nowrap;
+}
+
+.img-circle {
+    border-radius: 50%;
+    max-width: 36px;
+    max-height: 36px;
+}
+
+.ds {
+  display: block;
+}
+
+.clr {
+  color: black;
+}

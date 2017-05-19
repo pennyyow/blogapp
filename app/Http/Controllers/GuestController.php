@@ -11,8 +11,11 @@ class GuestController extends Controller
 {
    public function home(){
       $category = Input::get('category');
+      $tags = Input::get('tags');
+
       return view('blogs.posts')->with([
-         'category' => $category 
+         'category' => $category,
+         'tags' => $tags
       ]);
    }
 
@@ -42,6 +45,9 @@ class GuestController extends Controller
 
  	 public function profile($id){
         $user = User::find($id);
+        if($user == null){
+            return view('errors.404');
+        }else{
     	return view('blogs.profile')->with([
             '_id' => $user->_id,
             'firstName' => $user->firstName,
@@ -50,15 +56,21 @@ class GuestController extends Controller
             'email' => $user->email,
             'image' => $user->image
         ]);
+        }
     }
 
  	 public function view($id) {
         $blog = Blogs::find($id);
-        $views = $blog->views ? $blog->views : 0;
-        $views++;
-        $blog->views = $views;
-        $blog->save();
-        return view('blogs.blog', compact('blog'));
+        $tags = Input::get('tags');
+        if($blog == null){
+            return view('errors.404');
+        }else{
+            $views = $blog->views ? $blog->views : 0;
+            $views++;
+            $blog->views = $views;
+            $blog->save();
+            return view('blogs.blog', compact('blog', 'tags'));
+        }
     }
 
     public function getBlog() {
