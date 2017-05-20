@@ -1,9 +1,19 @@
+.blog-title {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.status-container {
+  margin-bottom: 0px;
+}
+
 html {
 	overflow: hidden;
 }
 
 .ibox-content {
 	border: 1px solid #e7eaec !important;
+  padding-bottom: 15px !important;
 }
 
 li.tab span.hidden-xs {
@@ -18,9 +28,9 @@ li.tab span.hidden-xs {
 
 .user-image {
 	max-height: 90px !important;
-    max-width: 90px !important;
-    min-height: 90px !important;
-    min-width: 90px !important;
+  max-width: 100% !important;
+  min-height: 90px !important;
+  min-width: 100% !important;
 }
 
 .like-on {

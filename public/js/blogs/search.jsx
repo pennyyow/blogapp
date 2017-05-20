@@ -54,8 +54,25 @@ var FilteredBlogs = React.createClass({
 					<div>
 						{
 							blogs.map( blog => {
+								var reaction = null; 
+								var liked = 0;
+								var disliked = 0;
+
+								if(blog.reactions) {
+									if(!isGuest) {
+										reaction = $.grep(blog.reactions, function(reaction) {
+											return reaction._id == user.id;
+										})[0];
+									}			
+
+									$.each(blog.reactions, function(i, reaction) {
+										if(reaction.reaction == 1) liked++;
+										if(reaction.reaction == 2) disliked++;
+									});
+								}
+
 								return(
-									<div>
+									<div key={blog._id}>
 										<div className="ibox float-e-margins">
 				                            <div className="ibox-content">
 				                                <div className="row">
@@ -68,7 +85,22 @@ var FilteredBlogs = React.createClass({
 				                                                {blog.title}
 				                                            </a>
 				                                        </h3>
-				                                        <h4 className="overflow">{blog.description}</h4>
+				                                        <div className="form-group">
+							                              Posted by 
+							                              <a href={Url.profile + '/' + blog.user._id} className="btn-link">
+							                                  <strong>
+							                                      &nbsp;{ blog.user.name }&nbsp;
+							                                  </strong>
+							                              </a> 
+							                              <span className="text-muted">
+							                                  <i className="fa fa-clock-o"></i> { blog.created_at }
+							                              </span>
+							                          </div>
+							                          <p className="status-container">
+								                      		<i className="fa fa-eye"></i> {blog.views ? blog.views : 0} Views
+								                          &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-up"></i> {liked} Likes
+								                          &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-down"></i> {disliked}  Dislikes
+								                      </p>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -166,7 +198,7 @@ var FilteredTags = React.createClass({
 						{
 							blogs.map( blog => {
 								return(
-									<div>
+									<div key={blog._id}>
 										<div className="ibox float-e-margins">
 				                            <div className="ibox-content">
 				                                <div className="row">
@@ -174,12 +206,33 @@ var FilteredTags = React.createClass({
 				                                      <img alt="image" className="img-responsive user-image" src={'img/company/' + blog.image} />
 				                                    </div>
 				                                    <div className="col-md-10">
-				                                        <h3>
+				                                        <h3 className="blog-title">
 				                                            <a href="#" className="overflow">
 				                                                {blog.title}
 				                                            </a>
 				                                        </h3>
-				                                        <h4 className="overflow">{blog.description}</h4>
+				                                        <div className="form-group">
+							                              Posted by 
+							                              <a href={Url.profile + '/' + blog.user._id} className="btn-link">
+							                                  <strong>
+							                                      &nbsp;{ blog.user.name }&nbsp;
+							                                  </strong>
+							                              </a> 
+							                              <span className="text-muted">
+							                                  <i className="fa fa-clock-o"></i> { blog.created_at }
+							                              </span>
+							                          	</div>
+							                          	<div>
+							                          	{
+							                          		(blog.tags ? blog.tags : []).map( tag => {
+							                          			return(
+							                          				<a key={tag} href="#" className="btn btn-white btn-xs btn-tag" type="button">
+							                                  	<i className="fa fa-tag"></i> {tag}
+							                                  </a>
+							                          			);
+							                          		})
+							                          	}
+							                          </div>
 				                                    </div>
 				                                </div>
 				                            </div>
@@ -277,7 +330,7 @@ var FilteredUsers = React.createClass({
 						{
 							users.map( user => {
 								return(
-									<div>
+									<div key={user._id}>
 										<div className="ibox float-e-margins">
 				                            <div className="ibox-content">
 				                                <div className="row">
