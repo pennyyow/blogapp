@@ -48,7 +48,10 @@ var Blog = React.createClass({
 	                   {blog.title}
 	                </h1>
 	                <span className="text-muted">
-	                    By <a href={Url.profile + '/' + this.state.author._id} className="btn-link">
+	                    By 	<a href={Url.profile + '/' + this.state.author._id} className="btn-link">
+	                    		<img alt="image" className="img-circle" src={ '../img/avatar/' + this.state.author.image} />
+	                    	</a>
+	                    	<a href={Url.profile + '/' + this.state.author._id} className="btn-link">
 	                    	<If test={blog.user}>
 	                        <strong> {this.state.author.name} </strong>
 	                    	</If>
@@ -66,7 +69,7 @@ var Blog = React.createClass({
 	                        {
 	                        	(this.state.tags ? this.state.tags : []).map(tag => {
 	                        		return(
-	                        		 <a key={tag} href={ Url.posts + '?tags=' + blog.tags} className="btn btn-white btn-xs btn-tag" type="button">
+	                        		 <a key={tag} href={ Url.posts + '?tags=' + tag} className="btn btn-white btn-xs btn-tag" type="button">
                               <i className="fa fa-tag"></i> {tag}
                             </a>
 	                        		

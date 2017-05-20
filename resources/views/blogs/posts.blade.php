@@ -6,7 +6,9 @@
     <link href="{{ asset('css/plugins/slick/slick.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/slick/slick-theme.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom/badge.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom/index.css') }}" rel="stylesheet">
 @stop
+
 
 <title>BlogMoTo | Posts</title>
         <div class="row animated fadeInRight">
@@ -101,21 +103,24 @@
                     </div>
                 </li>
             </ul>
-
-            <div class="col-md-8 col-md-offset-2">
-                @if($category)
-                    <h2>Filtered by category: {{ $category }}</h2>
-                @endif
-
-                @if($tags)
-                    <h2>Filtered by tags: {{ $tags }}</h2>
-                @endif
-                @if(!$category && !$tags)
-                    <h2><strong>Latest blogs</strong></h2>
-                @endif
-            </div>
-            <div id="blogs"></div>
         </div>
+        <div class="col-md-8 col-md-offset-2">
+            @if($category)
+                <h2 class="latest">Filtered by category: {{ $category }}</h2>
+                <hr class="hrcss"/>
+            @endif
+
+            @if($tags)
+                <h2 class="latest">Filtered by tags: {{ $tags }}</h2>
+                <hr class="hrcss"/>
+            @endif
+            @if(!$category && !$tags)
+                <h2 class="latest"><strong>Latest Blogs</strong></h2>
+                <hr class="hrcss"/>
+            @endif
+        </div>
+            
+        <div id="blogs"></div>
 
 @endsection
 @section('scripts')

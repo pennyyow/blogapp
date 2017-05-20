@@ -25,26 +25,69 @@ class GuestController extends Controller
 
    public function listBlogs() {
       $max = (int) Input::get('max');
-      $result = Blogs::orderBy('updated_at', 'desc')->take($max)->get();
-      return [
-          'total' => $result->count(),
-          'blogs' => $result
-      ];
+        $category = Input::get('category');
+        $tags = Input::get('tags');
+        $result = [];
+        if($category) {
+            $result = Blogs::orderBy('updated_at', 'desc')->raw(
+            function($collection) use($category) {
+                return $collection->find([
+                    'category' => $category
+                    ], 
+                    ['sort' => ['updated_at' => -1]]);
+            })->take($max);
+        }else if($tags){
+            $result = Blogs::orderBy('updated_at', 'desc')->raw(
+            function($collection) use($tags) {
+                return $collection->find([
+                    'tags' => $tags
+                    ], 
+                    ['sort' => ['updated_at' => -1]]);
+            })->take($max);
+        }
+        else {
+            $result = Blogs::orderBy('created_at', 'desc')->take($max)->get();
+        }
+
+      $blogs = $result->toArray();
+        for ($i=0; $i < count($blogs) ; $i++) { 
+            $blogs[$i]['user'] = User::find($blogs[$i]['user']);
+        }
+
+        return [
+            'total' => $result->count(),
+            'blogs' => $blogs
+        ];
  	 }
 
  	 public function listBlogsByUser() {
-        $user = Input::get('user');
+         $user = Input::get('user');
         $max = (int) Input::get('max');
-        $result = Blogs::orderBy('updated_at', 'desc')->take($max)->get();
+        $res = Blogs::orderBy('updated_at', 'desc')->raw(
+            function($collection) use($user) {
+                return $collection->find([
+                    'user' => $user
+                    ], 
+                    ['sort' => ['created_at' => -1]]);
+            })->take($max);
+
+        $blogs = $res->toArray();
+        for ($i=0; $i < count($blogs) ; $i++) { 
+            $blogs[$i]['user'] = User::find($blogs[$i]['user']);
+        }
+
+
         return [
-            'total' => $result->count(),
-            'blogs' => $result
+            'total' => $res->count(),
+            'blogs' => $blogs
         ];
     }
 
 
  	 public function profile($id){
         $user = User::find($id);
+        $blogs = count(Blogs::where('user', '=', $id)->get());
+        $tags = Input::get('tags');
         if($user == null){
             return view('errors.404');
         }else{
@@ -54,7 +97,10 @@ class GuestController extends Controller
             'lastName' => $user->lastName,
             'name' => $user->name,
             'email' => $user->email,
-            'image' => $user->image
+            'image' => $user->image,
+            'blogs' => $blogs,
+            'tags' => $tags,
+            'user' => $user
         ]);
         }
     }

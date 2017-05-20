@@ -23,12 +23,14 @@ class BlogController extends Controller
     }
 
     public function home(){
+        $blogs = Blogs::all();
         $category = Input::get('category');
         $tags = Input::get('tags');
 
         return view('blogs.posts')->with([
            'category' => $category,
-           'tags' => $tags
+           'tags' => $tags,
+           'blogs' => $blogs
         ]);
     }
 
@@ -175,7 +177,10 @@ class BlogController extends Controller
         $blog->reactions = $reactions;
         $blog->save();
 
-        return $blog; 
+        $arr = $blog->toArray();
+        $arr['user'] = User::find($blog->toArray()['user']);
+
+        return $arr; 
     }
 
     public function comment() {
@@ -365,6 +370,7 @@ class BlogController extends Controller
         $blog->views = $views;
         $blog->save();
         }
+
         return view('blogs.blog', compact('blog', 'tags'));
     }
 

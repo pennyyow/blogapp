@@ -3,6 +3,7 @@
 @section('content')
 @section('styles')
     <link href="{{ asset('css/custom/blog.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom/badge.css') }}" rel="stylesheet">
 @stop
 <title>BlogMoTo | Blog</title>
 

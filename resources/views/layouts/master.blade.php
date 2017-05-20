@@ -46,7 +46,7 @@
         <nav class="navbar navbar-fixed-top" role="navigation" style="margin-bottom: 0">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="logo hvr-grow-shadow" href="{{ url('/posts') }}">
+                    <a class="logo hvr-grow" href="{{ url('/posts') }}">
                         BlogMoTo
                     </a>
                     {!! Form::open(array('action' => array('BlogController@search'), 'role' => 'search', 'method' => 'GET', 'id' => 'createForm', 'class' => 'app-search')) !!}
@@ -173,7 +173,7 @@
         <nav class="navbar navbar-fixed-top" role="navigation" style="margin-bottom: 0">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="logo" href="posts">
+                    <a class="logo hvr-grow" href="posts">
                         BlogMoTo
                     </a>
                     <form method="GET" action="{{ url('/pubSearch') }}" id="createForm" class="app-search">

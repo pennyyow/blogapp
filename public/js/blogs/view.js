@@ -62,7 +62,12 @@ var Blog = React.createClass({
 						React.createElement(
 							'span',
 							{ className: 'text-muted' },
-							'By ',
+							'By  ',
+							React.createElement(
+								'a',
+								{ href: Url.profile + '/' + this.state.author._id, className: 'btn-link' },
+								React.createElement('img', { alt: 'image', className: 'img-circle', src: '../img/avatar/' + this.state.author.image })
+							),
 							React.createElement(
 								'a',
 								{ href: Url.profile + '/' + this.state.author._id, className: 'btn-link' },
@@ -102,7 +107,7 @@ var Blog = React.createClass({
 								(this.state.tags ? this.state.tags : []).map(tag => {
 									return React.createElement(
 										'a',
-										{ key: tag, href: Url.posts + '?tags=' + blog.tags, className: 'btn btn-white btn-xs btn-tag', type: 'button' },
+										{ key: tag, href: Url.posts + '?tags=' + tag, className: 'btn btn-white btn-xs btn-tag', type: 'button' },
 										React.createElement('i', { className: 'fa fa-tag' }),
 										' ',
 										tag

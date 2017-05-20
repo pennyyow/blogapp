@@ -4,7 +4,7 @@ var Blogs = React.createClass({
   getInitialState() {
     return {
       blogs: [],
-      max: 2,
+      max: 6,
       nothingToShow: false
     };
   },
@@ -45,9 +45,13 @@ var Blogs = React.createClass({
     return React.createElement(
       'div',
       null,
-      this.state.blogs.map(blog => {
-        return React.createElement(Blog, { blog: blog, key: blog._id });
-      }),
+      React.createElement(
+        'div',
+        { className: 'col-md-offset-2 col-md-8 p-l-r-0' },
+        this.state.blogs.map(blog => {
+          return React.createElement(Blog, { blog: blog, key: blog._id });
+        })
+      ),
       React.createElement(
         'div',
         { className: 'col-md-8 col-md-offset-2' },
@@ -103,6 +107,13 @@ var Blog = React.createClass({
       js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
       fjs.parentNode.insertBefore(js, fjs);
     })(document, 'script', 'facebook-jssdk');
+
+    var $this = this;
+    $(this.refs.imgBlog).hover(function () {
+      $($this.refs.imgLink).addClass('hover');
+    }, function () {
+      $($this.refs.imgLink).removeClass('hover');
+    });
   },
   addReaction(reaction, blog) {
     $.ajax({
@@ -155,161 +166,141 @@ var Blog = React.createClass({
 
     return React.createElement(
       'div',
-      { key: blog._id },
+      { key: blog._id, className: 'col-md-4 m-b-15' },
       React.createElement(
         'div',
-        { className: 'col-md-8 col-md-offset-2' },
+        { className: 'ibox-content image-container no-padding border-left-right col-md-12' },
+        React.createElement(
+          'a',
+          { href: Url.view + '/' + blog._id },
+          React.createElement('img', { alt: 'image', ref: 'imgBlog', className: 'img-responsive img-blog', src: 'img/company/' + blog.image })
+        ),
+        React.createElement(
+          'a',
+          { href: Url.view + '/' + blog._id, ref: 'imgLink', className: 'btn-link title-container' },
+          React.createElement(
+            'h1',
+            { className: 'ellips' },
+            React.createElement(
+              'strong',
+              null,
+              blog.title
+            )
+          )
+        ),
+        React.createElement(
+          'p',
+          { className: 'text-center reactions' },
+          React.createElement('i', { className: 'fa fa-eye' }),
+          ' ',
+          blog.views ? blog.views : 0,
+          ' Views \xA0\xA0\xA0',
+          React.createElement('i', { className: 'fa fa-thumbs-up' }),
+          ' ',
+          liked,
+          ' Likes \xA0\xA0\xA0',
+          React.createElement('i', { className: 'fa fa-thumbs-down' }),
+          ' ',
+          disliked,
+          '  Dislikes \xA0\xA0\xA0',
+          React.createElement('i', { className: 'fa fa-comments' }),
+          ' ',
+          this.state.blog.comments ? this.state.blog.comments.length : 0,
+          ' Comments'
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'ibox-content col-md-12 p-t-b-10' },
+        React.createElement('div', { ref: 'description', className: 'form-group description-container ellips-two' }),
         React.createElement(
           'div',
-          { className: 'ibox float-e-margins' },
+          { className: 'form-group' },
+          (blog.tags ? blog.tags : []).map(tag => {
+            return React.createElement(
+              'a',
+              { key: tag, href: Url.posts + '?tags=' + tag, className: 'btn btn-white btn-xs btn-tag', type: 'button' },
+              React.createElement('i', { className: 'fa fa-tag' }),
+              ' ',
+              tag
+            );
+          })
+        ),
+        React.createElement(
+          'div',
+          { className: 'form-group m-b-0' },
           React.createElement(
-            'div',
-            { className: 'ibox-content' },
+            'a',
+            { href: Url.profile + '/' + blog.user._id, className: 'btn-link' },
             React.createElement(
-              'div',
-              { className: 'row' },
-              React.createElement(
-                'div',
-                { className: 'col-md-4 no-padding' },
-                React.createElement(
-                  'a',
-                  { href: Url.view + '/' + blog._id },
-                  React.createElement('img', { alt: 'image', className: 'img-responsive', src: 'img/company/' + blog.image })
-                )
-              ),
-              React.createElement(
-                'div',
-                { className: 'col-md-8' },
-                React.createElement(
-                  'a',
-                  { href: Url.view + '/' + blog._id, className: 'btn-link title-container' },
-                  React.createElement(
-                    'h1',
-                    null,
-                    React.createElement(
-                      'strong',
-                      null,
-                      blog.title
-                    )
-                  )
-                ),
-                React.createElement('div', { ref: 'description', className: 'form-group description-container' }),
-                React.createElement(
-                  'div',
-                  { className: 'form-group' },
-                  React.createElement(
-                    'a',
-                    { href: Url.profile + '/' + blog.user._id, className: 'btn-link' },
-                    React.createElement(
-                      'strong',
-                      null,
-                      '\xA0',
-                      React.createElement('img', { alt: 'image', className: ' img-circle', src: 'img/avatar/' + blog.user.image }),
-                      '\xA0 \xA0',
-                      blog.user.name,
-                      '\xA0'
-                    )
-                  ),
-                  React.createElement(
-                    'span',
-                    { className: 'text-muted' },
-                    React.createElement('i', { className: 'fa fa-clock-o' }),
-                    ' ',
-                    moment(blog.created_at, "YYYYMMDD h:mm:ss").fromNow()
-                  )
-                ),
-                React.createElement(
-                  'div',
-                  null,
-                  (blog.tags ? blog.tags : []).map(tag => {
-                    return React.createElement(
-                      'a',
-                      { key: tag, href: Url.posts + '?tags=' + blog.tags, className: 'btn btn-white btn-xs btn-tag', type: 'button' },
-                      React.createElement('i', { className: 'fa fa-tag' }),
-                      ' ',
-                      tag
-                    );
-                  })
-                )
-              )
+              'strong',
+              null,
+              '\xA0',
+              React.createElement('img', { alt: 'image', className: ' img-circle', src: 'img/avatar/' + blog.user.image }),
+              '\xA0 \xA0',
+              blog.user.name,
+              '\xA0'
             )
           ),
           React.createElement(
+            'span',
+            { className: 'text-muted' },
+            React.createElement('i', { className: 'fa fa-clock-o' }),
+            ' ',
+            moment(blog.created_at, "YYYYMMDD h:mm:ss").fromNow()
+          )
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'ibox-footer col-md-12 text-center' },
+        React.createElement(
+          If,
+          { test: !isGuest },
+          React.createElement(
             'div',
-            { className: 'ibox-footer' },
+            { className: 'btn-group' },
             React.createElement(
-              'div',
-              { className: 'pull-right' },
-              React.createElement(
-                'p',
-                null,
-                React.createElement('i', { className: 'fa fa-eye' }),
-                ' ',
-                blog.views ? blog.views : 0,
-                ' Views \xA0\xA0\xA0',
-                React.createElement('i', { className: 'fa fa-thumbs-up' }),
-                ' ',
-                liked,
-                ' Likes \xA0\xA0\xA0',
-                React.createElement('i', { className: 'fa fa-thumbs-down' }),
-                ' ',
-                disliked,
-                '  Dislikes \xA0\xA0\xA0',
-                React.createElement('i', { className: 'fa fa-comments' }),
-                ' ',
-                this.state.blog.comments ? this.state.blog.comments.length : 0,
-                ' Comments'
-              )
+              'button',
+              { className: reaction && reaction.reaction == 1 ? "btn btn-white btn-xs like-on" : "btn btn-white btn-xs",
+                onClick: () => this.addReaction(1, blog._id) },
+              React.createElement('i', { className: 'fa fa-thumbs-up' }),
+              ' Like'
             ),
             React.createElement(
-              If,
-              { test: !isGuest },
-              React.createElement(
-                'div',
-                { className: 'btn-group' },
-                React.createElement(
-                  'button',
-                  { className: reaction && reaction.reaction == 1 ? "btn btn-white btn-xs like-on" : "btn btn-white btn-xs",
-                    onClick: () => this.addReaction(1, blog._id) },
-                  React.createElement('i', { className: 'fa fa-thumbs-up' }),
-                  ' Like'
-                ),
-                React.createElement(
-                  'button',
-                  { className: reaction && reaction.reaction == 2 ? "btn btn-white btn-xs dislike-on" : "btn btn-white btn-xs",
-                    onClick: () => this.addReaction(2, blog._id) },
-                  React.createElement('i', { className: 'fa fa-thumbs-down' }),
-                  ' Dislike'
-                ),
-                React.createElement(
-                  'a',
-                  { href: Url.view + '/' + blog._id + '#comment-section', className: 'btn btn-white btn-xs' },
-                  React.createElement('i', { className: 'fa fa-comments' }),
-                  ' Comment'
-                ),
-                React.createElement(
-                  'button',
-                  { className: 'btn btn-white btn-xs', onClick: this.share },
-                  React.createElement(
-                    'i',
-                    { className: 'fa fa-share' },
-                    ' Share '
-                  )
-                )
-              )
+              'button',
+              { className: reaction && reaction.reaction == 2 ? "btn btn-white btn-xs dislike-on" : "btn btn-white btn-xs",
+                onClick: () => this.addReaction(2, blog._id) },
+              React.createElement('i', { className: 'fa fa-thumbs-down' }),
+              ' Dislike'
             ),
             React.createElement(
-              If,
-              { test: isGuest },
+              'a',
+              { href: Url.view + '/' + blog._id + '#comment-section', className: 'btn btn-white btn-xs' },
+              React.createElement('i', { className: 'fa fa-comments' }),
+              ' Comment'
+            ),
+            React.createElement(
+              'button',
+              { className: 'btn btn-white btn-xs', onClick: this.share },
               React.createElement(
-                'button',
-                { className: 'btn btn-white btn-xs', onClick: this.share },
-                React.createElement(
-                  'i',
-                  { className: 'fa fa-share' },
-                  ' Share '
-                )
+                'i',
+                { className: 'fa fa-share' },
+                ' Share '
               )
+            )
+          )
+        ),
+        React.createElement(
+          If,
+          { test: isGuest },
+          React.createElement(
+            'button',
+            { className: 'btn btn-white btn-xs', onClick: this.share },
+            React.createElement(
+              'i',
+              { className: 'fa fa-share' },
+              ' Share '
             )
           )
         )
