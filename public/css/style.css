@@ -3405,6 +3405,13 @@ video {
   outline: 0 none;
   position: relative;
 }
+.modal {
+ overflow-y: auto;
+}
+
+.modal-open {
+ overflow: auto;
+}
 .modal-dialog {
   z-index: 2200;
 }

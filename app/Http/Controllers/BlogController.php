@@ -11,36 +11,53 @@ use DB;
 use Carbon\Carbon;
 use Response;
 use File;
+use DateTime;
+use MongoDate;
 
 class BlogController extends Controller
 {
 
-	public function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
     }
 
     public function home(){
+        $blogs = Blogs::all();
         $category = Input::get('category');
-    	return view('blogs.posts')->with([
-           'category' => $category 
+        $tags = Input::get('tags');
+
+        return view('blogs.posts')->with([
+           'category' => $category,
+           'tags' => $tags,
+           'blogs' => $blogs
         ]);
     }
 
     public function profile($id){
         $user = User::find($id);
-    	return view('blogs.profile')->with([
+        $blogs = count(Blogs::where('user', '=', $id)->get());
+        $tags = Input::get('tags');
+        if($user == null){
+            return view('errors.404');
+        }else{
+            return view('blogs.profile')->with([
             '_id' => $user->_id,
             'firstName' => $user->firstName,
             'lastName' => $user->lastName,
             'name' => $user->name,
             'email' => $user->email,
-            'image' => $user->image
+            'image' => $user->image,
+            'facebook_id' => $user->facebook_id,
+            'blogs' => $blogs,
+            'tags' => $tags,
+            'user' => $user
         ]);
+        }
     }
 
     public function categories(){
-    	return view('blogs.categories');
+        return view('blogs.categories');
     }
 
     public function blog(){
@@ -70,6 +87,7 @@ class BlogController extends Controller
     public function listBlogs() {
         $max = (int) Input::get('max');
         $category = Input::get('category');
+        $tags = Input::get('tags');
         $result = [];
         if($category) {
             $result = Blogs::orderBy('updated_at', 'desc')->raw(
@@ -79,9 +97,17 @@ class BlogController extends Controller
                     ], 
                     ['sort' => ['updated_at' => -1]]);
             })->take($max);
+        }else if($tags){
+            $result = Blogs::orderBy('updated_at', 'desc')->raw(
+            function($collection) use($tags) {
+                return $collection->find([
+                    'tags' => $tags
+                    ], 
+                    ['sort' => ['updated_at' => -1]]);
+            })->take($max);
         }
         else {
-            $result = Blogs::orderBy('updated_at', 'desc')->take($max)->get();
+            $result = Blogs::orderBy('created_at', 'desc')->take($max)->get();
         }
         
         $blogs = $result->toArray();
@@ -103,7 +129,7 @@ class BlogController extends Controller
                 return $collection->find([
                     'user' => $user
                     ], 
-                    ['sort' => ['updated_at' => -1]]);
+                    ['sort' => ['created_at' => -1]]);
             })->take($max);
 
         $blogs = $res->toArray();
@@ -151,7 +177,10 @@ class BlogController extends Controller
         $blog->reactions = $reactions;
         $blog->save();
 
-        return $blog; 
+        $arr = $blog->toArray();
+        $arr['user'] = User::find($blog->toArray()['user']);
+
+        return $arr; 
     }
 
     public function comment() {
@@ -164,7 +193,7 @@ class BlogController extends Controller
         array_push($comments, [
             'content' => $comment,
             'user' => auth()->user()->_id,
-            'dateAdded' => Carbon::now()
+            'dateAdded' => Carbon::now('Asia/Manila')
         ]);
 
         $blog->comments = $comments;
@@ -259,10 +288,16 @@ class BlogController extends Controller
 
         $blog->title = Input::get('title');
         $blog->category = Input::get('category');
-        $blog->tags = [];
+        // $blog->tags = [];
         $blog->tags = $request->tags;
+        if($blog->tags == $request->tags){
+            $blog->tags = $request->tags;
+        }else{
+            $blog->tags = Input::get('tags');
+        }
         $blog->description = Input::get('description');
         $blog->content = Input::get('content');
+        $blog->updated_at = Carbon::now('Asia/Manila');
         $blog->save();
 
         return $blog;
@@ -287,7 +322,6 @@ class BlogController extends Controller
                 'errors' => $errors
             ], 400);
         }
-
         $blog = new Blogs();
 
         $blog->title = Input::get('title');
@@ -297,6 +331,9 @@ class BlogController extends Controller
         $blog->content = Input::get('content');
         $blog->comments = [];
         $blog->user = auth()->user()->_id;
+        $blog->created_at = Carbon::now('Asia/Manila')->addHours(8);
+        $blog->updated_at = Carbon::now('Asia/Manila')->addHours(8);
+
         $blog->save();
 
         if(!Input::get('file')) {
@@ -323,12 +360,18 @@ class BlogController extends Controller
 
     public function view($id) {
         $blog = Blogs::find($id);
+        $tags = Input::get('tags');
+        if($blog == null){
+            return view('errors.404');
+        }else{
+
         $views = $blog->views ? $blog->views : 0;
         $views++;
         $blog->views = $views;
         $blog->save();
+        }
 
-        return view('blogs.blog', compact('blog'));
+        return view('blogs.blog', compact('blog', 'tags'));
     }
 
     public function getBlog() {
@@ -345,8 +388,12 @@ class BlogController extends Controller
 
     public function search() {
         $keyword = Input::get('search');
-        
-        return view('blogs.search', compact('keyword'));
+
+        $filteredBlogs = count(Blogs::where('title', 'regex', "/". $keyword ."/i" )->get());
+        $filteredUsers = count(User::where('name', 'regex', "/". $keyword ."/i" )->get());
+        $filteredTags = count(Blogs::where('tags', 'regex', "/". $keyword ."/i" )->get());
+
+        return view('blogs.search', compact('keyword', 'filteredBlogs', 'filteredUsers', 'filteredTags'));
     }
 
     public function filterBlogs() {

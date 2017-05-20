@@ -17,6 +17,8 @@ var Blog = React.createClass({
 			url: Url.getBlog,
 			data: {
 				blog: blogId,
+				tags: tags ? tags : null,
+				moment: moment,
 				'_token': token
 			},
 			success: function (r) {
@@ -54,16 +56,21 @@ var Blog = React.createClass({
 						{ className: 'text-center article-title' },
 						React.createElement(
 							'h1',
-							{ className: 'title-container' },
+							{ className: 'title-container', style: { padding: '8px' } },
 							blog.title
 						),
 						React.createElement(
 							'span',
 							{ className: 'text-muted' },
-							'By ',
+							'By  ',
 							React.createElement(
 								'a',
-								{ href: '#', className: 'btn-link' },
+								{ href: Url.profile + '/' + this.state.author._id, className: 'btn-link' },
+								React.createElement('img', { alt: 'image', className: 'img-circle', src: '../img/avatar/' + this.state.author.image })
+							),
+							React.createElement(
+								'a',
+								{ href: Url.profile + '/' + this.state.author._id, className: 'btn-link' },
 								React.createElement(
 									If,
 									{ test: blog.user },
@@ -78,7 +85,7 @@ var Blog = React.createClass({
 							),
 							React.createElement('i', { className: 'fa fa-clock-o' }),
 							' ',
-							blog.updated_at
+							moment(blog.created_at).fromNow()
 						)
 					),
 					React.createElement('div', { id: 'content', ref: 'content' }),
@@ -99,8 +106,8 @@ var Blog = React.createClass({
 								),
 								(this.state.tags ? this.state.tags : []).map(tag => {
 									return React.createElement(
-										'button',
-										{ className: 'btn btn-white btn-xs btn-tag', type: 'button' },
+										'a',
+										{ key: tag, href: Url.posts + '?tags=' + tag, className: 'btn btn-white btn-xs btn-tag', type: 'button' },
 										React.createElement('i', { className: 'fa fa-tag' }),
 										' ',
 										tag
@@ -127,6 +134,24 @@ var Reactions = React.createClass({
 		};
 	},
 	componentDidMount() {
+		$(this.refs.description).html(this.state.blog.description);
+
+		window.fbAsyncInit = function () {
+			FB.init({
+				appId: '1352297461495712',
+				xfbml: true,
+				version: 'v2.0'
+			});
+		};
+
+		(function (d, s, id) {
+			var js,
+			    fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) return;
+			js = d.createElement(s);js.id = id;
+			js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+			fjs.parentNode.insertBefore(js, fjs);
+		})(document, 'script', 'facebook-jssdk');
 		this.getBlog();
 	},
 	getBlog() {
@@ -135,6 +160,7 @@ var Reactions = React.createClass({
 			url: Url.getBlog,
 			data: {
 				blog: blogId,
+				moment: moment,
 				'_token': token
 			},
 			success: function (r) {
@@ -173,6 +199,7 @@ var Reactions = React.createClass({
 					url: Url.comment,
 					data: {
 						comment: content,
+						moment: moment,
 						blog: this.state.blog._id,
 						'_token': token
 					},
@@ -182,6 +209,22 @@ var Reactions = React.createClass({
 				});
 			}
 		}
+	},
+	share() {
+		var blog = this.state.blog;
+
+		FB.ui({
+			method: 'share',
+			display: 'popup',
+			href: 'http://d09343f8.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
+			title: blog.title,
+			picture: 'http://d09343f8.ngrok.io/blogapp/public/img/company/' + blog.image,
+			caption: blog.description,
+			description: blog.description
+		}, function (response) {});
+	},
+	goTo() {
+		$(".comment-textbox").focus();
 	},
 	render() {
 		var blog = this.state.blog;
@@ -257,15 +300,18 @@ var Reactions = React.createClass({
 							),
 							React.createElement(
 								'a',
-								{ href: '#comment-section', className: 'btn btn-white btn-xs' },
+								{ href: '#comment-textbox', className: 'btn btn-white btn-xs', onClick: this.goTo },
 								React.createElement('i', { className: 'fa fa-comments' }),
 								' Comment'
 							),
 							React.createElement(
 								'button',
-								{ className: 'btn btn-white btn-xs' },
-								React.createElement('i', { className: 'fa fa-share' }),
-								' Share'
+								{ className: 'btn btn-white btn-xs', onClick: this.share },
+								React.createElement(
+									'i',
+									{ className: 'fa fa-share' },
+									' Share '
+								)
 							)
 						)
 					),
@@ -277,9 +323,12 @@ var Reactions = React.createClass({
 							{ className: 'btn-group' },
 							React.createElement(
 								'button',
-								{ className: 'btn btn-white btn-xs' },
-								React.createElement('i', { className: 'fa fa-share' }),
-								' Share'
+								{ className: 'btn btn-white btn-xs', onClick: this.share },
+								React.createElement(
+									'i',
+									{ className: 'fa fa-share' },
+									' Share '
+								)
 							)
 						)
 					)
@@ -314,7 +363,7 @@ var Reactions = React.createClass({
 									React.createElement(
 										'small',
 										{ className: 'text-muted' },
-										comment.dateAdded.date
+										moment(comment.dateAdded.date, "YYYYMMDD h:mm:ss").fromNow()
 									)
 								)
 							),

@@ -88,7 +88,11 @@ var FilteredBlogs = React.createClass({
 										React.createElement(
 											'div',
 											{ className: 'col-md-2 no-padding' },
-											React.createElement('img', { alt: 'image', className: 'img-responsive user-image', src: 'img/company/' + blog.image })
+											React.createElement(
+												'a',
+												{ href: Url.view + '/' + blog._id, className: 'overflow' },
+												React.createElement('img', { alt: 'image', className: 'img-responsive user-image', src: 'img/company/' + blog.image })
+											)
 										),
 										React.createElement(
 											'div',
@@ -98,7 +102,7 @@ var FilteredBlogs = React.createClass({
 												null,
 												React.createElement(
 													'a',
-													{ href: '#', className: 'overflow' },
+													{ href: Url.view + '/' + blog._id, className: 'overflow' },
 													blog.title
 												)
 											),
@@ -267,17 +271,21 @@ var FilteredTags = React.createClass({
 										React.createElement(
 											'div',
 											{ className: 'col-md-2 no-padding' },
-											React.createElement('img', { alt: 'image', className: 'img-responsive user-image', src: 'img/company/' + blog.image })
+											React.createElement(
+												'a',
+												{ href: Url.view + '/' + blog._id, className: 'overflow' },
+												React.createElement('img', { alt: 'image', className: 'img-responsive user-image', src: 'img/company/' + blog.image })
+											)
 										),
 										React.createElement(
 											'div',
 											{ className: 'col-md-10' },
 											React.createElement(
 												'h3',
-												{ className: 'blog-title' },
+												null,
 												React.createElement(
 													'a',
-													{ href: '#', className: 'overflow' },
+													{ href: Url.view + '/' + blog._id, className: 'overflow' },
 													blog.title
 												)
 											),
@@ -443,7 +451,11 @@ var FilteredUsers = React.createClass({
 										React.createElement(
 											'div',
 											{ className: 'col-md-2 no-padding' },
-											React.createElement('img', { alt: 'image', className: 'img-responsive user-image', src: 'img/avatar/' + user.image })
+											React.createElement(
+												'a',
+												{ href: Url.profile + '/' + user._id },
+												React.createElement('img', { alt: 'image', className: 'img-responsive user-image', src: 'img/avatar/' + user.image })
+											)
 										),
 										React.createElement(
 											'div',
@@ -453,7 +465,7 @@ var FilteredUsers = React.createClass({
 												null,
 												React.createElement(
 													'a',
-													{ href: '#' },
+													{ href: Url.profile + '/' + user._id },
 													user.name
 												)
 											),

@@ -1,6 +1,7 @@
 .ibox-content {
-  border-color: #18a689 !important;
+  border-color: white !important;
   border-width: 1px 0 !important;
+  min-height: 150px;
 }
 
 .like-on {
@@ -49,3 +50,8 @@
 .slick-next:before {
     color: black;
 }
+
+.m-b-0 {
+  margin-bottom: 0px;
+}
+

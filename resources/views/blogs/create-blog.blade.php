@@ -7,7 +7,9 @@
     <link href="css/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet" />
 
     <link href="css/custom/create-blog.css" rel="stylesheet">
+    <link href="css/custom/badge.css" rel="stylesheet">
 @stop
+
 <title>BlogMoTo | Create Blog</title>
 
 	<div class="wrapper wrapper-content">
@@ -85,10 +87,12 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <button class="btn btn-white btn-sm m-t-n-xs" type="button">
-                                        <i class="fa fa-times"></i>
-                                        Cancel
-                                    </button>
+                                    <a href="{{ url('/posts') }}" class="clr">
+                                        <button class="btn btn-white btn-sm m-t-n-xs" type="button">
+                                            <i class="fa fa-times"></i>
+                                            Cancel
+                                        </button>
+                                    </a>
                                         <button class="btn btn-sm btn-primary m-t-n-xs" 
                                             type="submit" id="btn-create">
                                             <strong>

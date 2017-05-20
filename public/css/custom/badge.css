@@ -1,0 +1,122 @@
+.badge1 {
+   position:relative;
+}
+.badge1[data-badge]:after {
+   content:attr(data-badge);
+   position:absolute;
+   top:-10px;
+   right:-16px;
+   font-size:.7em;
+   background:#00c0ff;
+   color:white;
+   width:18px;
+   height:17px;
+   text-align:center;
+   line-height:18px;
+   border-radius:50%;
+   box-shadow:0 0 1px #333;
+}
+
+.badge2 {
+   position:relative;
+}
+.badge2[data-badge2]:after {
+    content: attr(data-badge2);
+    position: absolute;
+    top: -3px;
+    right: -29px;
+    font-size: 1.2em;
+    background: #00c0ff;
+    color: white;
+    width: 25px;
+    height: 23px;
+    text-align: center;
+    /* line-height: 18px; */
+    border-radius: 50%;
+    box-shadow: 0 0 1px #333;
+    padding-top: 2px;
+}
+
+.errory {
+    font-size: 80px !important;
+    font-weight: 800;
+    letter-spacing: -3px;
+    color: #18a689;
+    position: absolute;
+    width: 100px;
+    height: 50px;
+    top: 25%;
+    left: 50%;
+    margin-left: -50px; /* margin is -0.5 * dimension */
+    margin-top: -25px; 
+    display: inline-block;
+
+
+}
+
+.disp {
+  white-space: nowrap;
+  margin-left: -250px;
+  margin-top: 104px;
+}
+
+.disp2 {
+  white-space: nowrap;
+  margin-left: -327px;
+  margin-top: 128px;
+}
+
+.btn-des {
+    color: #1ab394;
+    background-color: transparent;
+    transition: all .5s;
+    border-color: #1ab394;
+    padding: 15px;
+    font-size: 21px;
+}
+.btn-des:hover {
+  background-color: #1ab394;
+  color: white;
+}
+
+
+ .ul-style {
+    border: 1px solid #e7e7e7;
+    background-color: #f3f3f3;
+    list-style: none;
+    text-align: center;
+    word-spacing: 15px;
+}
+    
+.li-style {
+    display: inline-block;
+}
+.my-font {
+    font-size: 16px;
+    font-weight: 600;
+    color: #676a6c;
+    display: block;
+    margin: 2px 0 5px 0;
+}
+
+.my-font:hover {
+  color:#18a689;
+}
+
+.le-font {
+    white-space: nowrap;
+}
+
+.img-circle {
+    border-radius: 50%;
+    max-width: 36px;
+    max-height: 36px;
+}
+
+.ds {
+  display: block;
+}
+
+.clr {
+  color: black;
+}

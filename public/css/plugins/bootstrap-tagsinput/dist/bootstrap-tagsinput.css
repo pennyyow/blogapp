@@ -10,6 +10,7 @@
   max-width: 100%;
   line-height: 22px;
   cursor: text;
+  overflow: auto;
 }
 .bootstrap-tagsinput input {
   border: none;

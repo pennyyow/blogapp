@@ -4,7 +4,7 @@ var Blogs = React.createClass({
   getInitialState() {
     return {
       blogs: [],
-      max: 2,
+      max: 6,
       nothingToShow: false
     };
   },
@@ -18,10 +18,12 @@ var Blogs = React.createClass({
       data: {
         max: max,
         user: userProfile,
+        moment: moment,
+        tags: tags ? tags : null,
         '_token': token
       },
       success: function (r) {
-        console.log('>>>>>>>>>>>>>.BLOGS: ' + JSON.stringify(r));
+        console.log('>>>>>>>>>>>>>.BLOGS: ' + moment().format('MMMM Do YYYY, h:mm:s a'));
         var nothingToShow = this.state.nothingToShow;
         if (this.state.max > r.total) nothingToShow = true;
 
@@ -85,6 +87,30 @@ var Blog = React.createClass({
   },
   componentDidMount() {
     $(this.refs.description).html(this.state.blog.description);
+
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: '1352297461495712',
+        xfbml: true,
+        version: 'v2.0'
+      });
+    };
+
+    (function (d, s, id) {
+      var js,
+          fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, 'script', 'facebook-jssdk');
+
+    var $this = this;
+    $(this.refs.imgBlog).hover(function () {
+      $($this.refs.imgLink).addClass('hover');
+    }, function () {
+      $($this.refs.imgLink).removeClass('hover');
+    });
   },
   addReaction(reaction, blog) {
     $.ajax({
@@ -131,6 +157,19 @@ var Blog = React.createClass({
       }
     });
   },
+  share() {
+    var blog = this.state.blog;
+
+    FB.ui({
+      method: 'share',
+      display: 'popup',
+      href: 'http://d09343f8.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
+      title: blog.title,
+      picture: 'http://d09343f8.ngrok.io/blogapp/public/img/company/' + blog.image,
+      caption: blog.description,
+      description: blog.description
+    }, function (response) {});
+  },
   render() {
     var blog = this.state.blog;
     var reaction = null;
@@ -152,201 +191,182 @@ var Blog = React.createClass({
 
     return React.createElement(
       'div',
-      { key: blog._id },
+      { key: blog._id, className: 'col-md-4 m-b-15' },
+      React.createElement(
+        If,
+        { test: !isGuest },
+        React.createElement(
+          'div',
+          { className: 'ibox-title blog-content' },
+          React.createElement(
+            'div',
+            { className: 'ibox-tools' },
+            React.createElement(
+              'a',
+              { className: 'dropdown-toggle', 'data-toggle': 'dropdown', href: '#', 'aria-expanded': 'false' },
+              React.createElement('i', { className: 'fa fa-chevron-down' })
+            ),
+            React.createElement(
+              'ul',
+              { className: 'dropdown-menu dropdown-user' },
+              React.createElement(
+                'li',
+                null,
+                React.createElement(
+                  'a',
+                  { href: Url.editBlog + '/' + blog._id },
+                  React.createElement('i', { className: 'fa fa-edit' }),
+                  ' Edit'
+                )
+              ),
+              React.createElement(
+                'li',
+                null,
+                React.createElement(
+                  'a',
+                  { href: '#', onClick: this.deleteBlog },
+                  React.createElement('i', { className: 'fa fa-trash' }),
+                  ' Delete'
+                )
+              )
+            )
+          )
+        )
+      ),
       React.createElement(
         'div',
-        { className: 'ibox float-e-margins blog-posts' },
+        { className: 'ibox-content image-container no-padding border-left-right col-md-12' },
+        React.createElement(
+          'a',
+          { href: Url.view + '/' + blog._id },
+          React.createElement('img', { alt: 'image', ref: 'imgBlog', className: 'img-responsive img-blog', src: '../img/company/' + blog.image })
+        ),
+        React.createElement(
+          'a',
+          { href: Url.view + '/' + blog._id, ref: 'imgLink', className: 'btn-link title-container' },
+          React.createElement(
+            'h1',
+            { className: 'ellips' },
+            React.createElement(
+              'strong',
+              null,
+              blog.title
+            )
+          )
+        ),
+        React.createElement(
+          'p',
+          { className: 'text-center reactions' },
+          React.createElement('i', { className: 'fa fa-eye' }),
+          ' ',
+          blog.views ? blog.views : 0,
+          ' Views \xA0\xA0\xA0',
+          React.createElement('i', { className: 'fa fa-thumbs-up' }),
+          ' ',
+          liked,
+          ' Likes \xA0\xA0\xA0',
+          React.createElement('i', { className: 'fa fa-thumbs-down' }),
+          ' ',
+          disliked,
+          '  Dislikes \xA0\xA0\xA0',
+          React.createElement('i', { className: 'fa fa-comments' }),
+          ' ',
+          this.state.blog.comments ? this.state.blog.comments.length : 0,
+          ' Comments'
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'ibox-content col-md-12 p-t-b-10' },
+        React.createElement('div', { ref: 'description', className: 'form-group description-container ellips-two' }),
+        React.createElement(
+          'div',
+          { className: 'form-group' },
+          (blog.tags ? blog.tags : []).map(tag => {
+            return React.createElement(
+              'a',
+              { key: tag, href: Url.posts + '?tags=' + tag, className: 'btn btn-white btn-xs btn-tag', type: 'button' },
+              React.createElement('i', { className: 'fa fa-tag' }),
+              ' ',
+              tag
+            );
+          })
+        ),
+        React.createElement(
+          'div',
+          { className: 'form-group m-b-0' },
+          React.createElement(
+            'a',
+            { href: Url.profile + '/' + blog.user._id, className: 'btn-link' },
+            React.createElement(
+              'strong',
+              null,
+              '\xA0',
+              React.createElement('img', { alt: 'image', className: ' img-circle', src: '../img/avatar/' + blog.user.image }),
+              '\xA0 \xA0',
+              blog.user.name,
+              '\xA0'
+            )
+          ),
+          React.createElement(
+            'span',
+            { className: 'text-muted' },
+            React.createElement('i', { className: 'fa fa-clock-o' }),
+            ' ',
+            moment(blog.created_at, "YYYYMMDD h:mm:ss").fromNow()
+          )
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'ibox-footer col-md-12 text-center' },
         React.createElement(
           If,
           { test: !isGuest },
           React.createElement(
             'div',
-            { className: 'ibox-title blog-content' },
+            { className: 'btn-group' },
             React.createElement(
-              'div',
-              { className: 'ibox-tools' },
-              React.createElement(
-                'a',
-                { className: 'dropdown-toggle', 'data-toggle': 'dropdown', href: '#', 'aria-expanded': 'false' },
-                React.createElement('i', { className: 'fa fa-chevron-down' })
-              ),
-              React.createElement(
-                'ul',
-                { className: 'dropdown-menu dropdown-user' },
-                React.createElement(
-                  'li',
-                  null,
-                  React.createElement(
-                    'a',
-                    { href: Url.editBlog + '/' + blog._id },
-                    React.createElement('i', { className: 'fa fa-edit' }),
-                    ' Edit'
-                  )
-                ),
-                React.createElement(
-                  'li',
-                  null,
-                  React.createElement(
-                    'a',
-                    { href: '#', onClick: this.deleteBlog },
-                    React.createElement('i', { className: 'fa fa-trash' }),
-                    ' Delete'
-                  )
-                )
-              )
-            )
-          )
-        ),
-        React.createElement(
-          'div',
-          { className: 'ibox-content' },
-          React.createElement(
-            'div',
-            { className: 'row' },
-            React.createElement(
-              'div',
-              { className: 'col-md-4 no-padding' },
-              React.createElement('img', { alt: 'image', className: 'img-responsive', src: '../img/company/' + blog.image })
+              'button',
+              { className: reaction && reaction.reaction == 1 ? "btn btn-white btn-xs like-on" : "btn btn-white btn-xs",
+                onClick: () => this.addReaction(1, blog._id) },
+              React.createElement('i', { className: 'fa fa-thumbs-up' }),
+              ' Like'
             ),
             React.createElement(
-              'div',
-              { className: 'col-md-8' },
+              'button',
+              { className: reaction && reaction.reaction == 2 ? "btn btn-white btn-xs dislike-on" : "btn btn-white btn-xs",
+                onClick: () => this.addReaction(2, blog._id) },
+              React.createElement('i', { className: 'fa fa-thumbs-down' }),
+              ' Dislike'
+            ),
+            React.createElement(
+              'a',
+              { href: Url.view + '/' + blog._id + '#comment-section', className: 'btn btn-white btn-xs' },
+              React.createElement('i', { className: 'fa fa-comments' }),
+              ' Comment'
+            ),
+            React.createElement(
+              'button',
+              { className: 'btn btn-white btn-xs', onClick: this.share },
               React.createElement(
-                'a',
-                { href: Url.view + '/' + blog._id, className: 'btn-link title-container' },
-                React.createElement(
-                  'h1',
-                  null,
-                  React.createElement(
-                    'strong',
-                    null,
-                    blog.title
-                  )
-                )
-              ),
-              React.createElement('div', { ref: 'description', className: 'form-group description-container' }),
-              React.createElement(
-                'div',
-                { className: 'form-group' },
-                React.createElement(
-                  'a',
-                  { href: Url.view + '/' + blog._id, type: 'button',
-                    className: 'btn btn-primary btn-outline' },
-                  'Read more'
-                )
-              ),
-              React.createElement(
-                'div',
-                { className: 'form-group' },
-                'Posted by',
-                React.createElement(
-                  'a',
-                  { href: Url.profile + '/' + blog.user._id, className: 'btn-link' },
-                  React.createElement(
-                    'strong',
-                    null,
-                    '\xA0 ',
-                    blog.user.name,
-                    ' \xA0'
-                  )
-                ),
-                React.createElement(
-                  'span',
-                  { className: 'text-muted' },
-                  React.createElement('i', { className: 'fa fa-clock-o' }),
-                  ' ',
-                  blog.created_at
-                )
-              ),
-              React.createElement(
-                'div',
-                null,
-                (this.state.blog.tags ? this.state.blog.tags : []).map(tag => {
-                  return React.createElement(
-                    'a',
-                    { key: tag, href: '#', className: 'btn btn-white btn-xs btn-tag', type: 'button' },
-                    React.createElement('i', { className: 'fa fa-tag' }),
-                    ' ',
-                    tag
-                  );
-                })
+                'i',
+                { className: 'fa fa-share' },
+                ' Share '
               )
             )
           )
         ),
         React.createElement(
-          'div',
-          { className: 'ibox-footer' },
+          If,
+          { test: isGuest },
           React.createElement(
-            'div',
-            { className: 'pull-right' },
+            'button',
+            { className: 'btn btn-white btn-xs', onClick: this.share },
             React.createElement(
-              'p',
-              null,
-              React.createElement('i', { className: 'fa fa-eye' }),
-              ' ',
-              blog.views ? blog.views : 0,
-              ' Views \xA0\xA0\xA0',
-              React.createElement('i', { className: 'fa fa-thumbs-up' }),
-              ' ',
-              liked,
-              ' Likes \xA0\xA0\xA0',
-              React.createElement('i', { className: 'fa fa-thumbs-down' }),
-              ' ',
-              disliked,
-              '  Dislikes \xA0\xA0\xA0',
-              React.createElement('i', { className: 'fa fa-comments' }),
-              ' ',
-              this.state.blog.comments ? this.state.blog.comments.length : 0,
-              ' Comments'
-            )
-          ),
-          React.createElement(
-            If,
-            { test: !isGuest },
-            React.createElement(
-              'div',
-              { className: 'btn-group' },
-              React.createElement(
-                'button',
-                { className: reaction && reaction.reaction == 1 ? "btn btn-white btn-xs like-on" : "btn btn-white btn-xs",
-                  onClick: () => this.addReaction(1, blog._id) },
-                React.createElement('i', { className: 'fa fa-thumbs-up' }),
-                ' Like'
-              ),
-              React.createElement(
-                'button',
-                { className: reaction && reaction.reaction == 2 ? "btn btn-white btn-xs dislike-on" : "btn btn-white btn-xs",
-                  onClick: () => this.addReaction(2, blog._id) },
-                React.createElement('i', { className: 'fa fa-thumbs-down' }),
-                ' Dislike'
-              ),
-              React.createElement(
-                'a',
-                { href: Url.view + '/' + blog._id + '#comment-section', className: 'btn btn-white btn-xs' },
-                React.createElement('i', { className: 'fa fa-comments' }),
-                ' Comment'
-              ),
-              React.createElement(
-                'button',
-                { className: 'btn btn-white btn-xs' },
-                React.createElement('i', { className: 'fa fa-share' }),
-                ' Share'
-              )
-            )
-          ),
-          React.createElement(
-            If,
-            { test: isGuest },
-            React.createElement(
-              'div',
-              { className: 'btn-group' },
-              React.createElement(
-                'button',
-                { className: 'btn btn-white btn-xs' },
-                React.createElement('i', { className: 'fa fa-share' }),
-                ' Share'
-              )
+              'i',
+              { className: 'fa fa-share' },
+              ' Share '
             )
           )
         )
@@ -356,14 +376,6 @@ var Blog = React.createClass({
 });
 
 $(function () {
-  (function (d, s, id) {
-    var js,
-        fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s);js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1";
-    fjs.parentNode.insertBefore(js, fjs);
-  })(document, 'script', 'facebook-jssdk');
 
   var imageChanged = false;
   var $inputImage = $("#inputImage");
