@@ -401,9 +401,14 @@ class BlogController extends Controller
         $max = (int) Input::get('max');
 
         $result = Blogs::where('title', 'regex', "/". $keyword ."/i" )->take($max)->get();
+        $blogs = $result->toArray();
+        for ($i=0; $i < count($blogs) ; $i++) { 
+            $blogs[$i]['user'] = User::find($blogs[$i]['user']);
+        }
+
         return [
             'total' => $result->count(),
-            'result' => $result
+            'result' => $blogs
         ];
     }
 
@@ -423,9 +428,14 @@ class BlogController extends Controller
         $max = (int) Input::get('max');
 
         $result = Blogs::where('tags', 'regex', "/". $keyword ."/i" )->take($max)->get();
+        $blogs = $result->toArray();
+        for ($i=0; $i < count($blogs) ; $i++) { 
+            $blogs[$i]['user'] = User::find($blogs[$i]['user']);
+        }
+
         return [
             'total' => $result->count(),
-            'result' => $result
+            'result' => $blogs
         ];
     }
 }

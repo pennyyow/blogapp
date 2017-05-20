@@ -56,9 +56,26 @@ var FilteredBlogs = React.createClass({
 					'div',
 					null,
 					blogs.map(blog => {
+						var reaction = null;
+						var liked = 0;
+						var disliked = 0;
+
+						if (blog.reactions) {
+							if (!isGuest) {
+								reaction = $.grep(blog.reactions, function (reaction) {
+									return reaction._id == user.id;
+								})[0];
+							}
+
+							$.each(blog.reactions, function (i, reaction) {
+								if (reaction.reaction == 1) liked++;
+								if (reaction.reaction == 2) disliked++;
+							});
+						}
+
 						return React.createElement(
 							'div',
-							null,
+							{ key: blog._id },
 							React.createElement(
 								'div',
 								{ className: 'ibox float-e-margins' },
@@ -90,9 +107,43 @@ var FilteredBlogs = React.createClass({
 												)
 											),
 											React.createElement(
-												'h4',
-												{ className: 'overflow' },
-												blog.description
+												'div',
+												{ className: 'form-group' },
+												'Posted by',
+												React.createElement(
+													'a',
+													{ href: Url.profile + '/' + blog.user._id, className: 'btn-link' },
+													React.createElement(
+														'strong',
+														null,
+														'\xA0',
+														blog.user.name,
+														'\xA0'
+													)
+												),
+												React.createElement(
+													'span',
+													{ className: 'text-muted' },
+													React.createElement('i', { className: 'fa fa-clock-o' }),
+													' ',
+													blog.created_at
+												)
+											),
+											React.createElement(
+												'p',
+												{ className: 'status-container' },
+												React.createElement('i', { className: 'fa fa-eye' }),
+												' ',
+												blog.views ? blog.views : 0,
+												' Views \xA0\xA0\xA0',
+												React.createElement('i', { className: 'fa fa-thumbs-up' }),
+												' ',
+												liked,
+												' Likes \xA0\xA0\xA0',
+												React.createElement('i', { className: 'fa fa-thumbs-down' }),
+												' ',
+												disliked,
+												'  Dislikes'
 											)
 										)
 									)
@@ -207,7 +258,7 @@ var FilteredTags = React.createClass({
 					blogs.map(blog => {
 						return React.createElement(
 							'div',
-							null,
+							{ key: blog._id },
 							React.createElement(
 								'div',
 								{ className: 'ibox float-e-margins' },
@@ -239,9 +290,40 @@ var FilteredTags = React.createClass({
 												)
 											),
 											React.createElement(
-												'h4',
-												{ className: 'overflow' },
-												blog.description
+												'div',
+												{ className: 'form-group' },
+												'Posted by',
+												React.createElement(
+													'a',
+													{ href: Url.profile + '/' + blog.user._id, className: 'btn-link' },
+													React.createElement(
+														'strong',
+														null,
+														'\xA0',
+														blog.user.name,
+														'\xA0'
+													)
+												),
+												React.createElement(
+													'span',
+													{ className: 'text-muted' },
+													React.createElement('i', { className: 'fa fa-clock-o' }),
+													' ',
+													blog.created_at
+												)
+											),
+											React.createElement(
+												'div',
+												null,
+												(blog.tags ? blog.tags : []).map(tag => {
+													return React.createElement(
+														'a',
+														{ key: tag, href: '#', className: 'btn btn-white btn-xs btn-tag', type: 'button' },
+														React.createElement('i', { className: 'fa fa-tag' }),
+														' ',
+														tag
+													);
+												})
 											)
 										)
 									)
@@ -356,7 +438,7 @@ var FilteredUsers = React.createClass({
 					users.map(user => {
 						return React.createElement(
 							'div',
-							null,
+							{ key: user._id },
 							React.createElement(
 								'div',
 								{ className: 'ibox float-e-margins' },
