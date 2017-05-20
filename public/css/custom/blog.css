@@ -45,3 +45,7 @@
   min-height: 100px !important;
   overflow-y: auto;
 }
+
+.p-d-0 {
+    max-height: 0px !important;
+}

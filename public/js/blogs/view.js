@@ -62,7 +62,6 @@ var Blog = React.createClass({
 						React.createElement(
 							'span',
 							{ className: 'text-muted' },
-							'By  ',
 							React.createElement(
 								'a',
 								{ href: Url.profile + '/' + this.state.author._id, className: 'btn-link' },

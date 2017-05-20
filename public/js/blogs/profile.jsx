@@ -180,13 +180,14 @@ var Blog = React.createClass({
  
 		return(
      <div key={blog._id} className="col-md-4 m-b-15">
-          <If test={!isGuest}>
-            <div className="ibox-title blog-content">
-                <div className="ibox-tools">
+          <div className="ibox-content image-container no-padding border-left-right col-md-12">
+            <a href={ Url.view + '/' + blog._id}>
+            <If test={!isGuest}>
+              <div className="ibox-tools marg-r">
                     <a className="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
                         <i className="fa fa-chevron-down"></i>
                     </a>
-                    <ul className="dropdown-menu dropdown-user">
+                    <ul className="dropdown-menu dropdown-user pull-right">
                         <li>
                           <a href={ Url.editBlog + '/' + blog._id }>
                             <i className="fa fa-edit"></i> Edit
@@ -199,10 +200,7 @@ var Blog = React.createClass({
                         </li>
                     </ul>
                 </div>
-            </div>
-          </If>
-          <div className="ibox-content image-container no-padding border-left-right col-md-12">
-            <a href={ Url.view + '/' + blog._id}>
+              </If>
               <img alt="image" ref="imgBlog" className="img-responsive img-blog" src={ '../img/company/' + blog.image} />
             </a>
               <a href={ Url.view + '/' + blog._id} ref="imgLink" className="btn-link title-container">

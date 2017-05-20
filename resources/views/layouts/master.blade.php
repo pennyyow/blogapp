@@ -173,7 +173,7 @@
         <nav class="navbar navbar-fixed-top" role="navigation" style="margin-bottom: 0">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="logo hvr-grow" href="posts">
+                    <a class="logo hvr-grow" href="{{ url('/pub_posts') }}">
                         BlogMoTo
                     </a>
                     <form method="GET" action="{{ url('/pubSearch') }}" id="createForm" class="app-search">
@@ -219,7 +219,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic1" src="{{ asset('img/company/category8.jpeg') }}">
+                                            <img alt="image" class="img-responsive p-d-0" id="pic1" src="{{ asset('img/company/category8.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="{{ url('/posts?category=Adventure') }}" class="product-name">Adventure</a>
@@ -239,7 +239,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic2" src="{{ asset('img/company/category7.jpeg') }}">
+                                            <img alt="image" class="img-responsive p-d-0" id="pic2" src="{{ asset('img/company/category7.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="{{ url('/posts?category=Sports') }}" class="product-name">Sports</a>
@@ -259,7 +259,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic3" src="{{ asset('img/company/category1.jpeg') }}">
+                                            <img alt="image" class="img-responsive p-d-0" id="pic3" src="{{ asset('img/company/category1.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="{{ url('/posts?category=Entertainment') }}" class="product-name">Entertainment</a>
@@ -281,7 +281,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic4" src="{{ asset('img/company/category4.jpeg') }}">
+                                            <img alt="image" class="img-responsive p-d-0" id="pic4" src="{{ asset('img/company/category4.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="{{ url('/posts?category=Education') }}" class="product-name">Education</a>
@@ -301,7 +301,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic5" src="{{ asset('img/company/category6.jpeg') }}">
+                                            <img alt="image" class="img-responsive p-d-0" id="pic5" src="{{ asset('img/company/category6.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="{{ url('/posts?category=Technology') }}" class="product-name">Technology</a>
@@ -321,7 +321,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic6" src="{{ asset('img/company/category3.jpeg') }}">
+                                            <img alt="image" class="img-responsive p-d-0" id="pic6" src="{{ asset('img/company/category3.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="{{ url('/posts?category=Nature') }}" class="product-name">Nature</a>
@@ -343,7 +343,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic7" src="{{ asset('img/company/category2.jpeg') }}">
+                                            <img alt="image" class="img-responsive p-d-0" id="pic7" src="{{ asset('img/company/category2.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
                                             <a href="{{ url('/posts?category=Politics') }}" class="product-name">Politics</a>
@@ -363,7 +363,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic8" 
+                                            <img alt="image" class="img-responsive p-d-0" id="pic8" 
                                             src="{{ asset('img/company/category5.jpeg') }}">
                                         </div>
                                         <div class="product-desc">
@@ -384,7 +384,7 @@
                                 <div class="ibox">
                                     <div class="ibox-content product-box">
                                         <div class="product-imitation">
-                                            <img alt="image" class="img-responsive" id="pic9" 
+                                            <img alt="image" class="img-responsive p-d-0" id="pic9" 
                                             src="{{ asset('img/profile_big.jpg') }}">
                                         </div>
                                         <div class="product-desc">

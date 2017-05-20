@@ -48,7 +48,7 @@ var Blog = React.createClass({
 	                   {blog.title}
 	                </h1>
 	                <span className="text-muted">
-	                    By 	<a href={Url.profile + '/' + this.state.author._id} className="btn-link">
+	                     	<a href={Url.profile + '/' + this.state.author._id} className="btn-link">
 	                    		<img alt="image" className="img-circle" src={ '../img/avatar/' + this.state.author.image} />
 	                    	</a>
 	                    	<a href={Url.profile + '/' + this.state.author._id} className="btn-link">

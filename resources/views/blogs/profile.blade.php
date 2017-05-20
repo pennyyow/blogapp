@@ -9,6 +9,7 @@
     <link href="{{ asset('css/custom/index.css') }}" rel="stylesheet">
 @stop
 <title>BlogMoTo | Profile</title>
+
         @if(!auth()->guest())
             @if(auth()->user()->_id == $_id)
                 <div id="modal-form" class="modal fade" aria-hidden="true">
@@ -70,19 +71,15 @@
 <header>
   <div class="title">
   @if(!auth()->guest())
-    @if(count($facebook_id) == 1)
-    <div class="user-button" hidden="">
+    <div class="user-button">
         <button type="button" data-toggle="modal" href="#modal-form">
            <img src="{{ $image ? asset('img/avatar/' . $image) : asset('img/avatar/default-img.jpg') }}" class="img-circle img-profile circle-border m-b-md" alt="profile">
         </button>
     </div>
     @else
         <div class="user-button">
-            <button type="button" data-toggle="modal" href="#modal-form">
-                <img src="{{ $image ? asset('img/avatar/' . $image) : asset('img/avatar/default-img.jpg') }}" class="img-circle img-profile circle-border m-b-md" alt="profile">
-            </button>
+            <img src="{{ $image ? asset('img/avatar/' . $image) : asset('img/avatar/default-img.jpg') }}" class="img-circle img-profile circle-border m-b-md" alt="profile">
         </div>
-        @endif
     @endif
    
     <h1>{{ $name }}</h1>

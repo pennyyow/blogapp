@@ -193,52 +193,48 @@ var Blog = React.createClass({
       'div',
       { key: blog._id, className: 'col-md-4 m-b-15' },
       React.createElement(
-        If,
-        { test: !isGuest },
-        React.createElement(
-          'div',
-          { className: 'ibox-title blog-content' },
-          React.createElement(
-            'div',
-            { className: 'ibox-tools' },
-            React.createElement(
-              'a',
-              { className: 'dropdown-toggle', 'data-toggle': 'dropdown', href: '#', 'aria-expanded': 'false' },
-              React.createElement('i', { className: 'fa fa-chevron-down' })
-            ),
-            React.createElement(
-              'ul',
-              { className: 'dropdown-menu dropdown-user' },
-              React.createElement(
-                'li',
-                null,
-                React.createElement(
-                  'a',
-                  { href: Url.editBlog + '/' + blog._id },
-                  React.createElement('i', { className: 'fa fa-edit' }),
-                  ' Edit'
-                )
-              ),
-              React.createElement(
-                'li',
-                null,
-                React.createElement(
-                  'a',
-                  { href: '#', onClick: this.deleteBlog },
-                  React.createElement('i', { className: 'fa fa-trash' }),
-                  ' Delete'
-                )
-              )
-            )
-          )
-        )
-      ),
-      React.createElement(
         'div',
         { className: 'ibox-content image-container no-padding border-left-right col-md-12' },
         React.createElement(
           'a',
           { href: Url.view + '/' + blog._id },
+          React.createElement(
+            If,
+            { test: !isGuest },
+            React.createElement(
+              'div',
+              { className: 'ibox-tools marg-r' },
+              React.createElement(
+                'a',
+                { className: 'dropdown-toggle', 'data-toggle': 'dropdown', href: '#', 'aria-expanded': 'false' },
+                React.createElement('i', { className: 'fa fa-chevron-down' })
+              ),
+              React.createElement(
+                'ul',
+                { className: 'dropdown-menu dropdown-user pull-right' },
+                React.createElement(
+                  'li',
+                  null,
+                  React.createElement(
+                    'a',
+                    { href: Url.editBlog + '/' + blog._id },
+                    React.createElement('i', { className: 'fa fa-edit' }),
+                    ' Edit'
+                  )
+                ),
+                React.createElement(
+                  'li',
+                  null,
+                  React.createElement(
+                    'a',
+                    { href: '#', onClick: this.deleteBlog },
+                    React.createElement('i', { className: 'fa fa-trash' }),
+                    ' Delete'
+                  )
+                )
+              )
+            )
+          ),
           React.createElement('img', { alt: 'image', ref: 'imgBlog', className: 'img-responsive img-blog', src: '../img/company/' + blog.image })
         ),
         React.createElement(

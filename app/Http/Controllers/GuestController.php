@@ -98,6 +98,7 @@ class GuestController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'image' => $user->image,
+            'facebook_id' => $user->facebook_id,
             'blogs' => $blogs,
             'tags' => $tags,
             'user' => $user
