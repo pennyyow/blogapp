@@ -26,7 +26,7 @@
                                 <div class="col-sm-6 b-r">
                                     <div class="form-group title">
                                         <label class="control-label title-label">Title&nbsp;&nbsp;</label>
-                                        <input type="text" name="title" placeholder="Enter Title" class="form-control">
+                                        <input type="text" name="title" placeholder="Enter Title" class="form-control" maxlength="105">
                                     </div>
                                     <div class="form-group">
                                         <label>Category</label>

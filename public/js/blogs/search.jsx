@@ -2,7 +2,7 @@ var FilteredBlogs = React.createClass({
 	getInitialState() {
 		return {
 			blogs: [],
-			max: 2,
+			max: 5,
 			nothingToShow: false 
 		}
 	},
@@ -16,6 +16,7 @@ var FilteredBlogs = React.createClass({
 	      data: {
 	      	max: max,
 	    	keyword: keyword,
+	    	moment: moment,
 	        '_token': token
 	      },
 	      success: function(r) {
@@ -95,7 +96,7 @@ var FilteredBlogs = React.createClass({
 							                                  </strong>
 							                              </a> 
 							                              <span className="text-muted">
-							                                  <i className="fa fa-clock-o"></i> { blog.created_at }
+							                                  <i className="fa fa-clock-o"></i> {moment(blog.created_at).fromNow() }
 							                              </span>
 							                          </div>
 							                          <p className="status-container">
@@ -147,7 +148,7 @@ var FilteredTags = React.createClass({
 	getInitialState() {
 		return {
 			blogs: [],
-			max: 2,
+			max: 5,
 			nothingToShow: false 
 		}
 	},
@@ -223,14 +224,14 @@ var FilteredTags = React.createClass({
 							                                  </strong>
 							                              </a> 
 							                              <span className="text-muted">
-							                                  <i className="fa fa-clock-o"></i> { blog.created_at }
+							                                  <i className="fa fa-clock-o"></i> {moment(blog.created_at).fromNow() }
 							                              </span>
 							                          	</div>
 							                          	<div>
 							                          	{
 							                          		(blog.tags ? blog.tags : []).map( tag => {
 							                          			return(
-							                          				<a key={tag} href="#" className="btn btn-white btn-xs btn-tag" type="button">
+							                          				<a key={tag} href={ Url.posts + '?tags=' + tag } className="btn btn-white btn-xs btn-tag" type="button">
 							                                  	<i className="fa fa-tag"></i> {tag}
 							                                  </a>
 							                          			);
@@ -281,7 +282,7 @@ var FilteredUsers = React.createClass({
 	getInitialState() {
 		return {
 			users: [],
-			max: 2,
+			max: 5,
 			nothingToShow: false 
 		}
 	},

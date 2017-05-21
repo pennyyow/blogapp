@@ -16,6 +16,7 @@
 }
 
 .title-container {
+  font-size: 35px !important;
   max-width: 100%;
   overflow: hidden;
   word-wrap: break-word;
@@ -48,4 +49,23 @@
 
 .p-d-0 {
     max-height: 0px !important;
+}
+
+.b-panel {
+    background: #fff;
+    width: 80%;
+    margin: -95px 10px 4px 80px;
+    padding-top: 15px;
+    padding-bottom: 15;
+    box-shadow: 1px 1px 5px 0px #cacaca;
+    position: absolute;
+}
+
+.c-panel {
+    padding-top: 73px !important;
+    margin-top: -23px;
+}
+
+.blog-author {
+  font-size: 15px;
 }

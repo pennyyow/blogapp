@@ -21,9 +21,10 @@ var Blogs = React.createClass({
         '_token': token
       },
       success: function(r) {
-      console.log('>>>>>>>>>>>>>.BLOGS: ' + moment().format('MMMM Do YYYY, h:mm:s a'))
       	var nothingToShow = this.state.nothingToShow;
       	if(this.state.max > r.total) nothingToShow = true;
+
+        $(this.refs.spinner).addClass('hidden');
 
         this.setState({
         	blogs: r.blogs,
@@ -34,7 +35,7 @@ var Blogs = React.createClass({
 	},
 	showMore() {
 		var max = this.state.max;
-		max += 2;
+		max += 6;
 		this.setState({
 			max: max
 		});
@@ -51,7 +52,23 @@ var Blogs = React.createClass({
 					})
 				}
 
-				<div>
+        <div ref="noResult">
+          <div className="spiner-example" ref="spinner">
+              <div className="sk-spinner sk-spinner-cube-grid">
+                  <div className="sk-cube"></div>
+                  <div className="sk-cube"></div>
+                  <div className="sk-cube"></div>
+                  <div className="sk-cube"></div>
+                  <div className="sk-cube"></div>
+                  <div className="sk-cube"></div>
+                  <div className="sk-cube"></div>
+                  <div className="sk-cube"></div>
+                  <div className="sk-cube"></div>
+              </div>
+          </div>
+        </div>
+
+				<div className="col-md-12 m-b-25">
 					<If test={!this.state.nothingToShow}>
 						<button className="btn btn-primary btn-block" onClick={this.showMore}>
 							<i className="fa fa-arrow-down"></i> Show More Blogs

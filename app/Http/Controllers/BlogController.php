@@ -388,12 +388,12 @@ class BlogController extends Controller
 
     public function search() {
         $keyword = Input::get('search');
-
+        $tags = Input::get('tags');
         $filteredBlogs = count(Blogs::where('title', 'regex', "/". $keyword ."/i" )->get());
         $filteredUsers = count(User::where('name', 'regex', "/". $keyword ."/i" )->get());
         $filteredTags = count(Blogs::where('tags', 'regex', "/". $keyword ."/i" )->get());
 
-        return view('blogs.search', compact('keyword', 'filteredBlogs', 'filteredUsers', 'filteredTags'));
+        return view('blogs.search', compact('keyword', 'filteredBlogs', 'filteredUsers', 'filteredTags', 'tags'));
     }
 
     public function filterBlogs() {

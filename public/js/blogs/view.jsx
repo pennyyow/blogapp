@@ -40,24 +40,30 @@ var Blog = React.createClass({
 					<div className="ibox-content no-padding border-left-right">
 	            <img alt="image" className="img-responsive" 
 	            	src={'../img/company/' + blog.image} />
-	        </div>
-	        <div className="ibox-content">
-	            
-	            <div className="text-center article-title">
-	                <h1 className="title-container" style={{padding: '8px'}}>
-	                   {blog.title}
-	                </h1>
-	                <span className="text-muted">
+	            	<div className="panel panel-default">
+					  <div className="panel-body b-panel">
+					  	<span className="text-muted blog-author">
 	                     	<a href={Url.profile + '/' + this.state.author._id} className="btn-link">
-	                    		<img alt="image" className="img-circle" src={ '../img/avatar/' + this.state.author.image} />
+	                    		<img alt="image" className="img-circ" src={ '../img/avatar/' + this.state.author.image} />
 	                    	</a>
 	                    	<a href={Url.profile + '/' + this.state.author._id} className="btn-link">
-	                    	<If test={blog.user}>
-	                        <strong> {this.state.author.name} </strong>
-	                    	</If>
-	                    </a>
-	                    <i className="fa fa-clock-o"></i> {moment(blog.created_at).fromNow()}
-	                </span>
+		                    	<If test={blog.user}>
+		                        <strong> {this.state.author.name} </strong>
+		                    	</If>
+		                    </a> <i className="fa fa-clock-o"></i> {moment(blog.created_at).fromNow()}
+	                	</span>
+					  	<h1 className="title-container" style={{padding: '8px'}}>
+		                   {blog.title}
+		                </h1>
+		                 
+					  </div>
+					</div>
+	        </div>
+	        <div className="ibox-content c-panel">
+	            
+	            <div className="text-center article-title">
+	                
+	               
 	            </div>
 	            <div id="content" ref="content">
 	            </div>

@@ -113,10 +113,20 @@
     max-height: 36px;
 }
 
+.img-circ {
+    border-radius: 50%;
+    max-width: 50px;
+    max-height: 50px;
+}
+
 .ds {
   display: block;
 }
 
 .clr {
   color: black;
+}
+
+.spc {
+  font-size: 3vh;
 }

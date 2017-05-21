@@ -4,7 +4,7 @@ var FilteredBlogs = React.createClass({
 	getInitialState() {
 		return {
 			blogs: [],
-			max: 2,
+			max: 5,
 			nothingToShow: false
 		};
 	},
@@ -18,6 +18,7 @@ var FilteredBlogs = React.createClass({
 			data: {
 				max: max,
 				keyword: keyword,
+				moment: moment,
 				'_token': token
 			},
 			success: function (r) {
@@ -126,7 +127,7 @@ var FilteredBlogs = React.createClass({
 													{ className: 'text-muted' },
 													React.createElement('i', { className: 'fa fa-clock-o' }),
 													' ',
-													blog.created_at
+													moment(blog.created_at).fromNow()
 												)
 											),
 											React.createElement(
@@ -204,7 +205,7 @@ var FilteredTags = React.createClass({
 	getInitialState() {
 		return {
 			blogs: [],
-			max: 2,
+			max: 5,
 			nothingToShow: false
 		};
 	},
@@ -309,7 +310,7 @@ var FilteredTags = React.createClass({
 													{ className: 'text-muted' },
 													React.createElement('i', { className: 'fa fa-clock-o' }),
 													' ',
-													blog.created_at
+													moment(blog.created_at).fromNow()
 												)
 											),
 											React.createElement(
@@ -318,7 +319,7 @@ var FilteredTags = React.createClass({
 												(blog.tags ? blog.tags : []).map(tag => {
 													return React.createElement(
 														'a',
-														{ key: tag, href: '#', className: 'btn btn-white btn-xs btn-tag', type: 'button' },
+														{ key: tag, href: Url.posts + '?tags=' + tag, className: 'btn btn-white btn-xs btn-tag', type: 'button' },
 														React.createElement('i', { className: 'fa fa-tag' }),
 														' ',
 														tag
@@ -384,7 +385,7 @@ var FilteredUsers = React.createClass({
 	getInitialState() {
 		return {
 			users: [],
-			max: 2,
+			max: 5,
 			nothingToShow: false
 		};
 	},

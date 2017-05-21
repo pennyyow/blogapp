@@ -26,6 +26,7 @@ var Blogs = React.createClass({
         var nothingToShow = this.state.nothingToShow;
         if (this.state.max > r.total) nothingToShow = true;
 
+        $(this.refs.spinner).addClass('hidden');
         this.setState({
           blogs: r.blogs,
           nothingToShow: nothingToShow
@@ -35,7 +36,7 @@ var Blogs = React.createClass({
   },
   showMore() {
     var max = this.state.max;
-    max += 2;
+    max += 6;
     this.setState({
       max: max
     });
@@ -54,7 +55,28 @@ var Blogs = React.createClass({
       ),
       React.createElement(
         'div',
-        { className: 'col-md-8 col-md-offset-2' },
+        { ref: 'noResult' },
+        React.createElement(
+          'div',
+          { className: 'spiner-example', ref: 'spinner' },
+          React.createElement(
+            'div',
+            { className: 'sk-spinner sk-spinner-cube-grid' },
+            React.createElement('div', { className: 'sk-cube' }),
+            React.createElement('div', { className: 'sk-cube' }),
+            React.createElement('div', { className: 'sk-cube' }),
+            React.createElement('div', { className: 'sk-cube' }),
+            React.createElement('div', { className: 'sk-cube' }),
+            React.createElement('div', { className: 'sk-cube' }),
+            React.createElement('div', { className: 'sk-cube' }),
+            React.createElement('div', { className: 'sk-cube' }),
+            React.createElement('div', { className: 'sk-cube' })
+          )
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'col-md-8 col-md-offset-2 m-b-25' },
         React.createElement(
           If,
           { test: !this.state.nothingToShow },

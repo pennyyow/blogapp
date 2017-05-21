@@ -82,8 +82,8 @@
         </div>
     @endif
    
-    <h1>{{ $name }}</h1>
-    <h2>{{ $blogs }} Blogs | {{ $email }}</h2>
+    <h1 class="profile-name">{{ $name }}</h1>
+    <h2 class="profile-details">{{ $blogs }} Blogs | {{ $email }}</h2>
   </div>
 </header>
     <div class="wrapper wrapper-content">

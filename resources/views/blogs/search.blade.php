@@ -16,19 +16,19 @@
                     <li class="active tab" >
                         <a href="#search-user" id="tab-user" data-toggle="tab" aria-expanded="false">
                             <span class="visible-xs badge1" data-badge="{{ $filteredUsers }}"><i class="fa fa-home"></i></span>
-                            <span class="hidden-xs badge1" data-badge="{{ $filteredUsers }}">Users</span>
+                            <span class="label label-info">{{ $filteredUsers }}</span>  <span class="hidden-xs badge1">Users</span>
                         </a>
                     </li>
                     <li class="tab" >
                         <a href="#search-blog" id="tab-blog" data-toggle="tab" aria-expanded="false">
                             <span class="visible-xs badge1" data-badge="{{ $filteredBlogs }}"><i class="fa fa-user"></i></span>
-                            <span class="hidden-xs badge1" data-badge="{{ $filteredBlogs }}">Blogs</span>
+                            <span class="label label-info">{{ $filteredBlogs }}</span>  <span class="hidden-xs badge1">Blogs</span>
                         </a>
                     </li>
                     <li class="tab" >
                         <a href="#search-tag" id="tab-tag" data-toggle="tab" aria-expanded="true">
                             <span class="visible-xs badge1" data-badge="{{ $filteredTags }}"><i class="fa fa-envelope-o"></i></span>
-                            <span class="hidden-xs badge1" data-badge="{{ $filteredTags }}">Tags</span>
+                            <span class="label label-info">{{ $filteredTags }}</span>  <span class="hidden-xs badge1">Tags</span>
                         </a>
                     </li>
                 </ul>
@@ -52,11 +52,14 @@
             filterUsers: '{{ !auth()->guest() ? url('/filterUsers') : url('/pub_filterUsers')  }}',
             filterTags: '{{ !auth()->guest()  ? url('/filterTags') : url('/pub_filterTags') }}',
             view: '{{ !auth()->guest() ? url('/view-blog') : url('/pub-view-blog')  }}',
-            profile: '{{ !auth()->guest() ? url('/profile') : url('/pub_profile')  }}'
+            profile: '{{ !auth()->guest() ? url('/profile') : url('/pub_profile')  }}',
+            posts: '{{ !auth()->guest() ? url('/posts') : url('/pub_posts') }}'
         };
 
+        var isGuest = '{{ (!auth()->guest() ? url('/listBlogs') : url('/pub_listBlogs')) }}' == '{{url('/listBlogs')}}' ? false : true;
         var token = '{{ csrf_token() }}';
         var keyword = '{{ $keyword }}';
+        var tags = '{{ $tags }}'
     </script>
     <script src="{{ asset('css/import/waves.js') }}"></script>
     <script src="{{ asset('js/blogs/search.js') }}"></script>

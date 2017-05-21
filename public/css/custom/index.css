@@ -52,8 +52,12 @@ h1 {
   margin-bottom: 15px;
 }
 
+.m-b-25 {
+  margin-bottom: 25px !important;
+}
+
 .latest {
-    font-size: 30px;
+    font-size: 25px;
     font-weight: 600;
     letter-spacing: -1px;
     color: #18a689;

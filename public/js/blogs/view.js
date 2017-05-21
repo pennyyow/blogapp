@@ -46,47 +46,53 @@ var Blog = React.createClass({
 					'div',
 					{ className: 'ibox-content no-padding border-left-right' },
 					React.createElement('img', { alt: 'image', className: 'img-responsive',
-						src: '../img/company/' + blog.image })
+						src: '../img/company/' + blog.image }),
+					React.createElement(
+						'div',
+						{ className: 'panel panel-default' },
+						React.createElement(
+							'div',
+							{ className: 'panel-body b-panel' },
+							React.createElement(
+								'span',
+								{ className: 'text-muted blog-author' },
+								React.createElement(
+									'a',
+									{ href: Url.profile + '/' + this.state.author._id, className: 'btn-link' },
+									React.createElement('img', { alt: 'image', className: 'img-circ', src: '../img/avatar/' + this.state.author.image })
+								),
+								React.createElement(
+									'a',
+									{ href: Url.profile + '/' + this.state.author._id, className: 'btn-link' },
+									React.createElement(
+										If,
+										{ test: blog.user },
+										React.createElement(
+											'strong',
+											null,
+											' ',
+											this.state.author.name,
+											' '
+										)
+									)
+								),
+								' ',
+								React.createElement('i', { className: 'fa fa-clock-o' }),
+								' ',
+								moment(blog.created_at).fromNow()
+							),
+							React.createElement(
+								'h1',
+								{ className: 'title-container', style: { padding: '8px' } },
+								blog.title
+							)
+						)
+					)
 				),
 				React.createElement(
 					'div',
-					{ className: 'ibox-content' },
-					React.createElement(
-						'div',
-						{ className: 'text-center article-title' },
-						React.createElement(
-							'h1',
-							{ className: 'title-container', style: { padding: '8px' } },
-							blog.title
-						),
-						React.createElement(
-							'span',
-							{ className: 'text-muted' },
-							React.createElement(
-								'a',
-								{ href: Url.profile + '/' + this.state.author._id, className: 'btn-link' },
-								React.createElement('img', { alt: 'image', className: 'img-circle', src: '../img/avatar/' + this.state.author.image })
-							),
-							React.createElement(
-								'a',
-								{ href: Url.profile + '/' + this.state.author._id, className: 'btn-link' },
-								React.createElement(
-									If,
-									{ test: blog.user },
-									React.createElement(
-										'strong',
-										null,
-										' ',
-										this.state.author.name,
-										' '
-									)
-								)
-							),
-							React.createElement('i', { className: 'fa fa-clock-o' }),
-							' ',
-							moment(blog.created_at).fromNow()
-						)
-					),
+					{ className: 'ibox-content c-panel' },
+					React.createElement('div', { className: 'text-center article-title' }),
 					React.createElement('div', { id: 'content', ref: 'content' }),
 					React.createElement('hr', null),
 					React.createElement(
