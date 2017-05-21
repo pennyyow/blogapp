@@ -346,47 +346,7 @@ var Reactions = React.createClass({
 					'div',
 					{ className: 'col-lg-12' },
 					(this.state.comments ? this.state.comments : []).map(comment => {
-						return React.createElement(
-							'div',
-							{ className: 'social-feed-box', key: comment.dateAdded.date },
-							React.createElement(
-								'div',
-								{ className: 'social-avatar' },
-								React.createElement(
-									'a',
-									{ href: '', className: 'pull-left' },
-									React.createElement('img', { alt: 'image', src: '../img/avatar/' + comment.user.image })
-								),
-								React.createElement(
-									'div',
-									{ className: 'media-body' },
-									React.createElement(
-										'div',
-										{ className: 'col-md-10' },
-										React.createElement(
-											'a',
-											{ href: Url.profile + '/' + comment.user._id },
-											comment.user.name
-										),
-										React.createElement(
-											'small',
-											{ className: 'text-muted' },
-											moment(comment.dateAdded.date, "YYYYMMDD h:mm:ss").fromNow()
-										)
-									),
-									React.createElement(
-										'div',
-										{ className: 'col-md-2' },
-										React.createElement(UpdateComment, { comment: comment, blog: blog })
-									)
-								)
-							),
-							React.createElement(
-								'div',
-								{ className: 'social-body' },
-								React.createElement(CommentContent, { content: comment.content })
-							)
-						);
+						return React.createElement(CommentBody, { comment: comment, blog: blog, getBlog: () => this.getBlog() });
 					}),
 					React.createElement(
 						If,
@@ -410,6 +370,122 @@ var Reactions = React.createClass({
 										'data-text': 'Write comment...', contentEditable: 'true' })
 								)
 							)
+						)
+					)
+				)
+			)
+		);
+	}
+});
+
+var CommentBody = React.createClass({
+	displayName: 'CommentBody',
+
+	onKeyUp(e) {
+		var content = $(this.refs.comment).code();
+		if (e.key === 'Enter') {
+			if (!e.nativeEvent.shiftKey) {
+				$(this.refs.comment).html('');
+
+				$.ajax({
+					method: 'POST',
+					url: Url.subComment,
+					data: {
+						content: content,
+						moment: moment,
+						comment: this.props.comment._id,
+						'_token': token
+					},
+					success: function (r) {
+						this.props.getBlog();
+					}.bind(this)
+				});
+			}
+		}
+	},
+	showReplyBox(e) {
+		e.preventDefault();
+		$(this.refs.replyBox).removeClass('hidden');
+	},
+	render() {
+		var comment = this.props.comment;
+		return React.createElement(
+			'div',
+			{ className: 'social-feed-box', key: comment.dateAdded.date },
+			React.createElement(
+				'div',
+				{ className: 'social-footer' },
+				React.createElement(
+					'div',
+					{ className: 'social-comment' },
+					React.createElement(UpdateComment, { comment: comment, blog: this.props.blog, getBlog: () => this.getBlog() }),
+					React.createElement(
+						'a',
+						{ href: Url.profile + '/' + comment.user._id, className: 'pull-left' },
+						React.createElement('img', { alt: 'image', src: '../img/avatar/' + comment.user.image })
+					),
+					React.createElement(
+						'div',
+						{ className: 'media-body' },
+						React.createElement(
+							'a',
+							{ href: Url.profile + '/' + comment.user._id },
+							comment.user.name
+						),
+						'\xA0\xA0',
+						React.createElement(
+							'small',
+							{ className: 'text-muted' },
+							moment(comment.dateAdded.date, "YYYYMMDD h:mm:ss").fromNow()
+						),
+						React.createElement(CommentContent, { content: comment.content }),
+						React.createElement(
+							'a',
+							{ href: '#', onClick: this.showReplyBox, className: 'small' },
+							'Reply'
+						)
+					),
+					(comment.subComments ? comment.subComments : []).map(subComment => {
+						return React.createElement(
+							'div',
+							{ className: 'social-comment' },
+							React.createElement(
+								'a',
+								{ href: Url.profile + '/' + subComment.user._id, className: 'pull-left' },
+								React.createElement('img', { alt: 'image', src: '../img/avatar/' + subComment.user.image })
+							),
+							React.createElement(
+								'div',
+								{ className: 'media-body' },
+								React.createElement(
+									'a',
+									{ href: Url.profile + '/' + subComment.user._id },
+									subComment.user.name
+								),
+								'\xA0\xA0',
+								React.createElement(
+									'small',
+									{ className: 'text-muted' },
+									moment(subComment.dateAdded.date, "YYYYMMDD h:mm:ss").fromNow()
+								),
+								React.createElement(CommentContent, { content: subComment.content })
+							)
+						);
+					}),
+					React.createElement(
+						'div',
+						{ className: 'social-comment hidden', ref: 'replyBox' },
+						React.createElement(
+							'a',
+							{ href: '', className: 'pull-left' },
+							React.createElement('img', { alt: 'image', src: '../img/avatar/' + (user ? user.image : '') })
+						),
+						React.createElement(
+							'div',
+							{ className: 'media-body' },
+							React.createElement('div', { className: 'form-control subcomment-textbox',
+								onKeyUp: this.onKeyUp, ref: 'comment',
+								'data-text': 'Write comment...', contentEditable: 'true' })
 						)
 					)
 				)
@@ -444,8 +520,21 @@ var UpdateComment = React.createClass({
 				'_token': token
 			},
 			success: function (r) {
-				console.log('>>>>>>>>COMMENT: ' + JSON.stringify(r));
-				//this.getBlog();
+				window.location.href = Url.viewBlog + '/' + blogId;
+			}.bind(this)
+		});
+	},
+	deleteComment() {
+		$.ajax({
+			method: 'POST',
+			url: Url.deleteComment,
+			data: {
+				comment: this.state.comment._id,
+				blog: this.state.blog._id,
+				'_token': token
+			},
+			success: function (r) {
+				window.location.href = Url.viewBlog + '/' + blogId;
 			}.bind(this)
 		});
 	},
@@ -498,7 +587,7 @@ var UpdateComment = React.createClass({
 							),
 							React.createElement(
 								'button',
-								{ type: 'button', className: 'btn btn-danger pull-left', 'data-dismiss': 'modal' },
+								{ type: 'button', className: 'btn btn-danger pull-left', 'data-dismiss': 'modal', onClick: this.deleteComment },
 								'Delete Comment'
 							),
 							React.createElement(

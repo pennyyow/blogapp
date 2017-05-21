@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Blogs;
 use Input;
 use App\User;
+use App\Comment;
 
 class GuestController extends Controller
 {
@@ -124,6 +125,13 @@ class GuestController extends Controller
         $blog = Blogs::find(Input::get('blog'))->toArray();
 
         $blog['user'] = User::find($blog['user']);
+
+        $comments = [];
+        for ($i=0; $i < count($blog['comments']) ; $i++) { 
+            array_push($comments, Comment::find($blog['comments'][$i]));
+        }
+
+        $blog['comments'] = $comments;
 
         for ($i=0; $i < count($blog['comments']) ; $i++) { 
             $blog['comments'][$i]['user'] = User::find($blog['comments'][$i]['user']);

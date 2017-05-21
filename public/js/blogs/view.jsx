@@ -103,41 +103,41 @@ var Reactions = React.createClass({
 		}
 	},
 	componentDidMount() {
-	$(this.refs.description).html(this.state.blog.description);
+		$(this.refs.description).html(this.state.blog.description);
 
-	window.fbAsyncInit = function() {
-      FB.init({
-        appId      : '1352297461495712',
-        xfbml      : true,
-        version    : 'v2.0'
-      });
-    };
+		window.fbAsyncInit = function() {
+	      FB.init({
+		        appId      : '1352297461495712',
+		        xfbml      : true,
+		        version    : 'v2.0'
+		      });
+		    };
 
-    (function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
+		    (function(d, s, id) {
+		      var js, fjs = d.getElementsByTagName(s)[0];
+		      if (d.getElementById(id)) return;
+		      js = d.createElement(s); js.id = id;
+		      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+		      fjs.parentNode.insertBefore(js, fjs);
+	    }(document, 'script', 'facebook-jssdk'));
 		this.getBlog();
 	},
 	getBlog() {
 		$.ajax({
-      method: 'POST',    
-      url: Url.getBlog,
-      data: {
-    		blog: blogId,
-    		moment: moment,
-        '_token': token
-      },
-      success: function(r) {
-      	this.setState({
-      		blog: r,
-      		comments: r.comments
-      	});
-      }.bind(this)
-    });
+	      method: 'POST',    
+	      url: Url.getBlog,
+	      data: {
+	    		blog: blogId,
+	    		moment: moment,
+	        '_token': token
+	      },
+	      success: function(r) {
+	      	this.setState({
+	      		blog: r,
+	      		comments: r.comments
+	      	});
+	      }.bind(this)
+	    });
 	},
 	addReaction(reaction, blog) {
 		$.ajax({
@@ -257,29 +257,7 @@ var Reactions = React.createClass({
                 {
                 	(this.state.comments ? this.state.comments : []).map( comment => {
 	                		return(
-	                			<div className="social-feed-box" key={comment.dateAdded.date}>
-				                    <div className="social-avatar">
-				                        <a href="" className="pull-left">
-				                            <img alt="image" src={'../img/avatar/' + comment.user.image} />
-				                        </a>
-				                        <div className="media-body">
-				                        	<div className="col-md-10">
-				                        		<a href={Url.profile + '/' + comment.user._id}>
-				                                {comment.user.name}
-				                            </a>
-				                            <small className="text-muted">
-				                            	{moment(comment.dateAdded.date, "YYYYMMDD h:mm:ss").fromNow()}
-				                            </small>
-				                        	</div>
-				                        	<div className="col-md-2">
-				                        		<UpdateComment comment={comment} blog={blog} />				                        		
-				                        	</div>
-				                        </div>
-				                    </div>
-				                    <div className="social-body">
-				                        <CommentContent content={comment.content} />
-				                    </div>
-				                </div>
+	                			<CommentBody comment={comment} blog={blog} getBlog={() => this.getBlog()} />
 	                		);
 	                	})
                 } 
@@ -303,6 +281,87 @@ var Reactions = React.createClass({
 		);
 	}
 });
+
+var CommentBody = React.createClass({
+	onKeyUp(e) {
+		var content = $(this.refs.comment).code();
+		if(e.key === 'Enter') {
+			if(!e.nativeEvent.shiftKey) {
+				$(this.refs.comment).html('');
+
+				$.ajax({
+			      method: 'POST',    
+			      url: Url.subComment,
+			      data: {
+			    		content: content,
+			    		moment: moment,
+			    		comment: this.props.comment._id,
+			        '_token': token
+			      },
+			      success: function(r) {
+			      	this.props.getBlog();
+			      }.bind(this)
+			    });
+			}
+		}
+	},
+	showReplyBox(e) {
+		e.preventDefault();
+		$(this.refs.replyBox).removeClass('hidden');
+	},
+	render() {
+		var comment = this.props.comment;
+		return(
+			<div className="social-feed-box" key={comment.dateAdded.date}>
+                <div className="social-footer">
+                	<div className="social-comment">
+	                	<UpdateComment comment={comment} blog={this.props.blog} getBlog={() => this.getBlog()} />
+                        <a href={Url.profile + '/' + comment.user._id} className="pull-left">
+                            <img alt="image" src={'../img/avatar/' + comment.user.image} />
+                        </a>
+                        <div className="media-body">
+                            <a href={Url.profile + '/' + comment.user._id}>
+                                {comment.user.name}
+                            </a>
+                            &nbsp;&nbsp;<small className="text-muted">{moment(comment.dateAdded.date, "YYYYMMDD h:mm:ss").fromNow()}</small>
+                            <CommentContent content={comment.content} />
+                            <a href="#" onClick={this.showReplyBox} className="small">Reply</a> 
+                        </div>
+                        {
+		                	(comment.subComments ? comment.subComments : []).map( subComment => {
+		                		return(
+		                			<div className="social-comment">
+		                                <a href={Url.profile + '/' + subComment.user._id} className="pull-left">
+		                                    <img alt="image" src={'../img/avatar/' + subComment.user.image} />
+		                                </a>
+		                                <div className="media-body">
+		                                    <a href={Url.profile + '/' + subComment.user._id}>
+				                                {subComment.user.name}
+				                            </a>
+				                            &nbsp;&nbsp;<small className="text-muted">{moment(subComment.dateAdded.date, "YYYYMMDD h:mm:ss").fromNow()}</small>
+		                                    <CommentContent content={subComment.content} />
+		                                </div>
+		                            </div>
+		                		);
+		                	})
+		                }
+                        <div className="social-comment hidden" ref="replyBox">
+			                <a href="" className="pull-left">
+			                    <img alt="image" src={'../img/avatar/' + (user ? user.image : '')} />
+			                </a>
+			                <div className="media-body">
+			                    <div className="form-control subcomment-textbox" 
+			                    	onKeyUp={this.onKeyUp} ref="comment"
+			                      	data-text="Write comment..." contentEditable="true"></div>
+			                </div>
+			            </div>
+                    </div>
+                </div>
+            </div>
+		);
+	}
+});
+
 
 var UpdateComment = React.createClass({
 	getInitialState() {
@@ -328,8 +387,21 @@ var UpdateComment = React.createClass({
 	        	'_token': token
 	      },
 	      success: function(r) {
-	      	console.log('>>>>>>>>COMMENT: ' + JSON.stringify(r))
-	      	//this.getBlog();
+	      	window.location.href = Url.viewBlog + '/' + blogId;
+	      }.bind(this)
+	    });
+	},
+	deleteComment() {
+		$.ajax({
+	      method: 'POST',    
+	      url: Url.deleteComment,
+	      data: {
+	    		comment: this.state.comment._id,
+	    		blog: this.state.blog._id,
+	        	'_token': token
+	      },
+	      success: function(r) {
+	      	window.location.href = Url.viewBlog + '/' + blogId;
 	      }.bind(this)
 	    });
 	},
@@ -353,7 +425,7 @@ var UpdateComment = React.createClass({
 				      </div>
 				      <div className="modal-footer text-left">
 				      	<button type="button" className="btn btn-primary pull-left" data-dismiss="modal" onClick={this.updateComment}>Save Changes</button>
-				      	<button type="button" className="btn btn-danger pull-left" data-dismiss="modal">Delete Comment</button>
+				      	<button type="button" className="btn btn-danger pull-left" data-dismiss="modal" onClick={this.deleteComment}>Delete Comment</button>
 				        <button type="button" className="btn btn-default pull-right" data-dismiss="modal">Close</button>
 				      </div>
 				    </div>

@@ -33,10 +33,12 @@ Auth::routes();
 	Route::post('/listBlogs', 'BlogController@listBlogs');
 	Route::post('/react', 'BlogController@react');
 	Route::post('/comment', 'BlogController@comment');
+	Route::post('/subComment', 'BlogController@subComment');
 	Route::post('/get-blog', 'BlogController@getBlog');
 	Route::post('/listBlogsByUser', 'BlogController@listBlogsByUser');
 	Route::post('/editBlogContents', 'BlogController@editBlogContents');
 	Route::post('/updateComment', 'BlogController@updateComment');
+	Route::post('/deleteComment', 'BlogController@deleteComment');
 
     //only guests can access these routes
     Route::get('/pubSearch', 'GuestController@pubSearch');

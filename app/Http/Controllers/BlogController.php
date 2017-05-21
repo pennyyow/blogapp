@@ -236,12 +236,49 @@ class BlogController extends Controller
         return $blog;
     }
 
+    public function subComment() {
+        $comment = Comment::find(Input::get('comment'));
+        $subComments = $comment->subComments ? $comment->subComments : [];
+
+        array_push($subComments, [
+            'content' => Input::get('content'),
+            'dateAdded' => Carbon::now('Asia/Manila'),
+            'user' => [
+                'id' => auth()->user()->_id,
+                'name' => auth()->user()->name,
+                'image' => auth()->user()->image,
+                'email' => auth()->user()->email
+            ]
+        ]);
+
+        $comment->subComments = $subComments;
+        $comment->save();
+
+        return $comment;
+    }
+
     public function updateComment() {
         $comment = Comment::find(Input::get('comment'));
         $comment->content = Input::get('content');
         $comment->save();
 
         return $comment;
+    }
+
+    public function deleteComment() {
+        $comment = Comment::find(Input::get('comment'));
+        $comment->delete();
+
+        $blog = Blogs::find(Input::get('blog'));
+        $key = array_search(Input::get('comment'), $blog->comments);
+
+        $comments = $blog->comments;
+        array_splice($comments, $key, 1);
+
+        $blog->comments = $comments;
+        $blog->save();
+
+        return $blog;
     }
 
     public function updateProfile(Request $request){

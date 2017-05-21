@@ -47,6 +47,15 @@
   overflow-y: auto;
 }
 
+.subcomment-textbox {
+  min-height: 50px !important;
+  overflow-y: auto;
+}
+
+.subcomment-textbox:empty:not(:focus):before {
+  content: attr(data-text);
+}
+
 .p-d-0 {
     max-height: 0px !important;
 }

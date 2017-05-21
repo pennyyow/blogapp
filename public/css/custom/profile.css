@@ -171,7 +171,7 @@
   white-space: nowrap;
   position: absolute;
   top: 40% !important;
-  left: 43%;
+  left: 46%;
   color: #ffffff;
   font-weight: 500;
 }
@@ -182,7 +182,7 @@ header {
       rgba(0, 0, 0, 0.5),
       rgba(0, 0, 0, 0.5)
     ),
-    url(../../img/p1.jpg);
+    url(../../img/gallery/cover11.jpg);
   background-size: cover;
   height: 40vh;
 }
