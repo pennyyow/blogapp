@@ -69,3 +69,7 @@
 .blog-author {
   font-size: 15px;
 }
+
+.dropdown-comment {
+  top: 45% !important;
+}

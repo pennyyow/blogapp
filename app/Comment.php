@@ -8,8 +8,8 @@ use App\User;
 use DB;
 use Input;
 
-class Blogs extends Eloquent
+class Comment extends Eloquent
 {
    protected $connection = 'mongodb';
-   protected $collection = 'blogs';
+   protected $collection = 'comments';
 }

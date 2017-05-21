@@ -36,6 +36,7 @@ Auth::routes();
 	Route::post('/get-blog', 'BlogController@getBlog');
 	Route::post('/listBlogsByUser', 'BlogController@listBlogsByUser');
 	Route::post('/editBlogContents', 'BlogController@editBlogContents');
+	Route::post('/updateComment', 'BlogController@updateComment');
 
     //only guests can access these routes
     Route::get('/pubSearch', 'GuestController@pubSearch');

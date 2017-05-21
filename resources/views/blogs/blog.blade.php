@@ -25,6 +25,7 @@
         var Url = {
             react: '{{ url('/react') }}',
             comment: '{{ url('/comment') }}',
+            updateComment: '{{ url('/updateComment') }}',
             getBlog: '{{ !auth()->guest() ? url('/get-blog') : url('/pub-get-blog')  }}',
             profile: '{{ !auth()->guest() ? url('/profile') : url('/pub_profile')  }}',
             posts: '{{ !auth()->guest() ? url('/posts') : url('/pub_posts')  }}'

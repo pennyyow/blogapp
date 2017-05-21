@@ -198,7 +198,7 @@ var Reactions = React.createClass({
 		if (e.key === 'Enter') {
 			if (!e.nativeEvent.shiftKey) {
 				$(this.refs.comment).html('');
-				console.log('>>>>>>>>>>>>>>>>COMENT: ' + $(this.refs.comment).code());
+
 				$.ajax({
 					method: 'POST',
 					url: Url.comment,
@@ -361,14 +361,23 @@ var Reactions = React.createClass({
 									'div',
 									{ className: 'media-body' },
 									React.createElement(
-										'a',
-										{ href: '#' },
-										comment.user.name
+										'div',
+										{ className: 'col-md-10' },
+										React.createElement(
+											'a',
+											{ href: Url.profile + '/' + comment.user._id },
+											comment.user.name
+										),
+										React.createElement(
+											'small',
+											{ className: 'text-muted' },
+											moment(comment.dateAdded.date, "YYYYMMDD h:mm:ss").fromNow()
+										)
 									),
 									React.createElement(
-										'small',
-										{ className: 'text-muted' },
-										moment(comment.dateAdded.date, "YYYYMMDD h:mm:ss").fromNow()
+										'div',
+										{ className: 'col-md-2' },
+										React.createElement(UpdateComment, { comment: comment, blog: blog })
 									)
 								)
 							),
@@ -400,6 +409,102 @@ var Reactions = React.createClass({
 										onKeyUp: this.onKeyUp, ref: 'comment',
 										'data-text': 'Write comment...', contentEditable: 'true' })
 								)
+							)
+						)
+					)
+				)
+			)
+		);
+	}
+});
+
+var UpdateComment = React.createClass({
+	displayName: 'UpdateComment',
+
+	getInitialState() {
+		return {
+			comment: this.props.comment,
+			blog: this.props.blog
+		};
+	},
+	componentDidMount() {
+		$(this.refs.comment).html(this.props.comment.content);
+	},
+	showModal(e) {
+		e.preventDefault();
+		$(this.refs.updateModal).modal('show');
+	},
+	updateComment() {
+		$.ajax({
+			method: 'POST',
+			url: Url.updateComment,
+			data: {
+				comment: this.state.comment._id,
+				content: $(this.refs.comment).html(),
+				'_token': token
+			},
+			success: function (r) {
+				console.log('>>>>>>>>COMMENT: ' + JSON.stringify(r));
+				//this.getBlog();
+			}.bind(this)
+		});
+	},
+	render() {
+		return React.createElement(
+			'div',
+			null,
+			React.createElement(
+				'a',
+				{ className: 'dropdown-toggle pull-right', href: '#', onClick: this.showModal },
+				React.createElement('i', { className: 'fa fa-chevron-down' })
+			),
+			React.createElement(
+				'div',
+				{ ref: 'updateModal', className: 'modal fade', role: 'dialog' },
+				React.createElement(
+					'div',
+					{ className: 'modal-dialog' },
+					React.createElement(
+						'div',
+						{ className: 'modal-content' },
+						React.createElement(
+							'div',
+							{ className: 'modal-header' },
+							React.createElement(
+								'button',
+								{ type: 'button', className: 'close', 'data-dismiss': 'modal' },
+								'\xD7'
+							),
+							React.createElement(
+								'h4',
+								{ className: 'modal-title' },
+								'Update Comment'
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: 'modal-body' },
+							React.createElement('div', { className: 'form-control comment-textbox',
+								onKeyUp: this.onKeyUp, ref: 'comment',
+								'data-text': 'Write comment...', contentEditable: 'true' })
+						),
+						React.createElement(
+							'div',
+							{ className: 'modal-footer text-left' },
+							React.createElement(
+								'button',
+								{ type: 'button', className: 'btn btn-primary pull-left', 'data-dismiss': 'modal', onClick: this.updateComment },
+								'Save Changes'
+							),
+							React.createElement(
+								'button',
+								{ type: 'button', className: 'btn btn-danger pull-left', 'data-dismiss': 'modal' },
+								'Delete Comment'
+							),
+							React.createElement(
+								'button',
+								{ type: 'button', className: 'btn btn-default pull-right', 'data-dismiss': 'modal' },
+								'Close'
 							)
 						)
 					)

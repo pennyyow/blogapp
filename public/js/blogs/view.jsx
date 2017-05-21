@@ -161,7 +161,7 @@ var Reactions = React.createClass({
 		if(e.key === 'Enter') {
 			if(!e.nativeEvent.shiftKey) {
 				$(this.refs.comment).html('');
-				console.log('>>>>>>>>>>>>>>>>COMENT: ' + $(this.refs.comment).code())
+
 				$.ajax({
 			      method: 'POST',    
 			      url: Url.comment,
@@ -179,21 +179,21 @@ var Reactions = React.createClass({
 		}
 	},
 	share() {
-    var blog = this.state.blog;
+		var blog = this.state.blog;
 
-    FB.ui({
-      method: 'share',
-      display: 'popup',
-      href: 'http://d09343f8.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
-      title: blog.title,
-      picture: 'http://d09343f8.ngrok.io/blogapp/public/img/company/' + blog.image,  
-      caption: blog.description,
-      description: blog.description
-    }, function(response){});
-  },
-    goTo() {
-    	$(".comment-textbox").focus();
-  },
+		FB.ui({
+			  method: 'share',
+			  display: 'popup',
+			  href: 'http://d09343f8.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
+			  title: blog.title,
+			  picture: 'http://d09343f8.ngrok.io/blogapp/public/img/company/' + blog.image,  
+			  caption: blog.description,
+			  description: blog.description
+		}, function(response){});
+	},
+	goTo() {
+		$(".comment-textbox").focus();
+	},
 	render() {
 		var blog = this.state.blog;
 		var reaction = null; 
@@ -216,40 +216,40 @@ var Reactions = React.createClass({
 		return(
 			<div>
 				<div className="row">
-          <div className="col-md-12">
-            <div className="pull-right status">
-              <p>
-              		<i className="fa fa-eye"></i> {blog.views ? blog.views : 0} Views
-                  &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-up"></i> {liked} Likes
-                  &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-down"></i> {disliked}  Dislikes
-                  &nbsp;&nbsp;&nbsp;<i className="fa fa-comments"></i> {this.state.comments ? this.state.comments.length : 0} Comments
-              </p>
-            </div>
-              <If test={!isGuest}>
-          			<div className="btn-group">
-                		<button className={ reaction && reaction.reaction == 1 ? "btn btn-white btn-xs like-on" : "btn btn-white btn-xs"} 
-                			onClick={() => this.addReaction(1, blog._id)}>
-                			<i className="fa fa-thumbs-up"></i> Like
-                    </button>
-                    <button className={ reaction && reaction.reaction == 2 ? "btn btn-white btn-xs dislike-on" : "btn btn-white btn-xs"}
-                    	onClick={() => this.addReaction(2, blog._id)}>
-                    	<i className="fa fa-thumbs-down"></i> Dislike
-                    </button>
-                    <a href="#comment-textbox" className="btn btn-white btn-xs" onClick={this.goTo}>
-                      <i className="fa fa-comments"></i> Comment
-                    </a>
-                    <button className="btn btn-white btn-xs" onClick={this.share}>
-                      <i className="fa fa-share"> Share </i>
-                     </button>
-                </div>
-          		</If>
-              <If test={isGuest}>
-              	<div className="btn-group">
-            		<button className="btn btn-white btn-xs" onClick={this.share}>
-                      <i className="fa fa-share"> Share </i>
-                    </button>
-                </div>
-              </If>
+		          <div className="col-md-12">
+		            <div className="pull-right status">
+		              <p>
+		              		<i className="fa fa-eye"></i> {blog.views ? blog.views : 0} Views
+		                  &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-up"></i> {liked} Likes
+		                  &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-down"></i> {disliked}  Dislikes
+		                  &nbsp;&nbsp;&nbsp;<i className="fa fa-comments"></i> {this.state.comments ? this.state.comments.length : 0} Comments
+		              </p>
+		            </div>
+	              <If test={!isGuest}>
+	          			<div className="btn-group">
+	                		<button className={ reaction && reaction.reaction == 1 ? "btn btn-white btn-xs like-on" : "btn btn-white btn-xs"} 
+	                			onClick={() => this.addReaction(1, blog._id)}>
+	                			<i className="fa fa-thumbs-up"></i> Like
+	                    </button>
+	                    <button className={ reaction && reaction.reaction == 2 ? "btn btn-white btn-xs dislike-on" : "btn btn-white btn-xs"}
+	                    	onClick={() => this.addReaction(2, blog._id)}>
+	                    	<i className="fa fa-thumbs-down"></i> Dislike
+	                    </button>
+	                    <a href="#comment-textbox" className="btn btn-white btn-xs" onClick={this.goTo}>
+	                      <i className="fa fa-comments"></i> Comment
+	                    </a>
+	                    <button className="btn btn-white btn-xs" onClick={this.share}>
+	                      <i className="fa fa-share"> Share </i>
+	                     </button>
+	                </div>
+	          		</If>
+	              <If test={isGuest}>
+	              	<div className="btn-group">
+	            		<button className="btn btn-white btn-xs" onClick={this.share}>
+	                      <i className="fa fa-share"> Share </i>
+	                    </button>
+	                </div>
+	              </If>
 	          </div>
 	      </div>
 	      <div className="row">
@@ -263,12 +263,17 @@ var Reactions = React.createClass({
 				                            <img alt="image" src={'../img/avatar/' + comment.user.image} />
 				                        </a>
 				                        <div className="media-body">
-				                            <a href="#">
+				                        	<div className="col-md-10">
+				                        		<a href={Url.profile + '/' + comment.user._id}>
 				                                {comment.user.name}
 				                            </a>
 				                            <small className="text-muted">
 				                            	{moment(comment.dateAdded.date, "YYYYMMDD h:mm:ss").fromNow()}
 				                            </small>
+				                        	</div>
+				                        	<div className="col-md-2">
+				                        		<UpdateComment comment={comment} blog={blog} />				                        		
+				                        	</div>
 				                        </div>
 				                    </div>
 				                    <div className="social-body">
@@ -280,17 +285,6 @@ var Reactions = React.createClass({
                 } 
                 <If test={user}>
                 	<div className="social-feed-box" id="comment-section">
-		                {
-		                // 	<div className="social-avatar comment-text">
-		                //     <a href="" className="pull-left">
-		                //         <img alt="image" src={'../img/avatar/' + (user ? user.image : '')} />
-		                //     </a>
-		                //     <div className="media-body">
-		                //         <textarea className="form-control" onKeyUp={this.onKeyUp} 
-		                //         	placeholder="Write comment..." rows="3" ref="comment"></textarea>
-		                //     </div>
-		                // </div>
-		                }
 		                <div className="social-avatar comment-text">
 		                    <a href="" className="pull-left">
 		                        <img alt="image" src={'../img/avatar/' + (user ? user.image : '')} />
@@ -305,6 +299,66 @@ var Reactions = React.createClass({
                 </If>
             </div>
         </div>
+			</div>
+		);
+	}
+});
+
+var UpdateComment = React.createClass({
+	getInitialState() {
+		return {
+			comment: this.props.comment,
+			blog: this.props.blog
+		}
+	},
+	componentDidMount() {
+		$(this.refs.comment).html(this.props.comment.content);
+	},
+	showModal(e) {
+		e.preventDefault();
+		$(this.refs.updateModal).modal('show');
+	},
+	updateComment() {
+		$.ajax({
+	      method: 'POST',    
+	      url: Url.updateComment,
+	      data: {
+	    		comment: this.state.comment._id,
+	    		content: $(this.refs.comment).html(),
+	        	'_token': token
+	      },
+	      success: function(r) {
+	      	console.log('>>>>>>>>COMMENT: ' + JSON.stringify(r))
+	      	//this.getBlog();
+	      }.bind(this)
+	    });
+	},
+	render() {
+		return(
+			<div>
+				<a className="dropdown-toggle pull-right" href="#" onClick={this.showModal}>
+                    <i className="fa fa-chevron-down"></i>
+                </a>
+                <div ref="updateModal" className="modal fade" role="dialog">
+				  <div className="modal-dialog">
+				  	<div className="modal-content">
+				      <div className="modal-header">
+				        <button type="button" className="close" data-dismiss="modal">&times;</button>
+				        <h4 className="modal-title">Update Comment</h4>
+				      </div>
+				      <div className="modal-body">
+				        <div className="form-control comment-textbox" 
+		                	onKeyUp={this.onKeyUp} ref="comment"
+		                  	data-text="Write comment..." contentEditable="true"></div>
+				      </div>
+				      <div className="modal-footer text-left">
+				      	<button type="button" className="btn btn-primary pull-left" data-dismiss="modal" onClick={this.updateComment}>Save Changes</button>
+				      	<button type="button" className="btn btn-danger pull-left" data-dismiss="modal">Delete Comment</button>
+				        <button type="button" className="btn btn-default pull-right" data-dismiss="modal">Close</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
 			</div>
 		);
 	}

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Input;
 use App\Blogs;
+use App\Comment;
 use App\Profile;
 use DB;
 use Carbon\Carbon;
@@ -23,6 +24,22 @@ class BlogController extends Controller
     }
 
     public function home(){
+        // $blog = Blogs::find(Input::get('blog'))->toArray();
+
+        // $blog['user'] = User::find($blog['user']);
+
+        // $comments = [];
+        // for ($i=0; $i < count($blog['comments']) ; $i++) { 
+        //     array_push($comments, Comment::find($blog['comments'][$i]['_id']));
+        // }
+
+        // $blog['comments'] = $comments;
+
+        // for ($i=0; $i < count($blog['comments']) ; $i++) { 
+        //     $blog['comments'][$i]['user'] = User::find($blog['comments'][$i]['user']);
+        // }
+
+        // return $blog;
         $blogs = Blogs::all();
         $category = Input::get('category');
         $tags = Input::get('tags');
@@ -35,6 +52,22 @@ class BlogController extends Controller
     }
 
     public function profile($id){
+        // $blog = Blogs::find($id)->toArray();
+
+        // $blog['user'] = User::find($blog['user']);
+
+        // $comments = [];
+        // for ($i=0; $i < count($blog['comments']) ; $i++) { 
+        //     array_push($comments, Comment::find($blog['comments'][$i]));
+        // }
+
+        // $blog['comments'] = $comments;
+
+        // for ($i=0; $i < count($blog['comments']) ; $i++) { 
+        //     $blog['comments'][$i]['user'] = User::find($blog['comments'][$i]['user']);
+        // }
+
+        // return $blog;
         $user = User::find($id);
         $blogs = count(Blogs::where('user', '=', $id)->get());
         $tags = Input::get('tags');
@@ -185,21 +218,30 @@ class BlogController extends Controller
 
     public function comment() {
         $blogId = Input::get('blog');
-        $comment = Input::get('comment');
 
         $blog = Blogs::find($blogId);
         $comments = $blog->comments ? $blog->comments : [];
 
-        array_push($comments, [
-            'content' => $comment,
-            'user' => auth()->user()->_id,
-            'dateAdded' => Carbon::now('Asia/Manila')
-        ]);
+        $comment = new Comment();
+        $comment->content = Input::get('comment');
+        $comment->dateAdded = Carbon::now('Asia/Manila');
+        $comment->user = auth()->user()->_id;
+        $comment->save();
+
+        array_push($comments, $comment->id);
 
         $blog->comments = $comments;
         $blog->save();
 
         return $blog;
+    }
+
+    public function updateComment() {
+        $comment = Comment::find(Input::get('comment'));
+        $comment->content = Input::get('content');
+        $comment->save();
+
+        return $comment;
     }
 
     public function updateProfile(Request $request){
@@ -378,6 +420,13 @@ class BlogController extends Controller
         $blog = Blogs::find(Input::get('blog'))->toArray();
 
         $blog['user'] = User::find($blog['user']);
+
+        $comments = [];
+        for ($i=0; $i < count($blog['comments']) ; $i++) { 
+            array_push($comments, Comment::find($blog['comments'][$i]));
+        }
+
+        $blog['comments'] = $comments;
 
         for ($i=0; $i < count($blog['comments']) ; $i++) { 
             $blog['comments'][$i]['user'] = User::find($blog['comments'][$i]['user']);
