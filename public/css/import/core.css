@@ -73,7 +73,7 @@ a:focus {
   text-decoration: none;
 }
 .container {
-  width: auto;
+  width: relative;
 }
 .container-alt {
   margin-left: auto;

@@ -101,8 +101,8 @@ var FilteredBlogs = React.createClass({
 							                          </div>
 							                          <p className="status-container">
 								                      		<i className="fa fa-eye"></i> {blog.views ? blog.views : 0} Views
-								                          &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-up"></i> {liked} Likes
-								                          &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-down"></i> {disliked}  Dislikes
+								                          &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-up"></i> {liked} {liked == 1 || liked == 0 ? 'Like' : 'Likes'}
+								                          &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-down"></i> {disliked}  {disliked == 1 || disliked == 0 ? 'Dislike' : 'Dislikes'}
 								                      </p>
 				                                    </div>
 				                                </div>

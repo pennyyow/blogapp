@@ -26,7 +26,7 @@
                                 <div class="col-sm-6 b-r">
                                     <div class="form-group title">
                                         <label class="control-label title-label">Title&nbsp;&nbsp;</label>
-                                        <input type="text" name="title" placeholder="Enter Title" class="form-control" maxlength="105">
+                                        <input type="text" name="title" placeholder="Enter Title" class="form-control" maxlength="100">
                                     </div>
                                     <div class="form-group">
                                         <label>Category</label>
@@ -54,7 +54,7 @@
                                     <input type="hidden" id="description" name="description">
                                     <div class="form-group description">
                                         <label class="control-label description-label">Description&nbsp;&nbsp;</label>
-                                        <div class="form-control description-textbox" 
+                                        <div class="form-control description-textbox" id="divs" 
                                         data-text="Enter description" contenteditable="true"></div>
                                     </div>
                                 </div>

@@ -140,11 +140,14 @@ var FilteredBlogs = React.createClass({
 												React.createElement('i', { className: 'fa fa-thumbs-up' }),
 												' ',
 												liked,
-												' Likes \xA0\xA0\xA0',
+												' ',
+												liked == 1 || liked == 0 ? 'Like' : 'Likes',
+												'\xA0\xA0\xA0',
 												React.createElement('i', { className: 'fa fa-thumbs-down' }),
 												' ',
 												disliked,
-												'  Dislikes'
+												'  ',
+												disliked == 1 || disliked == 0 ? 'Dislike' : 'Dislikes'
 											)
 										)
 									)

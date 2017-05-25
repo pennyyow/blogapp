@@ -74,72 +74,6 @@
                                 <i class="fa fa-user icon"></i>
                             </a>
                         </li>
-                        <li class="dropdown hvr-grow" data-toggle="tooltip" data-placement="bottom" title="Notifications">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="false">
-                                <i class="fa fa-globe icon"></i>  <span class="label label-warning">16</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-messages">
-                                <li class="text-center notifi-title">Notifications</li>
-                                <li>
-                                    <a href="#">
-                                        <div class="dropdown-messages-box">
-                                            <div class="pull-left">
-                                                <img alt="image" class=" user-photo" src="img/a4.jpg">
-                                            </div>
-                                            <div class="media-body ">
-                                                <small class="pull-right text-navy">5h ago</small>
-                                                <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
-                                                <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="dropdown-messages-box">
-                                            <div class="pull-left">
-                                                <img alt="image" class=" user-photo" src="img/a4.jpg">
-                                            </div>
-                                            <div class="media-body ">
-                                                <small class="pull-right text-navy">5h ago</small>
-                                                <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
-                                                <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="dropdown-messages-box">
-                                            <div class="pull-left">
-                                                <img alt="image" class=" user-photo" src="img/a4.jpg">
-                                            </div>
-                                            <div class="media-body ">
-                                                <small class="pull-right text-navy">5h ago</small>
-                                                <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
-                                                <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="dropdown-messages-box">
-                                            <div class="pull-left">
-                                                <img alt="image" class=" user-photo" src="img/a4.jpg">
-                                            </div>
-                                            <div class="media-body ">
-                                                <small class="pull-right text-navy">5h ago</small>
-                                                <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
-                                                <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a href="mailbox.html">
-                                            <strong>See All Notifications</strong>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
                         <li data-toggle="tooltip" data-placement="bottom" title="Categories" class="hvr-grow">
                             <a href="#categories" data-toggle="modal">
                                 <i class="fa fa-th-large icon"></i>
@@ -176,7 +110,7 @@
                     <a class="logo hvr-grow" href="{{ url('/pub_posts') }}">
                         BlogMoTo
                     </a>
-                    <form method="GET" action="{{ url('/pubSearch') }}" id="createForm" class="app-search">
+                    <form method="GET" action="{{ url('/pub_search') }}" id="createForm" class="app-search">
                         <div class="form-group">
                             <input type="text" placeholder="Search for something..." name="search" id="top-search" class="form-control app-search-input">
                             <a href=""><i class="fa fa-search"></i></a>
@@ -185,6 +119,11 @@
                 </div>
                 <div class="tooltip-demo">
                     <ul class="nav navbar-top-links navbar-right pull-right">
+                        <li data-toggle="tooltip" data-placement="bottom" title="Create Blog">
+                            <a href="{{ url('create-blog') }}">
+                                    <i class="fa fa-plus icon"></i></li>
+                            </a>
+                        <li> | </li>
                         <li data-toggle="tooltip" data-placement="bottom" title="Home">
                             <a href="{{ url('/pub_posts') }}">
                                 <i class="fa fa-home icon"></i>

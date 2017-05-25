@@ -31,7 +31,7 @@
                         <div class="form-group{{ $errors->has('firstName') ? ' has-error' : '' }}">
 
                             <div class="form-group">
-                                <input id="firstName" type="text" class="form-control" name="firstName" value="{{ old('firstName') }}" placeholder="First Name" required autofocus>
+                                <input id="firstName" type="text" class="form-control" name="firstName" value="{{ old('firstName') }}" placeholder="First Name" autofocus>
 
                                 @if ($errors->has('firstName'))
                                     <span class="help-block">
@@ -44,7 +44,7 @@
                         <div class="form-group{{ $errors->has('lastName') ? ' has-error' : '' }}">
 
                             <div class="form-group">
-                                <input id="lastName" type="text" class="form-control" name="lastName" value="{{ old('lastName') }}" placeholder="Last Name" required autofocus>
+                                <input id="lastName" type="text" class="form-control" name="lastName" value="{{ old('lastName') }}" placeholder="Last Name" autofocus>
 
                                 @if ($errors->has('lastName'))
                                     <span class="help-block">
@@ -57,7 +57,7 @@
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
 
                             <div class="form-group">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email" required>
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -70,7 +70,7 @@
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
 
                             <div class="form-group">
-                                <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
+                                <input id="password" type="password" class="form-control" name="password" placeholder="Password">
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -81,7 +81,7 @@
                         </div>
 
                         <div class="form-group">
-                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password" required>
+                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password">
                         </div>
 
                         <button type="submit" class="btn btn-primary block full-width m-b"> Register </button>

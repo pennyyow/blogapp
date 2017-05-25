@@ -184,9 +184,9 @@ var Reactions = React.createClass({
 		FB.ui({
 			  method: 'share',
 			  display: 'popup',
-			  href: 'http://d09343f8.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
+			  href: 'http://008de834.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
 			  title: blog.title,
-			  picture: 'http://d09343f8.ngrok.io/blogapp/public/img/company/' + blog.image,  
+			  picture: 'http://008de834.ngrok.io/blogapp/public/img/company/' + blog.image,  
 			  caption: blog.description,
 			  description: blog.description
 		}, function(response){});
@@ -219,10 +219,13 @@ var Reactions = React.createClass({
 		          <div className="col-md-12">
 		            <div className="pull-right status">
 		              <p>
-		              		<i className="fa fa-eye"></i> {blog.views ? blog.views : 0} Views
-		                  &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-up"></i> {liked} Likes
-		                  &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-down"></i> {disliked}  Dislikes
-		                  &nbsp;&nbsp;&nbsp;<i className="fa fa-comments"></i> {this.state.comments ? this.state.comments.length : 0} Comments
+		              		<i className="fa fa-eye"></i> {blog.views ? blog.views : 0} {blog.views ? 'Views' : 'View'}
+
+		                  &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-up"></i>  {liked} {liked == 1 || liked == 0 ? 'Like' : 'Likes'}
+
+		                  &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-down"></i> {disliked} {disliked == 1 || disliked == 0 ? 'Dislike' : 'Dislikes'}
+
+		                  &nbsp;&nbsp;&nbsp;<i className="fa fa-comments"></i> {this.state.comments ? this.state.comments.length : 0} {this.state.comments.length == 1 || this.state.comments.length == 0 ? 'Comment' : 'Comments'}
 		              </p>
 		            </div>
 	              <If test={!isGuest}>
@@ -315,7 +318,11 @@ var CommentBody = React.createClass({
 			<div className="social-feed-box" key={comment.dateAdded.date}>
                 <div className="social-footer">
                 	<div className="social-comment">
-	                	<UpdateComment comment={comment} blog={this.props.blog} getBlog={() => this.getBlog()} />
+	               		<If test={ !isGuest && comment.user._id == user.id }>
+	               			<div>
+	                			<UpdateComment comment={comment} blog={this.props.blog} getBlog={() => this.getBlog()} />
+	                		</div>
+	                	</If>
                         <a href={Url.profile + '/' + comment.user._id} className="pull-left">
                             <img alt="image" src={'../img/avatar/' + comment.user.image} />
                         </a>
@@ -325,18 +332,21 @@ var CommentBody = React.createClass({
                             </a>
                             &nbsp;&nbsp;<small className="text-muted">{moment(comment.dateAdded.date, "YYYYMMDD h:mm:ss").fromNow()}</small>
                             <CommentContent content={comment.content} />
-                            <a href="#" onClick={this.showReplyBox} className="small">Reply</a> 
+                            <If test={ !isGuest }>
+                            	<a href="#" onClick={this.showReplyBox} className="small">Reply</a> 
+                            </If>
                         </div>
                         {
+
 		                	(comment.subComments ? comment.subComments : []).map( subComment => {
 		                		return(
 		                			<div className="social-comment">
-		                                <a href={Url.profile + '/' + subComment.user._id} className="pull-left">
+		                                <a href={Url.profile + '/' + subComment.user.id} className="pull-left">
 		                                    <img alt="image" src={'../img/avatar/' + subComment.user.image} />
 		                                </a>
 		                                <div className="media-body">
-		                                    <a href={Url.profile + '/' + subComment.user._id}>
-				                                {subComment.user.name}
+		                                    <a href={Url.profile + '/' + subComment.user.id}>
+		                                    	{subComment.user.name}
 				                            </a>
 				                            &nbsp;&nbsp;<small className="text-muted">{moment(subComment.dateAdded.date, "YYYYMMDD h:mm:ss").fromNow()}</small>
 		                                    <CommentContent content={subComment.content} />

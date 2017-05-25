@@ -41,7 +41,7 @@ Auth::routes();
 	Route::post('/deleteComment', 'BlogController@deleteComment');
 
     //only guests can access these routes
-    Route::get('/pubSearch', 'GuestController@pubSearch');
+    Route::get('/pub_search', 'GuestController@pubSearch');
 	Route::get('/pub_profile/{id}', 'GuestController@profile');
 	Route::post('/pub-get-blog', 'GuestController@getBlog');
 	Route::get('/pub-view-blog/{id}', 'GuestController@view');

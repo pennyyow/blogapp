@@ -185,9 +185,9 @@ var Blog = React.createClass({
     FB.ui({
       method: 'share',
       display: 'popup',
-      href: 'http://d09343f8.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
+      href: 'http://008de834.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
       title: blog.title,
-      picture: 'http://d09343f8.ngrok.io/blogapp/public/img/company/' + blog.image,
+      picture: 'http://008de834.ngrok.io/blogapp/public/img/company/' + blog.image,
       caption: blog.description,
       description: blog.description
     }, function (response) {});
@@ -282,15 +282,20 @@ var Blog = React.createClass({
           React.createElement('i', { className: 'fa fa-thumbs-up' }),
           ' ',
           liked,
-          ' Likes \xA0\xA0\xA0',
+          ' ',
+          liked == 1 || liked == 0 ? 'Like' : 'Likes',
+          '\xA0\xA0\xA0',
           React.createElement('i', { className: 'fa fa-thumbs-down' }),
           ' ',
           disliked,
-          '  Dislikes \xA0\xA0\xA0',
+          '  ',
+          disliked == 1 || disliked == 0 ? 'Dislike' : 'Dislikes',
+          '\xA0\xA0\xA0',
           React.createElement('i', { className: 'fa fa-comments' }),
           ' ',
           this.state.blog.comments ? this.state.blog.comments.length : 0,
-          ' Comments'
+          ' ',
+          this.state.blog.comments.length == 1 || this.state.blog.comments.length == 0 ? 'Comment' : 'Comments'
         )
       ),
       React.createElement(

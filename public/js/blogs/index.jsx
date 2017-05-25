@@ -139,9 +139,9 @@ var Blog = React.createClass({
     FB.ui({
       method: 'share',
       display: 'popup',
-      href: 'http://ca6c9074.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
+      href: 'http://008de834.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
       title: blog.title,
-      picture: 'http://ca6c9074.ngrok.io/blogapp/public/img/company/' + blog.image,  
+      picture: 'http://008de834.ngrok.io/blogapp/public/img/company/' + blog.image,  
       caption: blog.description,
       description: blog.description
     }, function(response){});
@@ -176,9 +176,9 @@ var Blog = React.createClass({
               </a>
               <p className="text-center reactions">
                   <i className="fa fa-eye"></i> {blog.views ? blog.views : 0} Views
-                  &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-up"></i> {liked} Likes
-                  &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-down"></i> {disliked}  Dislikes
-                  &nbsp;&nbsp;&nbsp;<i className="fa fa-comments"></i> {this.state.blog.comments ? this.state.blog.comments.length : 0 } Comments
+                  &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-up"></i> {liked} {liked == 1 || liked == 0 ? 'Like' : 'Likes'}
+                  &nbsp;&nbsp;&nbsp;<i className="fa fa-thumbs-down"></i> {disliked}  {disliked == 1 || disliked == 0 ? 'Dislike' : 'Dislikes'}
+                  &nbsp;&nbsp;&nbsp;<i className="fa fa-comments"></i> {this.state.blog.comments ? this.state.blog.comments.length : 0 } {this.state.blog.comments.length == 1 || this.state.blog.comments.length == 0 ? 'Comment' : 'Comments'}
               </p>
           </div>
           <div className="ibox-content col-md-12 p-t-b-10">

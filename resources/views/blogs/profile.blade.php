@@ -83,7 +83,15 @@
     @endif
    
     <h1 class="profile-name">{{ $name }}</h1>
-    <h2 class="profile-details">{{ $blogs }} Blogs | {{ $email }}</h2>
+    <h2 class="profile-details">
+    @if($blogs == 1) {{ $blogs }} Blog
+    @else
+        {{ $blogs }} Blogs
+    @endif
+
+
+
+    | {{ $email }}</h2>
   </div>
 </header>
     <div class="wrapper wrapper-content">
@@ -109,7 +117,7 @@
             deleteBlog: '{{ url('/delete-blog') }}',
             edit: '{{ url('/edit') }}',
             updateProfile: '{{ url('/profile/update') }}',
-            posts: '{{ url('/posts') }}',
+            posts: '{{ !auth()->guest() ? url('/posts') : url('/pub_posts') }}',
         };
 
         var isGuest = (Url.listBlogs == '{{url('/listBlogs')}}' ? false : true);

@@ -221,9 +221,9 @@ var Reactions = React.createClass({
 		FB.ui({
 			method: 'share',
 			display: 'popup',
-			href: 'http://d09343f8.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
+			href: 'http://008de834.ngrok.io/blogapp/public/pub-view-blog/' + blog._id,
 			title: blog.title,
-			picture: 'http://d09343f8.ngrok.io/blogapp/public/img/company/' + blog.image,
+			picture: 'http://008de834.ngrok.io/blogapp/public/img/company/' + blog.image,
 			caption: blog.description,
 			description: blog.description
 		}, function (response) {});
@@ -268,19 +268,26 @@ var Reactions = React.createClass({
 							React.createElement('i', { className: 'fa fa-eye' }),
 							' ',
 							blog.views ? blog.views : 0,
-							' Views \xA0\xA0\xA0',
-							React.createElement('i', { className: 'fa fa-thumbs-up' }),
 							' ',
+							blog.views ? 'Views' : 'View',
+							'\xA0\xA0\xA0',
+							React.createElement('i', { className: 'fa fa-thumbs-up' }),
+							'  ',
 							liked,
-							' Likes \xA0\xA0\xA0',
+							' ',
+							liked == 1 || liked == 0 ? 'Like' : 'Likes',
+							'\xA0\xA0\xA0',
 							React.createElement('i', { className: 'fa fa-thumbs-down' }),
 							' ',
 							disliked,
-							'  Dislikes \xA0\xA0\xA0',
+							' ',
+							disliked == 1 || disliked == 0 ? 'Dislike' : 'Dislikes',
+							'\xA0\xA0\xA0',
 							React.createElement('i', { className: 'fa fa-comments' }),
 							' ',
 							this.state.comments ? this.state.comments.length : 0,
-							' Comments'
+							' ',
+							this.state.comments.length == 1 || this.state.comments.length == 0 ? 'Comment' : 'Comments'
 						)
 					),
 					React.createElement(
@@ -418,7 +425,15 @@ var CommentBody = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'social-comment' },
-					React.createElement(UpdateComment, { comment: comment, blog: this.props.blog, getBlog: () => this.getBlog() }),
+					React.createElement(
+						If,
+						{ test: !isGuest && comment.user._id == user.id },
+						React.createElement(
+							'div',
+							null,
+							React.createElement(UpdateComment, { comment: comment, blog: this.props.blog, getBlog: () => this.getBlog() })
+						)
+					),
 					React.createElement(
 						'a',
 						{ href: Url.profile + '/' + comment.user._id, className: 'pull-left' },
@@ -440,9 +455,13 @@ var CommentBody = React.createClass({
 						),
 						React.createElement(CommentContent, { content: comment.content }),
 						React.createElement(
-							'a',
-							{ href: '#', onClick: this.showReplyBox, className: 'small' },
-							'Reply'
+							If,
+							{ test: !isGuest },
+							React.createElement(
+								'a',
+								{ href: '#', onClick: this.showReplyBox, className: 'small' },
+								'Reply'
+							)
 						)
 					),
 					(comment.subComments ? comment.subComments : []).map(subComment => {
@@ -451,7 +470,7 @@ var CommentBody = React.createClass({
 							{ className: 'social-comment' },
 							React.createElement(
 								'a',
-								{ href: Url.profile + '/' + subComment.user._id, className: 'pull-left' },
+								{ href: Url.profile + '/' + subComment.user.id, className: 'pull-left' },
 								React.createElement('img', { alt: 'image', src: '../img/avatar/' + subComment.user.image })
 							),
 							React.createElement(
@@ -459,7 +478,7 @@ var CommentBody = React.createClass({
 								{ className: 'media-body' },
 								React.createElement(
 									'a',
-									{ href: Url.profile + '/' + subComment.user._id },
+									{ href: Url.profile + '/' + subComment.user.id },
 									subComment.user.name
 								),
 								'\xA0\xA0',
